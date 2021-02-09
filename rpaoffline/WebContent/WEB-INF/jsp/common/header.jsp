@@ -126,9 +126,9 @@
 	<core:out value="${pageContext.request.userPrincipal}"/>
     <ul id="gn-menu" class="gn-menu-main">
         <li id="menu">
-            <core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
+            <!--<core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
                 <%@include file="menu.jsp" %> 
-            </core:if>
+            </core:if>-->
         </li>
         <li style="float: right;padding-top: 68px; padding-right: 335px">
             <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">

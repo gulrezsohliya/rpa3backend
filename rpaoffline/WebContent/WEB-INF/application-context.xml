@@ -38,7 +38,7 @@
     <!--  Spring Annotation Configuration Starts  -->  
     <!--  <context:annotation-config />-->
     <!--<aop:aspectj-autoproxy />-->    
-    <context:component-scan base-package="rpa"/>     
+    <context:component-scan base-package="rpa.controller"/>     
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <!--  Spting Annotation Configuration Ends  -->        
 
