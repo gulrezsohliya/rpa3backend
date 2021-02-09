@@ -12,12 +12,13 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
  
 	<mvc:annotation-driven />
-	<context:component-scan
-		base-package="rpa.controller" />
-	<mvc:default-servlet-handler />
+	<context:annotation-config/> 
+	<context:component-scan base-package="rpa" />
+	<mvc:resources mapping="/resources/**" location="resources/" />
+<!-- 	<mvc:default-servlet-handler /> -->
  
 	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver ">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/jsp/" />
