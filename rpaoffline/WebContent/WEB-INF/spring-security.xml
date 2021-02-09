@@ -15,39 +15,30 @@
         <intercept-url pattern="/*" access="isAuthenticated()" />
         <intercept-url pattern="/*.htm" access="isAuthenticated()" />
         <intercept-url pattern="/*/*.htm" access="isAuthenticated()" />
-        <csrf/>
-        
+		
         <!--<access-denied-handler error-page="/403.jsp"/>-->
         <session-management session-fixation-protection="migrateSession"/>
         <!--<remember-me/>-->
-        <form-login login-page="/login.htm"
-                    default-target-url="/home.htm"
-        />
-<!--                     authentication-success-handler-ref="MyAuthenticationSuccessHandler" -->
+        <form-login/>
+		<!--         <form-login login-page="/login.htm" default-target-url="/home.htm"/> -->
+		<!--                     authentication-success-handler-ref="MyAuthenticationSuccessHandler" -->
         <logout invalidate-session="true"/>
         
     </http> 
 <!--     <beans:bean id="MyAuthenticationSuccessHandler" class="rpa.security.MyAuthenticationSuccessHandler" /> -->
-
+	<beans:bean id ="passwordEncoder" class = "org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method = "getInstance" />
+	
     <authentication-manager alias="authenticationManager">
         <authentication-provider>
-            <!--<password-encoder hash="bcrypt"></password-encoder>-->
+          <password-encoder ref="passwordEncoder"></password-encoder>
+			<!-- <password-encoder hash="bcrypt"></password-encoder> -->
             <jdbc-user-service data-source-ref="dataSource" 
-                               users-by-username-query="SELECT
-														  username,
-														  passwords as password,
-														  CASE WHEN enabled = 'Y' THEN true ELSE false end AS enabled
-														FROM
-														  backend.userlogins
-														WHERE username = ?"
+                               users-by-username-query="SELECT username, passwords as password, true AS enabled
+														FROM backend.userlogins WHERE username = ?"
 
-                               authorities-by-username-query="SELECT
-															  username,
-															  designation as authority
-															FROM
-															  backend.userlogins
-															WHERE
-															  username = ?
+                               authorities-by-username-query="SELECT username, cellcode as authority
+															FROM backend.userlogins
+															WHERE username = ?
 "/>
         </authentication-provider>
     </authentication-manager>

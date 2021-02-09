@@ -23,7 +23,7 @@
         <div class='containerBody' style="background: none">
             <h2>Login with Username and Password</h2>
             <div class="pagewrap" style="">
-                <form class="form" id="loginForm" name='f' action='/estate/login' method='POST' onsubmit='return beforeSubmit();' autocomplete="off">
+                <form class="form" id="loginForm" name='f' action='/rpaoffline/login' method='POST' onsubmit='return beforeSubmit();' autocomplete="off">
                     <div class="container" align="center">
                         <span style="color:red;width: 100%;">   
                             <core:out value="${sessionScope['SPRING_SECURITY_LAST_EXCEPTION'].message}"/>
@@ -50,7 +50,7 @@
         });
         
         function beforeSubmit() {
-            jQuery('#password').val(sha256_digest(jQuery('#password').val()));
+//             jQuery('#password').val(sha256_digest(jQuery('#password').val()));
             return true;
         }
         </script>

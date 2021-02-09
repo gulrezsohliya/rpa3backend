@@ -68,6 +68,11 @@
 	        <artifactId>spring-security-config</artifactId>
 	        <version>5.2.3.RELEASE</version>
 	    </dependency>
+	    <dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-crypto</artifactId>
+		    <version>5.2.3.RELEASE</version>
+		</dependency>
 		<dependency>
 		    <groupId>org.slf4j</groupId>
 		    <artifactId>log4j-over-slf4j</artifactId>
@@ -84,11 +89,16 @@
 		    <version>2.5</version>
 		    <scope>provided</scope>
 		</dependency>
-		<!-- database dependency		 -->
+		<!-- database dependency -->
 		<dependency>
 		    <groupId>c3p0</groupId>
 		    <artifactId>c3p0</artifactId>
 		    <version>0.9.1.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>9.4.1212</version>
 		</dependency>
 	</dependencies>
 </project>
