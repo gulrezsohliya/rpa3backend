@@ -1,16 +1,9 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- <%@taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %> --%>
 
 <title>RPA3</title>
-<link rel="stylesheet" href="resources/googlenexusMenu/css/component.css" />  
-<link rel="stylesheet" href="resources/jQuery/jquery-ui.min.css" />  
-<script src="resources/jQuery/jquery-ui.min.js"></script>  
-<link rel="stylesheet" href="resources/jQuery/fancybox/jquery.fancybox.css" />
-<link rel="stylesheet" href="resources/style/style.css" rel="stylesheet" type="text/css"/>
-<script src="resources/js/models/classes.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jQuery/fancybox/jquery.fancybox.pack.js"></script>
-<script src="resources/js/ajaxloading.js" type="text/javascript"></script>
+<%@include file="headerfiles.jsp" %> 
 <script>
     $(document).ready(function() {
         $(document).tooltip({
@@ -126,9 +119,9 @@
 	<core:out value="${pageContext.request.userPrincipal}"/>
     <ul id="gn-menu" class="gn-menu-main">
         <li id="menu">
-            <!--<core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
+            <core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
                 <%@include file="menu.jsp" %> 
-            </core:if>-->
+            </core:if>
         </li>
         <li style="float: right;padding-top: 68px; padding-right: 335px">
             <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">

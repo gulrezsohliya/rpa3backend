@@ -11,19 +11,23 @@
     <http auto-config="true" use-expressions="true">
 
         <!--<global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>-->
-<!--         <intercept-url pattern="/login.htm" access="permitAll" /> -->
+        <intercept-url pattern="/login.htm" access="permitAll" />
 <!--         <intercept-url pattern="/index.htm" access="permitAll" /> -->
-<!--         <intercept-url pattern="/*" access="isAuthenticated()" /> -->
-<!--         <intercept-url pattern="/*.htm" access="isAuthenticated()" /> -->
-<!--         <intercept-url pattern="/*/*.htm" access="isAuthenticated()" /> -->
+        <intercept-url pattern="/*" access="isAuthenticated()" />
+        <intercept-url pattern="/*.htm" access="isAuthenticated()" />
+        <intercept-url pattern="/*/*.htm" access="isAuthenticated()" />
 		
         <!--<access-denied-handler error-page="/403.jsp"/>-->
         <session-management session-fixation-protection="migrateSession"/>
         <!--<remember-me/>-->
         <!-- <form-login/>-->
-		<!--         <form-login login-page="/login.htm" default-target-url="/home.htm"/> -->
+        <form-login 
+        	login-page="/login.htm" 
+        	default-target-url="/index.htm"
+        	authentication-failure-url="/login.htm?error=1"
+        />
 		<!--                     authentication-success-handler-ref="MyAuthenticationSuccessHandler" -->
-        <logout invalidate-session="true"/>
+        <logout invalidate-session="true" logout-url="/logout" logout-success-url="/login.htm?logout=1"/>
         
     </http> 
 <!--     <beans:bean id="MyAuthenticationSuccessHandler" class="rpa.security.MyAuthenticationSuccessHandler" /> -->

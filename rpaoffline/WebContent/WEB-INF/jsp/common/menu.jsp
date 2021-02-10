@@ -86,10 +86,10 @@
             </li>
             <li>
             <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
-                <a class="gn-icon icon-exit" href='/estate/logout'>Log Out</a>
+                <a class="gn-icon icon-exit" href='/rpaoffline/logout'>Log Out</a>
             </core:if>
             <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user eq null}">
-                <a class="gn-icon icon-exit" href='/estate/logout'>Log Out</a>
+                <a class="gn-icon icon-exit" href='/rpaoffline/logout'>Log Out</a>
             </core:if>
             </li>
         </ul>
