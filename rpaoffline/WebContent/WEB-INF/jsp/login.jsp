@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<title>Login Page</title>
-		<script src="resources/sha256.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="resources/style/style.css" />
+		<script src="resources/vendor/sha256.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="resources/application/style/style.css" />
 		<style>
 		.containerBody td, .containerBody input, .containerBody select,
 			.containerBody span, .containerBody a {
