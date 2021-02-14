@@ -17,16 +17,16 @@
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
           p:location="/WEB-INF/xdb.properties" />
           
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-          p:driverClass="${jdbc.driverClassName}"
-          p:jdbcUrl="${jdbc.jdbcUrl}"
-          p:user="${jdbc.userName}"
-          p:password="${jdbc.password}"
-          p:initialPoolSize="${jdbc.initialPoolSize}"
-          p:minPoolSize="${jdbc.minPoolSize}"
-          p:maxIdleTime="${jdbc.maxIdleTime}"
-          p:maxConnectionAge="${jdbc.maxConnectionAge}"
-          p:maxStatements="${jdbc.maxStatements}" destroy-method="close"/>           
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          p:driverClassName="${driverClassName}"
+          p:url="${jdbcUrl}"
+          p:username="${username}"
+          p:password="${password}"
+          p:initialSize="${initialSize}"
+          p:maxActive="${maxActive}"
+          p:maxIdle="${maxIdle}"
+          p:minEvictableIdleTimeMillis="${minEvictableIdleTimeMillis}"
+    />           
         
     
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -39,6 +39,8 @@
     <!--  <context:annotation-config />-->
     <!--<aop:aspectj-autoproxy />-->    
     <context:component-scan base-package="rpa.controller"/>     
+	<context:component-scan base-package="rpa.services" />
+	<context:component-scan base-package="rpa.dao" />
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <!--  Spting Annotation Configuration Ends  -->        
 

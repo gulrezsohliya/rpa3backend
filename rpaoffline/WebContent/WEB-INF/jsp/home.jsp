@@ -6,8 +6,8 @@
         <!--<title>RBI File Parser</title>-->
     </head>
     <body>
-       	<%@include file="common/header.jsp" %> 
 	    <div ng-app="CommonApp">
+       	<%@include file="common/header.jsp" %> 
 	        <div class='containerBody' id="homeCtrl" ng-controller="homeCtrl" >
 	                    <!--<legend class="title">Quarter Location</legend>-->
 	            <div style='width:80%;margin:20% auto 0'>

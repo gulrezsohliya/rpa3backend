@@ -116,7 +116,6 @@
 
 </style>
 <div>
-	<core:out value="${pageContext.request.userPrincipal}"/>
     <ul id="gn-menu" class="gn-menu-main">
         <li id="menu">
             <core:if test="${pageContext.request.userPrincipal.authenticated eq true}">

@@ -29,7 +29,7 @@ function GlobalCsrfTokenInterceptorService($q) {
         if (HTTP_TYPES_TO_ADD_TOKEN.indexOf(config.method.toUpperCase()) !== -1) {
             config.headers[CSRF_TOKEN_HEADER] = token;
         }
-
+console.log("called");
         return config;
     }
 
@@ -48,4 +48,36 @@ app.factory('CsrfTokenInterceptorService', ['$q',
 function CsrfTokenInterceptorService($q) {
        return GlobalCsrfTokenInterceptorService($q);
 }]);
+
+
+///////////////////////////////Kaushik///////////////////////////////////////
+(function($) {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    jQuery(document).ajaxSend(function(event, xhr, options) {
+        xhr.setRequestHeader(header, token);
+        xhr.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        xhr.setRequestHeader("Pragma", "no-cache");
+        xhr.setRequestHeader("Expires", "0");
+        jQuery('#loader').css('display', 'block');
+    });
+    $(document).ajaxStop(function() {
+        jQuery('#loader').css('display', 'none');        
+    });
+    jQuery(document).ajaxError(function(event, jqxhr, settings, exception) {
+        if (jqxhr.status == 401 || jqxhr.status == 403 || jqxhr.status == 301) {
+            setTimeout(function() {
+                jQuery('#loader').css('display', 'none'); 
+                MsgBox("No active session. You will be redirected to Login page.");
+            }, 5000);
+            window.location = root + "/login.htm";
+        }
+        if (jqxhr.status == 500) {
+            jQuery('#loader').css('display', 'none'); 
+            MsgBox("Server Error. Please Contact the Administrator.");
+        }
+        jQuery('#loader').css('display', 'none');  
+    });
+})(jQuery);
 

@@ -1,2 +1,1 @@
-<% response.sendRedirect("index.htm"); %>
-<!-- <p>helo</p> -->
+<% response.sendRedirect("home.htm"); %>

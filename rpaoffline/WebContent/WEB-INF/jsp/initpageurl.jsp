@@ -3,11 +3,6 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="resources/vendor/jQuery/jquery.min.js"></script>  
-        <link rel="stylesheet" href="resources/vendor/jQuery/datatable/jquery.dataTables.min.css" />  
-        <script src="resources/vendor/jQuery/datatable/jquery.dataTables.min.js"></script>   
-        <script src="resources/vendor/angular1.3.js"></script> 
-        <script src="resources/vendor/date.js"></script> 
         <style>
             input[type=text],select{
                 width: calc(90%/3);
@@ -100,6 +95,7 @@
         </div>
     <script src="resources/application/js/controllers/pageurls.js"></script>
         <script>
+        var header=${headers};
 //             $(document).ready(function() {
 //                 var scope = angular.element($("#pageurlCtrl")).scope();
 //                 scope.$apply(function() {

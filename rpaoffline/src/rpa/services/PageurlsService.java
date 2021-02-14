@@ -6,8 +6,11 @@ package rpa.services;
 
 import rpa.dao.PageurlsDao;
 import java.util.AbstractList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import rpa.models.Pageurls;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -109,26 +112,22 @@ public class PageurlsService {
 //        return (dao.savePageurlsDao(url)) ? "Saved" : "Failed";
 //    }
 //
-//    public List<model.JSONmodels.Pageurls> listUrls() {
+    public List<Pageurls> listUrls() {
+
+        return dao.getPageurls();
+    }
 //
-//        List<model.JSONmodels.Pageurls> urls = new LinkedList<model.JSONmodels.Pageurls>();
-//        for (model.persitent.Pageurls url : dao.getPageurls()) {
-//            urls.add(new model.JSONmodels.Pageurls(url));
-//        }
-//        return urls;
-//    }
-//
-//    public String getHeaders() {
-//        JSONArray jarr = new JSONArray();
-//        JSONObject jo = null;
-//        for (Object[] obj : dao.getHeaders()) {
-//            jo = new JSONObject();
-//            jo.put("key", obj[0].toString());
-//            jo.put("icon", (obj[1] != null) ? obj[1].toString() : "");
-//            jarr.add(jo);
-//        }
-//        return jarr.toJSONString();
-//    }
+    public String getHeaders() {
+        JSONArray jarr = new JSONArray();
+        JSONObject jo = null;
+        for (Map<String, Object> obj : dao.getHeaders()) {
+            jo = new JSONObject();
+            jo.put("key", obj.get("parent").toString());
+            jo.put("icon", (obj.get("parenticon") != null) ? obj.get("parenticon").toString() : "");
+            jarr.add(jo);
+        }
+        return jarr.toJSONString();
+    }
 //
 //    public String getSubmenu(String parent) {
 //        JSONArray jarr = new JSONArray();

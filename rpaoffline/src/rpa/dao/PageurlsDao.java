@@ -2,6 +2,7 @@ package rpa.dao;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -17,10 +18,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Repository("PageurlsDao")
 @Transactional
 public class PageurlsDao {
 
+	private ObjectMapper mapper = new ObjectMapper();
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -54,61 +58,63 @@ public class PageurlsDao {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Pageurls> getPageurls() {
 
-		String currentPrincipalName = (SecurityContextHolder.getContext().getAuthentication()).getName();
-		List<Pageurls> list = null;
+		List<Map<String, Object>> list = null;
+		List<Pageurls> urllist = null;
 		try {
-			String sql = "Select * From Pageurls "+
-					"Order by parent, submenu, subsubmenu";
-			list =(List<Pageurls>)jdbcTemplate.queryForList(sql, Pageurls.class) ;
+			String sql = "Select * From backend.Pageurls Order by parent, submenu, subsubmenu";
+			list = (List<Map<String, Object>>) jdbcTemplate.queryForList(sql);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("\n\nError in getPageurls " + ex);
-		} 
-		return (list != null) ? list : new LinkedList();
+		}
+		if (list != null) {
+			urllist = new LinkedList<Pageurls>();
+			for (Map<String, Object> row : list) {
+				urllist.add(mapper.convertValue(row, Pageurls.class));
+			}
+		}
+		return (urllist != null) ? urllist : new LinkedList();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Pageurls> getMappedPageurls() {
 
 		List<Pageurls> urllist = null;
-		List<UserPages> userurllist = null;
+		List<Map<String, Object>> rowList = null;
 		try {
-			String sql = "Select * From backend.UserPages " + "WHERE user.username=:username "
+			String sql = "Select url.* From backend.userlogins u ,backend.UserPages up,backend.pageurls url "
+					+ "WHERE u.usercode=up.usercode " + "and up.urlcode=url.urlcode " + "and username=:username "
 					+ "order by url.parent, url.submenu, url.subsubmenu";
 			SqlParameterSource parameters = new MapSqlParameterSource().addValue("username",
 					SecurityContextHolder.getContext().getAuthentication().getName());
-			userurllist = (List<UserPages>) namedParameterJdbcTemplate.queryForList(sql, parameters, UserPages.class);
+			rowList = (List<Map<String, Object>>) namedParameterJdbcTemplate.queryForList(sql, parameters);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("\n\nError in getPageurls " + ex);
 		}
-		if (userurllist != null) {
+		if (rowList != null) {
 			urllist = new LinkedList<Pageurls>();
-			for (UserPages up : userurllist) {
-				urllist.add(up.getUrl());
+			for (Map<String, Object> row : rowList) {
+				urllist.add(mapper.convertValue(row, Pageurls.class));
 			}
 		}
 		return (urllist != null) ? urllist : new LinkedList();
 	}
 //
-//    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = HibernateException.class, readOnly = true)
-//    public List<Object[]> getHeaders() {
-//        List<Object[]> list = null;
-//        Session session = sessionFactory.getCurrentSession();
-//        try {
-//            String hql = "Select DISTINCT parent ,parenticon "
-//                    + "From Pageurls Order by parent ";
-//            Query query = session.createQuery(hql);
-//            list = query.list();
-//        } catch (HibernateException ex) {
-//            ex.printStackTrace();
-//            System.out.println("\n\nError in getHeaders " + ex);
-//        } finally {
-//            session.flush();
-//        }
-//        return (list != null) ? list : new LinkedList();
-//    }
-//
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    public List<Map<String, Object>> getHeaders() {
+        List<Map<String, Object>> list = null;
+        try {
+            String sql = "Select DISTINCT parent ,parenticon "
+                    + "From backend.Pageurls Order by parent ";
+            list =  jdbcTemplate.queryForList(sql);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("\n\nError in getHeaders " + ex);
+        } 
+        return (list != null) ? list : new LinkedList();
+    }
+
 //    @Transactional
 //    public List<Object[]> getSubmenu(String par) {
 //        List<Object[]> list = null;

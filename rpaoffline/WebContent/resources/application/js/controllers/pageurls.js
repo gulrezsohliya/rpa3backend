@@ -9,7 +9,7 @@ pageurlapp.controller("pageurlCtrl", [
   "$scope",
   "$sce",
   function ($scope, $sce) {
-    // $scope.header = ${headers};
+     $scope.header = header;
     $scope.submenu = [];
     $scope.subsubmenu = [];
     $scope.URLs = [];
