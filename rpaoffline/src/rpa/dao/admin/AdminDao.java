@@ -42,7 +42,7 @@ public class AdminDao {
 		List<User> list = null;
 		try {
 			String sql = "Select * From backend.userlogins Order by username";
-			list = (List<User>) jdbcTemplate.queryForList(sql, User.class);
+			list = jdbcTemplate.queryForList(sql,User.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("\n\nError in listUsers " + ex);
@@ -51,7 +51,7 @@ public class AdminDao {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<User> listUsers(Integer usercode) {
+	public User listUsers(Integer usercode) {
 
 		List<User> list = null;
 		try {
@@ -61,11 +61,11 @@ public class AdminDao {
 			ex.printStackTrace();
 			System.out.println("\n\nError in listUsers " + ex);
 		}
-		return (list != null) ? list : new LinkedList();
+		return (list != null) ? list.get(0) : new User();
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<User> listUsers(String username) {
+	public User listUsers(String username) {
 
 		List<User> list = null;
 		try {
@@ -75,7 +75,7 @@ public class AdminDao {
 			ex.printStackTrace();
 			System.out.println("\n\nError in listUsers " + ex);
 		}
-		return (list != null) ? list : new LinkedList();
+		return (list != null) ? list.get(0) : new User();
 	}
 
 }

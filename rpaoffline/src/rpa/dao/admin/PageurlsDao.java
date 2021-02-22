@@ -101,62 +101,44 @@ public class PageurlsDao {
 		}
 		return (urllist != null) ? urllist : new LinkedList();
 	}
-//
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public List<Map<String, Object>> getHeaders() {
-        List<Map<String, Object>> list = null;
-        try {
-            String sql = "Select DISTINCT parent ,parenticon "
-                    + "From backend.Pageurls Order by parent ";
-            list =  jdbcTemplate.queryForList(sql);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("\n\nError in getHeaders " + ex);
-        } 
-        return (list != null) ? list : new LinkedList();
-    }
 
-//    @Transactional
-//    public List<Object[]> getSubmenu(String par) {
-//        List<Object[]> list = null;
-//        Session session = sessionFactory.getCurrentSession();
-//        try {
-//            String hql = "select Distinct submenu,submenuicon "
-//                    + "From Pageurls "
-//                    + "Where parent=:val "
-//                    + "Order by submenu ";
-//            Query query = session.createQuery(hql);
-//            query.setParameter("val", par);
-//            list = query.list();
-//        } catch (HibernateException ex) {
-//            ex.printStackTrace();
-//            System.out.println("\n\nError in getSubmenu " + ex);
-//        } finally {
-//            session.flush();
-//        }
-//        return (list != null) ? list : new LinkedList();
-//    }
 //
-//    @Transactional
-//    public List<Object[]> getSubsubmenu(String parent, String submenu) {
-//        List<Object[]> list = null;
-//        Session session = sessionFactory.getCurrentSession();
-//        try {
-//            String hql = "select Distinct subsubmenu,subsubmenuicon "
-//                    + "From Pageurls "
-//                    + "Where parent=:parent "
-//                    + "AND submenu=:submenu "
-//                    + "Order by subsubmenu ";
-//            Query query = session.createQuery(hql);
-//            query.setParameter("parent", parent);
-//            query.setParameter("submenu", submenu);
-//            list = query.list();
-//        } catch (HibernateException ex) {
-//            ex.printStackTrace();
-//            System.out.println("\n\nError in getSubsubmenu " + ex);
-//        } finally {
-//            session.flush();
-//        }
-//        return (list != null) ? list : new LinkedList();
-//    }
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+	public List<Map<String, Object>> getHeaders() {
+		List<Map<String, Object>> list = null;
+		try {
+			String sql = "Select DISTINCT parent ,parenticon " + "From backend.Pageurls Order by parent ";
+			list = jdbcTemplate.queryForList(sql);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("\n\nError in getHeaders " + ex);
+		}
+		return (list != null) ? list : new LinkedList();
+	}
+
+	@Transactional
+	public List<Map<String, Object>> getSubmenu(String parent) {
+		List<Map<String, Object>> list = null;
+		try {
+			String sql = "Select Distinct submenu,submenuicon From backend.Pageurls Where parent=? Order by submenu ";
+			list = jdbcTemplate.queryForList(sql, parent);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("\n\nError in getSubmenu " + ex);
+		}
+		return (list != null) ? list : new LinkedList();
+	}
+
+	@Transactional
+	public List<Map<String, Object>> getSubsubmenu(String parent, String submenu) {
+		List<Map<String, Object>> list = null;
+		try {
+			String sql = "Select Distinct subsubmenu,subsubmenuicon From backend.Pageurls Where parent=? AND submenu=? Order by subsubmenu ";
+			list = jdbcTemplate.queryForList(sql, parent, submenu);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("\n\nError in getSubsubmenu " + ex);
+		}
+		return (list != null) ? list : new LinkedList();
+	}
 }

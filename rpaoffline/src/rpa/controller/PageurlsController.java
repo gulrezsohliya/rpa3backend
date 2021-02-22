@@ -3,6 +3,7 @@ import rpa.models.master.Pageurls;
 import rpa.services.admin.PageurlsService;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -52,13 +53,13 @@ public class PageurlsController {
 
         return pageser.getHeaders();
     }
-//
-//    @RequestMapping(value = "/getSubmenu.htm", method = RequestMethod.POST)
-//    public @ResponseBody 
-//            String getSubmenu(String val) {
-//                
-//        return pageser.getSubmenu(val);
-//    }
+
+    @RequestMapping(value = "/getSubmenu.htm", method = RequestMethod.POST)
+    public @ResponseBody 
+    List<Map<String, Object>> getSubmenu(String val) {
+                
+        return pageser.getSubmenu(val);
+    }
 //
 //    @RequestMapping(value = "/getSubsubmenu.htm", method = RequestMethod.POST)
 //    public @ResponseBody 

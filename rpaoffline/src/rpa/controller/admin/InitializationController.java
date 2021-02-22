@@ -7,8 +7,11 @@
 
 package rpa.controller.admin;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,13 +27,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import rpa.models.master.Cell;
 import rpa.models.master.Office;
 import rpa.models.master.User;
+import rpa.services.admin.AdminService;
 
 @Controller
 public class InitializationController {
 	private static final Logger LOG = Logger.getLogger(InitializationController.class);
-
+	@Autowired private AdminService service;
 	/********************************************************
-	 * PAGEURL
+	 * PAGEURLs
 	 ***********************************************************/
 	@RequestMapping(value = "/createuser", method = RequestMethod.GET)
 	public String createUser() {
@@ -55,39 +59,42 @@ public class InitializationController {
 	 **********************************************************/
 
 	@RequestMapping(value = "/listCells/{cellcode}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String listCell(@PathVariable String cellcode) {
+	public @ResponseBody String listCell(@PathVariable String cellcode) {
 		JSONObject json = new JSONObject();
 		return json.toJSONString();
 	}
 
 	@RequestMapping(value = "/listCells", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String listCells() {
+	public @ResponseBody String listCells() {
 		JSONObject json = new JSONObject();
 		return json.toJSONString();
 	}
 
 	@RequestMapping(value = "/listOffices/{officecode}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String listOffice(@PathVariable String officecode) {
+	public @ResponseBody String listOffice(@PathVariable String officecode) {
 		JSONObject json = new JSONObject();
 		return json.toJSONString();
 	}
 
 	@RequestMapping(value = "/listOffices", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String listOffices() {
+	public @ResponseBody String listOffices() {
 		JSONObject json = new JSONObject();
 		return json.toJSONString();
 	}
 
-	@RequestMapping(value = "/listUsers/{userid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String listUser(@PathVariable String userid) {
-		JSONObject json = new JSONObject();
-		return json.toJSONString();
+	@RequestMapping(value = "/listUsers/{usercode}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody User listUser(@PathVariable Integer usercode) {
+		return service.listUser(usercode);
+	}
+	
+	@RequestMapping(value = "/listUsers/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody User listUser(@PathVariable String username) {
+		return service.listUser(username);
 	}
 
 	@RequestMapping(value = "/listUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody JSONObject listUsers() {
-		JSONObject json = new JSONObject();
-		return json;
+	public @ResponseBody List<User> listUsers() {
+		return service.listUser();
 	}
 
 	/*******************************************************
@@ -95,7 +102,7 @@ public class InitializationController {
 	 ***********************************************************/
 
 	@PostMapping(value = "/createcell", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONObject> createCell(@RequestBody Cell cell) {
+	public @ResponseBody ResponseEntity<JSONObject> createCell(@RequestBody Cell cell) {
 		return ResponseEntity.notFound().build();
 	}
 	
