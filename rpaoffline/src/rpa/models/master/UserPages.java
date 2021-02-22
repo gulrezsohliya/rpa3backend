@@ -1,4 +1,4 @@
-package rpa.models;
+package rpa.models.master;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -25,7 +25,7 @@
         	default-target-url="/home.htm"
         	authentication-failure-url="/login.htm?error=1"
         />
-		<!--                     authentication-success-handler-ref="MyAuthenticationSuccessHandler" -->
+<!--    	        authentication-success-handler-ref="MyAuthenticationSuccessHandler" -->
         <logout invalidate-session="true" logout-url="/logout" logout-success-url="/login.htm?logout=1"/>
         
     </http> 

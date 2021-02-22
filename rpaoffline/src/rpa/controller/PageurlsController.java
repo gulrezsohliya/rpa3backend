@@ -1,6 +1,6 @@
 package rpa.controller;
-import rpa.models.Pageurls;
-import rpa.services.PageurlsService;
+import rpa.models.master.Pageurls;
+import rpa.services.admin.PageurlsService;
 
 import java.util.List;
 

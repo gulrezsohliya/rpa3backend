@@ -1,4 +1,4 @@
-package rpa.dao;
+package rpa.dao.admin;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,8 +6,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import rpa.models.Pageurls;
-import rpa.models.UserPages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,6 +17,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import rpa.models.master.Pageurls;
+import rpa.models.master.UserPages;
 
 @Repository("PageurlsDao")
 @Transactional

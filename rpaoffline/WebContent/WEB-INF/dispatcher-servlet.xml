@@ -13,14 +13,13 @@
 
 	<mvc:annotation-driven />
 	<context:annotation-config />
-	<context:component-scan
-		base-package="rpa.controller" />
-	<context:component-scan
-		base-package="rpa.services" />
+	<context:component-scan base-package="rpa.controller" />
 	<context:component-scan base-package="rpa.dao" />
+	<context:component-scan base-package="rpa.services" />
+	<context:component-scan base-package="rpa.security" />
+	<context:component-scan base-package="rpa.utility" />
 	<mvc:resources mapping="/resources/**"
 		location="resources/" />
-
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

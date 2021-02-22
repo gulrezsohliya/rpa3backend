@@ -2,16 +2,17 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package rpa.services;
+package rpa.services.admin;
 
-import rpa.dao.PageurlsDao;
+import rpa.dao.admin.PageurlsDao;
+import rpa.models.master.Pageurls;
+
 import java.util.AbstractList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import rpa.models.Pageurls;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
