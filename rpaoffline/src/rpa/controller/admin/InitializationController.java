@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import rpa.models.master.Cell;
 import rpa.models.master.Office;
@@ -84,9 +85,9 @@ public class InitializationController {
 	}
 
 	@RequestMapping(value = "/listUsers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String listUsers() {
+	public @ResponseBody JSONObject listUsers() {
 		JSONObject json = new JSONObject();
-		return json.toJSONString();
+		return json;
 	}
 
 	/*******************************************************

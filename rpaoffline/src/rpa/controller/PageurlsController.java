@@ -5,6 +5,8 @@ import rpa.services.admin.PageurlsService;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
 //import model.JSONmodels.Pageurls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -77,4 +80,11 @@ public class PageurlsController {
                 
         return pageser.listUrls();
     }
+    
+    @RequestMapping(value = "accesscontrol.htm", method = RequestMethod.GET)
+    public String pageLoad_AccessControl(ModelMap model) {
+
+        return "accesscontrol";
+    }
+    
 }
