@@ -40,13 +40,13 @@ public class PageController {
 	
 	@RequestMapping(value = "accesscontrol.htm", method = RequestMethod.GET)
     public String pageLoad_AccessControl(ModelMap model) {
-        return "accesscontrol";
+        return "init/accesscontrol";
     }
 
     @RequestMapping(value = "initpageurl.htm", method = RequestMethod.GET)
     public String pageLoad_Menu(ModelMap model) {
         model.addAttribute("headers", pageser.getHeaders());
-        return "initpageurl";
+        return "init/initpageurl";
     }
 
     

@@ -5,9 +5,7 @@ $(document).ready(function() {
 		scope.listURLs();
 	});
 });
-var mainapp = angular.module('accesscontrolCtrl', []);
-mainapp
-		.controller(
+		app.controller(
 				'accesscontrolCtrl',
 				[
 						'$scope',
@@ -128,7 +126,6 @@ mainapp
 												});
 							}
 						} ]);
-angular.module("CombineModules", [ "Menu", "accesscontrolCtrl" ]);
 angular.element(document).ready(function() {
 	dTable = $('#displayRecordsTable');
 	dTable.DataTable({

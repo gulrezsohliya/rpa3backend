@@ -9,8 +9,8 @@
             }
         </style>
     </head>
-    <body ng-app="CombineModules">
-        <%@include file="./common/header.jsp" %> 
+    <body ng-app="CommonApp">
+        <%@include file="../common/header.jsp" %> 
         <div class='containerBody' id="pageurlCtrl" ng-controller="pageurlCtrl">
             <h2>Page URL Initialization</h2>
             <div  style='width:80%;margin: 50px auto 50px auto;'>
@@ -93,7 +93,7 @@
                 </table>
             </div>
         </div>
-    <script src="resources/application/js/controllers/pageurls.js"></script>
+    	<script src="resources/application/js/controllers/pageurls.js"></script>
         <script>
         var header=${headers};
         </script>

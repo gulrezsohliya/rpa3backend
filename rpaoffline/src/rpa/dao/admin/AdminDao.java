@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import rpa.controller.rest.admin.InitializationController;
+import rpa.controller.rest.initlialization.InitializationController;
 import rpa.models.master.Pageurls;
 import rpa.models.master.User;
 import rpa.models.master.UserPages;

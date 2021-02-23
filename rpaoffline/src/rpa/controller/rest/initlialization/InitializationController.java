@@ -1,4 +1,4 @@
-package rpa.controller.rest.admin;
+package rpa.controller.rest.initlialization;
 
 import java.util.List;
 

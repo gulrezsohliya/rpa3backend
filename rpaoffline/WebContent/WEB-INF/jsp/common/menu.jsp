@@ -133,12 +133,11 @@
         });
 
     });
-    //{"urlcode": 1, "modulecode": 1, "pagename": "home", "pageurl": "home.htm", "pageurlicon": "e900", "subsubmenu": null, "subsubmenuicon": null, "submenu": null, "submenuicon": null, "parent": "Home", "parenticon": "icon-home"}
-    var menuapp = angular.module('Menu', []);
-    menuapp.controller('menuCtrl', ['$scope', '$sce', function ($scope, $sce) {
-            $scope.menu = [];
-            $scope.trustHTML = function (post) {
-                return $sce.trustAsHtml(post);
-            };
-        }]);
+    app.controller('menuCtrl', ['$scope', '$sce', function ($scope, $sce) {
+        $scope.menu = [];
+        $scope.trustHTML = function (post) {
+            return $sce.trustAsHtml(post);
+        };
+    }]);
+
 </script>

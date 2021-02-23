@@ -4,8 +4,8 @@ $(document).ready(function () {
     scope.listURLs();
   });
 });
-var pageurlapp = angular.module("pageurlCtrl", []);
-pageurlapp.controller("pageurlCtrl", [
+
+app.controller("pageurlCtrl", [
   "$scope",
   "$sce","$timeout",
   function ($scope, $sce,$timeout) {
@@ -89,7 +89,6 @@ pageurlapp.controller("pageurlCtrl", [
     };
   },
 ]);
-angular.module("CombineModules", ["Menu", "pageurlCtrl"]);
 angular.element(document).ready(function () {
   dTable = $("#displayRecordsTable");
   dTable.DataTable({

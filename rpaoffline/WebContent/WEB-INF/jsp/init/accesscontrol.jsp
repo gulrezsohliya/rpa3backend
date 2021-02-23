@@ -9,8 +9,9 @@
             }
         </style>
     </head>
-    <body ng-app="CombineModules">
-        <%@include file="./common/header.jsp" %>
+    <body ng-app="CommonApp">
+<!--     <body ng-app="CombineModules"> -->
+        <%@include file="../common/header.jsp" %>
         <div class='containerBody' id="accesscontrolCtrl" ng-controller="accesscontrolCtrl">
             <h2>Access Control</h2>
             <div id="maptable" ></div>
