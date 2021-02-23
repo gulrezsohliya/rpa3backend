@@ -28,7 +28,9 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 	    @Override
 	    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         	LOG.info("onAuthenticationSuccess");
-        	LOG.info(authentication.getCredentials().toString());
+        	LOG.info(authentication);
+        	LOG.info(authentication.getDetails());
+        	LOG.info(authentication.getCredentials());
 	    	HttpSession session = request.getSession();
 //	        Userlogins Currentuser = admindao.getCurrentUser();
 	        setDefaultTargetUrl("/home.htm");

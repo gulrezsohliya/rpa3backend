@@ -29,5 +29,9 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
+	<mvc:annotation-driven />
+	<context:annotation-config />
+	<context:component-scan base-package="rpa" />
+	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

@@ -24,12 +24,12 @@
         	login-page="/login.htm" 
         	default-target-url="/home.htm"
         	authentication-failure-url="/login.htm?error=1"
+   	        authentication-success-handler-ref="MyAuthenticationSuccessHandler"
         />
-<!--    	        authentication-success-handler-ref="MyAuthenticationSuccessHandler" -->
         <logout invalidate-session="true" logout-url="/logout" logout-success-url="/login.htm?logout=1"/>
         
     </http> 
-<!--     <beans:bean id="MyAuthenticationSuccessHandler" class="rpa.security.MyAuthenticationSuccessHandler" /> -->
+    <beans:bean id="MyAuthenticationSuccessHandler" class="rpa.security.MyAuthenticationSuccessHandler" />
 	<beans:bean id ="passwordEncoder" class = "org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method = "getInstance" />
 	
     <authentication-manager alias="authenticationManager">

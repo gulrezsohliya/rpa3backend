@@ -104,22 +104,27 @@
 //                dataType: "json",
             contentType: "application/json; charset=utf-8", //comment incase where data sent is non json
             success: function (response) {
-                var scope = angular.element($("#menuCtrl")).scope();
-                scope.$apply(function () {
-                    scope.menu = JSON.parse(response);
-                });
-                jQuery('.gn-menu li').click(function () {
-                    jQuery(this).find('ul.gn-submenu li.gn-submenu-li').stop(true, true).slideDown(500);
-                });
-                jQuery('.gn-menu li').mouseleave(function () {
-                    jQuery(this).find('ul.gn-submenu li.gn-submenu-li').stop(true, true).slideUp(500);
-                });
-                jQuery('.gn-submenu li.gn-submenu-li').click(function () {
-                    jQuery(this).find('ul.gn-subsubmenu li.gn-subsubmenu-li').stop(true, true).slideDown(500);
-                });
-                jQuery('.gn-submenu li.gn-submenu-li').mouseleave(function () {
-                    jQuery(this).find('ul.gn-subsubmenu li.gn-subsubmenu-li').stop(true, true).slideUp(500);
-                });
+            	try{
+            		var scope = angular.element($("#menuCtrl")).scope();
+                    scope.$apply(function () {
+                        scope.menu = JSON.parse(response);
+                    });
+                    jQuery('.gn-menu li').click(function () {
+                        jQuery(this).find('ul.gn-submenu li.gn-submenu-li').stop(true, true).slideDown(500);
+                    });
+                    jQuery('.gn-menu li').mouseleave(function () {
+                        jQuery(this).find('ul.gn-submenu li.gn-submenu-li').stop(true, true).slideUp(500);
+                    });
+                    jQuery('.gn-submenu li.gn-submenu-li').click(function () {
+                        jQuery(this).find('ul.gn-subsubmenu li.gn-subsubmenu-li').stop(true, true).slideDown(500);
+                    });
+                    jQuery('.gn-submenu li.gn-submenu-li').mouseleave(function () {
+                        jQuery(this).find('ul.gn-subsubmenu li.gn-subsubmenu-li').stop(true, true).slideUp(500);
+                    });
+            	}catch(e){
+            		console.error("Error:"+e);
+            	}
+                
             },
             error: function (xhr) {
                 alert(xhr.status + " = " + xhr)
