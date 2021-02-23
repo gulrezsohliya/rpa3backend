@@ -7,8 +7,8 @@ $(document).ready(function () {
 var pageurlapp = angular.module("pageurlCtrl", []);
 pageurlapp.controller("pageurlCtrl", [
   "$scope",
-  "$sce",
-  function ($scope, $sce) {
+  "$sce","$timeout",
+  function ($scope, $sce,$timeout) {
      $scope.header = header;
     $scope.submenu = [];
     $scope.subsubmenu = [];
@@ -22,16 +22,15 @@ pageurlapp.controller("pageurlCtrl", [
     };
     $scope.getSubmenu = function () {
       jQuery.ajax({
-        type: "POST",
-        url: "./getSubmenu.htm",
+        type: "GET",
+        url: "./getSubmenu",
         data: "val=" + $scope.url.parent,
-        //                dataType: "json",
-        //                                contentType: "application/json; charset=utf-8",
+        // dataType: "json",
+        contentType: "application/json; charset=utf-8",
         success: function (response) {
-          var scope = angular.element($("#pageurlCtrl")).scope();
-          scope.$apply(function () {
-            scope.submenu = JSON.parse(response);
-          });
+          $timeout(() => {
+        	  $scope.submenu = response
+        	  },0);
         },
         error: function (xhr) {
           alert(xhr.status + " = " + xhr);

@@ -28,11 +28,11 @@
                                 <input type="text" name="parenticon" ng-model="url.parenticon" class="selectIcon"/>
                             </td>
                         </tr>
-                        <tr><td class="title"> Sub Menu </td>
+                        <tr><td class="title"> Sub Menu</td>
                             <td>
                                 <select name="submenu" ng-model="url.submenu" ><!--ng-change="getSubsubmenu()">-->
                                     <option value=""> --Select--</option>
-                                    <option ng-selected="head.key == url.submenu" ng-repeat='head in submenu track by $index' ng-value="head.key"> {{head.key}} </option>
+                                    <option ng-selected="head.submenu == url.submenu" ng-repeat='head in submenu track by $index' ng-value="head.submenu"> {{head.submenu}} </option>
                                 </select> 
                                 <input type="text" ng-model="url.submenu" name="submenuNew" placeholder="New Submenu"/>
                                 <input type="text" name="submenuicon" ng-model="url.submenuicon" class="selectIcon"/>

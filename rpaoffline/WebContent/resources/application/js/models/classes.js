@@ -15,17 +15,15 @@ function Pageurls() {
 }
 function Userlogins() {
     var Userlogins = {
-        "officername": "",
-        "designation": new Designation(),
-//        "designationid": 0,
-//        "designationname": "",
+        "cellcode": 0,
+        "designation": "",
         "usercode": 0,
         "username": "",
-        "password": "",
-        "userrole": "U",
+        "passwords": "",
+        "entrydate": new Date(),
         "enabled": "Y",
-        "officecode": 0,
-        "officename": "",
+        "mobileno": 0,
+        "fullname": "",
     };
     return Userlogins;
 }
@@ -154,22 +152,6 @@ var quarterLoc = [
     
 ];
 var salutationList = ["","Dr","Shri","Smti", "Kumari"];
-//function Occupant() {
-//    var Occupant = {
-//        "occupantid": 0,
-//        "occupantname": "",
-//        "designation": "",
-//        "gender": "",
-//        "maritalstatuscode": "",
-//        "department": new Department(),
-//        "jobtypecode": 0,
-//        "basicpay": "",
-//        "paymatrix": "",
-//        "dateofjoining": "",
-//        "dateofretirement": "",
-//    };
-//    return Occupant;
-//}
 function ApplicationDetails() {
     var ApplicationDetails = {
         "applicantid": 0,

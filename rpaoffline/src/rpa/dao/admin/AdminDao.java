@@ -6,7 +6,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import rpa.controller.rest.admin.InitializationController;
 import rpa.models.master.Pageurls;
 import rpa.models.master.User;
 import rpa.models.master.UserPages;
@@ -26,7 +29,7 @@ import rpa.models.master.UserPages;
 @Transactional
 public class AdminDao {
 
-	// private ObjectMapper mapper = new ObjectMapper();
+	private static final Logger LOG = Logger.getLogger(AdminDao.class);
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -42,10 +45,9 @@ public class AdminDao {
 		List<User> list = null;
 		try {
 			String sql = "Select * From backend.userlogins Order by username";
-			list = jdbcTemplate.queryForList(sql,User.class);
+			list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<User>(User.class));
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.out.println("\n\nError in listUsers " + ex);
+			LOG.info("\n\nError in listUsers " + ex);
 		}
 		return (list != null) ? list : new LinkedList();
 	}
@@ -58,8 +60,7 @@ public class AdminDao {
 			String sql = "Select * From backend.userlogins Where usercode=? Order by username";
 			list = (List<User>) jdbcTemplate.queryForList(sql, User.class, usercode);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.out.println("\n\nError in listUsers " + ex);
+			LOG.info("\n\nError in listUsers " + ex);
 		}
 		return (list != null) ? list.get(0) : new User();
 	}
@@ -72,8 +73,7 @@ public class AdminDao {
 			String sql = "Select * From backend.userlogins Where username=? Order by username";
 			list = (List<User>) jdbcTemplate.queryForList(sql, User.class, username);
 		} catch (Exception ex) {
-			ex.printStackTrace();
-			System.out.println("\n\nError in listUsers " + ex);
+			LOG.info("\n\nError in listUsers " + ex);
 		}
 		return (list != null) ? list.get(0) : new User();
 	}

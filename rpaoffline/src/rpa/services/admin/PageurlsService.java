@@ -133,16 +133,4 @@ public class PageurlsService {
     public List<Map<String, Object>> getSubmenu(String parent) {
         return dao.getSubmenu(parent);
     }
-//
-//    public String getSubmenu(String parent, String submenu) {
-//        JSONArray jarr = new JSONArray();
-//        JSONObject jo = null;
-//        for (Object[] obj : dao.getSubsubmenu(parent, submenu)) {
-//            jo = new JSONObject();
-//            jo.put("key", obj[0].toString());
-//            jo.put("icon", (obj[1] != null) ? obj[1].toString() : "");
-//            jarr.add(jo);
-//        }
-//        return jarr.toJSONString();
-//    }
 }

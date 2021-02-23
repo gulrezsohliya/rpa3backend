@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -39,27 +40,12 @@ public class PageurlsController {
 		return pageser.getHeaders();
 	}
 
-	@GetMapping(value = "/getSubmenu.htm")
-	public @ResponseBody List<Map<String, Object>> getSubmenu(String val) {
+	@GetMapping(value = "/getSubmenu")
+	public @ResponseBody List<Map<String, Object>> getSubmenu(@RequestParam String val) {
 
 		return pageser.getSubmenu(val);
 	}
 
-//
-//    @RequestMapping(value = "/getSubsubmenu.htm", method = RequestMethod.POST)
-//    public @ResponseBody 
-//            String getSubmenu(String parent,String submenu) {
-//                
-//        return pageser.getSubmenu(parent,submenu);
-//    }
-//
-//    @RequestMapping(value = "/saveMenu.htm", method = RequestMethod.POST)
-//    public @ResponseBody 
-//            String saveMenu(@RequestBody Pageurls url) {
-//                
-//        return pageser.savePageurl(new model.persitent.Pageurls(url));
-//    }
-//    
 	@GetMapping(value = "/listUrls")
 	public @ResponseBody List<Pageurls> listUrls() {
 		return pageser.listUrls();
