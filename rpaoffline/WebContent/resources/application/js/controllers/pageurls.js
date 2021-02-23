@@ -71,7 +71,7 @@ pageurlapp.controller("pageurlCtrl", [
     };
     $scope.listURLs = function () {
       jQuery.ajax({
-        type: "POST",
+        type: "GET",
         url: "./listUrls",
         contentType: "application/json; charset=utf-8",
         success: function (response) {

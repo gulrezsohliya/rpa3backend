@@ -88,7 +88,7 @@ mainapp
 							$scope.listURLs = function() {
 								jQuery
 										.ajax({
-											type : 'POST',
+											type : 'GET',
 											url : "./listUrls",
 											// dataType: "json",
 											contentType : "application/json; charset=utf-8",

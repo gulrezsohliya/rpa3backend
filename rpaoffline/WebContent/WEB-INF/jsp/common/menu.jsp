@@ -99,7 +99,7 @@
     $(document).ready(function () {
 
         jQuery.ajax({
-            type: 'POST',
+            type: 'GET',
             url: "./getMenu.htm",
 //                dataType: "json",
             contentType: "application/json; charset=utf-8", //comment incase where data sent is non json
