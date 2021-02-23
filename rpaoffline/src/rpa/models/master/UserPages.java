@@ -42,4 +42,9 @@ public class UserPages {
 		this.url = url;
 	}
 
+	@Override
+	public String toString() {
+		return "UserPages [userpagecode=" + userpagecode + ", usercode=" + usercode + ", url=" + url + "]";
+	}
+	
 }

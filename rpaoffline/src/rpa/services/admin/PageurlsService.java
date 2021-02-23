@@ -4,8 +4,11 @@
  */
 package rpa.services.admin;
 
+import rpa.dao.admin.AdminDao;
 import rpa.dao.admin.PageurlsDao;
 import rpa.models.master.Pageurls;
+import rpa.models.master.User;
+import rpa.models.master.UserPages;
 
 import java.util.AbstractList;
 import java.util.HashMap;
@@ -16,13 +19,14 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service("PageurlsService")
 public class PageurlsService {
 
-    @Autowired
-    PageurlsDao dao;
+    @Autowired PageurlsDao dao;
+    @Autowired AdminDao admindao;
 
     public JSONArray getPageurls() {
 
@@ -34,7 +38,7 @@ public class PageurlsService {
         JSONArray arrSubSubmenu = null;
         List<String> parent = new LinkedList<String>();
         List<String> submenu = new LinkedList<String>();
-        for (Pageurls url : dao.getMappedPageurls()) {
+        for (Pageurls url : dao.getMappedPageurls(SecurityContextHolder.getContext().getAuthentication().getName())) {
             if (!parent.contains(url.getParent())) {
                 parent.add(url.getParent());
                 submenu = new LinkedList<String>();
@@ -132,5 +136,19 @@ public class PageurlsService {
 
     public List<Map<String, Object>> getSubmenu(String parent) {
         return dao.getSubmenu(parent);
+    }
+    
+    public List<User> listUserAndMappedPages() {
+    	
+    	List<User> list=admindao.listUsers();
+    	for(User user:list) {
+    		user.setMappedpages(dao.getMappedPageurls(user.getUsername()));
+    	}    	
+    	return list;
+    }
+
+    public String saveUserpages(List<UserPages> upages) {
+
+        return (dao.mapUserpages(upages)) ? "Mapped" : "Failed";
     }
 }

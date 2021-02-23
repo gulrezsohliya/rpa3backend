@@ -20,15 +20,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import rpa.models.master.Pageurls;
 import rpa.models.master.UserPages;
+import rpa.utility.Utility;
 
 @Repository("PageurlsDao")
 @Transactional
 public class PageurlsDao {
 
+	@Autowired private Utility util;
+	
 	private ObjectMapper mapper = new ObjectMapper();
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
 	@Autowired
 	public void createTemplate(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -78,7 +80,7 @@ public class PageurlsDao {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<Pageurls> getMappedPageurls() {
+	public List<Pageurls> getMappedPageurls(String username) {
 
 		List<Pageurls> urllist = null;
 		List<Map<String, Object>> rowList = null;
@@ -86,8 +88,7 @@ public class PageurlsDao {
 			String sql = "Select url.* From backend.userlogins u ,backend.UserPages up,backend.pageurls url "
 					+ "WHERE u.usercode=up.usercode " + "and up.urlcode=url.urlcode " + "and username=:username "
 					+ "order by url.parent, url.submenu, url.subsubmenu";
-			SqlParameterSource parameters = new MapSqlParameterSource().addValue("username",
-					SecurityContextHolder.getContext().getAuthentication().getName());
+			SqlParameterSource parameters = new MapSqlParameterSource().addValue("username",username);
 			rowList = (List<Map<String, Object>>) namedParameterJdbcTemplate.queryForList(sql, parameters);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -141,4 +142,27 @@ public class PageurlsDao {
 		}
 		return (list != null) ? list : new LinkedList();
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public boolean mapUserpages(List<UserPages> upage) {
+        boolean response = false;
+        try {
+            String sql = "DELETE From backend.UserPages WHERE usercode=? ";
+            if(jdbcTemplate.update(sql, upage.get(0).getUsercode())<0) {
+            	return false;
+            }
+            /////////////////////////////////////
+            sql="INSERT INTO backend.userpages(userpagecode, usercode, urlcode) VALUES (?, ?, ?)";
+            int max=util.getMax("backend", "UserPages","userpagecode");
+            for (UserPages up : upage) {
+                up.setUserpagecode(++max);
+                jdbcTemplate.update(sql, up.getUserpagecode(),up.getUsercode(),up.getUrl().getUrlcode());
+            }
+            response = true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("\n\nError in mapUserpages " + ex);
+        }
+        return response;
+    }
 }

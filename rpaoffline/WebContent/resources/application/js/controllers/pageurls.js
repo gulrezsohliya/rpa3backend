@@ -1,7 +1,11 @@
+var icons;
 $(document).ready(function () {
   var scope = angular.element($("#pageurlCtrl")).scope();
   scope.$apply(function () {
     scope.listURLs();
+  });
+  jQuery.getJSON('resources/vendor/googlenexusMenu/fonts/icomoon/icon.json',(data)=>{
+		(angular.element($("#pageurlCtrl")).scope()).icons=data;
   });
 });
 

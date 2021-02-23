@@ -22,20 +22,6 @@ public class Pageurls {
     public Pageurls() {
     }
 
-//    public Pageurls(model.persitent.Pageurls url) {
-//        this.urlcode = url.getUrlcode();
-////        this.modulecode = modulecode;
-////        this.pagename = pagename;
-//        this.pageurl = url.getPageurl();
-////        this.pageurlicon = pageurlicon;
-//        this.subsubmenu = (url.getSubsubmenu()!=null)?url.getSubsubmenu():"";
-//        this.subsubmenuicon = (url.getSubsubmenuicon()!=null)?url.getSubsubmenuicon():"" ;
-//        this.submenu =(url.getSubmenu()!=null)?url.getSubmenu():"" ;
-//        this.submenuicon= (url.getSubmenuicon()!=null)?url.getSubmenuicon():"" ;
-//        this.parent = url.getParent();
-//        this.parenticon = (url.getParenticon()!=null)?url.getParenticon():"";
-//    }
-
     public int getUrlcode() {
         return urlcode;
     }

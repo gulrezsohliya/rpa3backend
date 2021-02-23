@@ -1,6 +1,7 @@
 package rpa.models.master;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
@@ -17,6 +18,7 @@ public class User {
 	private String enabled;
 	@JsonSerialize(using = DateSerializer.class)
 	private Date entrydate;
+	private List<Pageurls> mappedpages;
 
 	public Integer getCellcode() {
 		return cellcode;
@@ -89,4 +91,13 @@ public class User {
 	public void setEntrydate(Date entrydate) {
 		this.entrydate = entrydate;
 	}
+
+	public List<Pageurls> getMappedpages() {
+		return mappedpages;
+	}
+
+	public void setMappedpages(List<Pageurls> mappedpages) {
+		this.mappedpages = mappedpages;
+	}
+	
 }

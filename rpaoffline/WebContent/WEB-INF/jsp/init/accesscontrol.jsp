@@ -19,9 +19,9 @@
                 <form>
                     <table class="" style="width:100%;margin: 0px auto"> 
                         <tr class="form-group has-feedback">
-                            <td class="title" style="width: 15%">Officer Name :</td>
+                            <td class="title" style="width: 15%">Full Name :</td>
                             <td>
-                                <span >{{user.officername}}</span>
+                                <span >{{user.fullname}}</span>
                             </td>                                     
                             <td rowspan="15" style="width:65%;border: 1px solid blue;">
                                 <div style="width:100%;max-height:230px;overflow-y: auto ">
@@ -47,7 +47,7 @@
                         <tr>
                             <td class="title">User Name :</td>
                             <td >
-                                <span >{{user.username}}</span>
+                                <span >{{user.fullname}}</span>
                             </td>
                         </tr><tr><td>&nbsp;</td></tr>
                         <tr >
@@ -71,17 +71,17 @@
                 <table id="displayRecordsTable" width="100%" cellspacing="0" border="1">
                     <thead>
                         <tr>
-                            <th>Officer Name</th>
+                            <th>Full Name</th>
                             <th>User Name</th>
-                            <th>Role</th>     
+                            <th>Designation</th>     
                             <th>Action</th>                            
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat='u in users track by $index '>
-                            <td style='width:10%'>{{u.officername}}</td>
+                            <td style='width:10%'>{{u.fullname}}</td>
                             <td style='width:10%'>{{u.username}}</td>
-                            <td style='width:10%'>{{u.userrole}}</td>
+                            <td style='width:10%'>{{u.designation}}</td>
                             <td style='width:10%'>
                                 <button style="padding:5px" ng-click="mappedPages($index)">Map Pages</button>
                             </td>
