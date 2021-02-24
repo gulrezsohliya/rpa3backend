@@ -7,6 +7,19 @@
 input[type=text], select {
 	width: calc(90%/ 3);
 }
+.iconSelection{
+	border: 1px solid black; 
+	width: 100%; 
+	height: 200px; 
+	overflow: hidden;overflow-y:scroll; 
+	background-color: whitesmoke;
+	position: absolute;
+	left:0;
+	z-index:10;
+}
+.hide{
+	display:none;
+}
 </style>
 </head>
 <body ng-app="CommonApp">
@@ -26,35 +39,59 @@ input[type=text], select {
 								<option ng-selected="head.key == url.parent"
 									ng-repeat='head in header track by $index' ng-value="head.key">
 									{{head.key}}</option>
-						</select> <input type="text" name="parentNew" ng-model="url.parent"
-							placeholder="New Menu Header" /> <input type="text"
-							name="parenticon" ng-model="url.parenticon" class="selectIcon" />
+							</select> 
+							<input type="text" name="parentNew" ng-model="url.parent" placeholder="New Menu Header" /> 
+							<div style="display:inline-block;position: relative;width:100%">
+								<input type="text" readonly="readonly" name="parenticon" ng-model="url.parenticon" ng-click="parenticonPressed=true"/><a class="gn-icon {{url.parenticon}}"></a>
+								<div class="iconSelection" ng-class="{'hide':parenticonPressed!=true}">
+										<button ng-click="parenticonPressed=false" style="position:absolute;right:0">Close</button>
+									<div style="padding:20px;width: 100%; display: grid; grid-gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(20px, 40px));">
+										<div ng-repeat="i in icons">
+											<a class="gn-icon {{i}}" ng-click="url.parenticon=i"></a>
+										</div>
+									</div>
+								</div>														
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="title">Sub Menu</td>
-						<td><select name="submenu" ng-model="url.submenu">
-								<!--ng-change="getSubsubmenu()">-->
-								<option value="">--Select--</option>
-								<option ng-selected="head.submenu == url.submenu"
-									ng-repeat='head in submenu track by $index'
-									ng-value="head.submenu">{{head.submenu}}</option>
-						</select> <input type="text" ng-model="url.submenu" name="submenuNew"
-							placeholder="New Submenu" /> <input type="text"
-							name="submenuicon" ng-model="url.submenuicon" class="selectIcon" />
+						<td>
+								<select name="submenu" ng-model="url.submenu">
+										<option value="">--Select--</option>
+										<option ng-selected="head.submenu == url.submenu"
+											ng-repeat='head in submenu track by $index'
+											ng-value="head.submenu">{{head.submenu}}</option>
+								</select> 
+								<input type="text" ng-model="url.submenu" name="submenuNew" placeholder="New Submenu" /> 
+								<div style="display:inline-block;position: relative;width:100%">
+									<input type="text" readonly="readonly" name="submenuicon" ng-model="url.submenuicon" ng-click="submenuiconPressed=true"/><a class="gn-icon {{url.submenuicon}}"></a>
+									<div class="iconSelection" ng-class="{'hide':submenuiconPressed!=true}">
+											<button ng-click="submenuiconPressed=false" style="position:absolute;right:0">Close</button>
+										<div style="padding:20px;width: 100%; display: grid; grid-gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(20px, 40px));">
+											<div ng-repeat="i in icons">
+												<a class="gn-icon {{i}}" ng-click="url.submenuicon=i"></a>
+											</div>
+										</div>
+									</div>														
+								</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="title">Sub sub Menu</td>
 						<td>
-							<!--                            <select name="subsubmenu" ng-model="url.subsubmenu" >
-                                                                <option value=""> --Select--</option>
-                                                                <option ng-repeat='head in subsubmenu track by $index' ng-value="head.key"> {{head.key}} </option>
-                                                            </select> -->
-							<input type="text" ng-model="url.subsubmenu" name="subsubmenuNew"
-							placeholder="New Submenu" /> <input type="text"
-							name="subsubmenuicon" ng-model="url.subsubmenuicon"
-							class="selectIcon" />
+							<input type="text" ng-model="url.subsubmenu" name="subsubmenuNew" placeholder="New Submenu" /> 
+							<div style="display:inline-block;position: relative;width:100%">
+								<input type="text" readonly="readonly" name="subsubmenuicon" ng-model="url.subsubmenuicon" ng-click="subsubmenuiconPressed=true"/><a class="gn-icon {{url.subsubmenuicon}}"></a>
+								<div class="iconSelection" ng-class="{'hide':subsubmenuiconPressed!=true}">
+										<button ng-click="subsubmenuiconPressed=false" style="position:absolute;right:0">Close</button>
+									<div style="padding:20px;width: 100%; display: grid; grid-gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(20px, 40px));">
+										<div ng-repeat="i in icons">
+											<a class="gn-icon {{i}}" ng-click="url.subsubmenuicon=i"></a>
+										</div>
+									</div>
+								</div>														
+							</div>
 						</td>
 					</tr>
 
@@ -108,18 +145,10 @@ input[type=text], select {
 				</tbody>
 			</table>
 		</div>
-		<div id="iconSelection" style="display: none;">
-			<div style="border:1px solid black;min-width:100px;min-height:50px;display: grid;grid-gap: 1rem;grid-template-columns: repeat(auto-fit, minmax(20px, 40px));">
-				<div ng-repeat="i in icons">
-					<a class="gn-icon {{i}}"></a>
-				</div>
-				
-			</div>
-		</div>
 	</div>
 	<script src="resources/application/js/controllers/pageurls.js"></script>
 	<script>
-		var header = ${headers};		
+		var header = ${headers};
 	</script>
 </body>
 </html>

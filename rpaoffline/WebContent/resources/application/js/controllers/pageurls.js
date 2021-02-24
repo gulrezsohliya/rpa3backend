@@ -4,16 +4,15 @@ $(document).ready(function () {
   scope.$apply(function () {
     scope.listURLs();
   });
-  jQuery.getJSON('resources/vendor/googlenexusMenu/fonts/icomoon/icon.json',(data)=>{
-		(angular.element($("#pageurlCtrl")).scope()).icons=data;
-  });
 });
 
 app.controller("pageurlCtrl", [
   "$scope",
   "$sce","$timeout",
   function ($scope, $sce,$timeout) {
-     $scope.header = header;
+	$scope.parenticonPressed=false;
+	  $scope.icons = [];
+    $scope.header = header;
     $scope.submenu = [];
     $scope.subsubmenu = [];
     $scope.URLs = [];
@@ -24,6 +23,14 @@ app.controller("pageurlCtrl", [
     $scope.reset = function () {
       $scope.url = new Pageurls();
     };
+    $scope.getIcons=()=>{
+    	jQuery.getJSON('resources/vendor/googlenexusMenu/fonts/icomoon/icon.json',(data)=>{
+    		$timeout(() => {
+    			$scope.icons=data;
+          	  },0);
+	      });
+    };
+    $scope.getIcons();
     $scope.getSubmenu = function () {
       jQuery.ajax({
         type: "GET",
