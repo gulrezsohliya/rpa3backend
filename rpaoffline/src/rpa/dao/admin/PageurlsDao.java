@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +19,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import rpa.models.master.Pageurls;
 import rpa.models.master.UserPages;
-import rpa.utility.Utility;
+import rpa.utility.UtilityInterface;
 
 @Repository("PageurlsDao")
 @Transactional
-public class PageurlsDao {
+public class PageurlsDao implements PageurlsDaoInterface{
 
-	@Autowired private Utility util;
+	@Autowired private UtilityInterface util;
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	private JdbcTemplate jdbcTemplate;
@@ -58,6 +57,7 @@ public class PageurlsDao {
 //        return response;
 //    }
 
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Pageurls> getPageurls() {
 
@@ -79,6 +79,7 @@ public class PageurlsDao {
 		return (urllist != null) ? urllist : new LinkedList();
 	}
 
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Pageurls> getMappedPageurls(String username) {
 
@@ -103,7 +104,7 @@ public class PageurlsDao {
 		return (urllist != null) ? urllist : new LinkedList();
 	}
 
-//
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public List<Map<String, Object>> getHeaders() {
 		List<Map<String, Object>> list = null;
@@ -117,6 +118,7 @@ public class PageurlsDao {
 		return (list != null) ? list : new LinkedList();
 	}
 
+	@Override
 	@Transactional
 	public List<Map<String, Object>> getSubmenu(String parent) {
 		List<Map<String, Object>> list = null;
@@ -130,6 +132,7 @@ public class PageurlsDao {
 		return (list != null) ? list : new LinkedList();
 	}
 
+	@Override
 	@Transactional
 	public List<Map<String, Object>> getSubsubmenu(String parent, String submenu) {
 		List<Map<String, Object>> list = null;
@@ -143,6 +146,7 @@ public class PageurlsDao {
 		return (list != null) ? list : new LinkedList();
 	}
 	
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public boolean mapUserpages(List<UserPages> upage) {
         boolean response = false;

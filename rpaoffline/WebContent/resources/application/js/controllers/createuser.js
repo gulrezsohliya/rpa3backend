@@ -3,31 +3,31 @@
  */
 
 $(document).ready(function () {
-                var scope = angular.element($("#createuserCtrl")).scope();
-    scope.$apply(function () {
-        scope.listUsers();
-    });
+//    var scope = angular.element($("#createuserCtrl")).scope();
+//    scope.$apply(function () {
+//        scope.listUsers();
+//    });
 });
 
 app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope, $sce, $compile) {
+	var scope = angular.element($("#createuserCtrl")).scope();
+	$scope.actionButton = 1;
+	$scope.cellcode = null;
+	$scope.cells = [];
+	$scope.officecode = null;
+	$scope.offices = [];
+	
     $scope.user = new Userlogins();
     $scope.users = [];
     $scope.repassword = "";
-    $scope.designations = [];
-//                $scope.designations = ${designations};
-    $scope.department = null;
-    $scope.designationgrp = null;
-    $scope.departments = "";
-    $scope.designationgroups =  "";
+    
     $scope.trustHTML = function (post) {
         return $sce.trustAsHtml(post);
     };
+    
     $scope.reset = function () {
-        $scope.user = new Userlogins();
-        $scope.department = null;
-        $scope.designationgrp = null;
-        $scope.repassword = "";
-        jQuery("#add").html("Save");
+    	$scope.user = new Userlogins();
+    	$scope.actionButton = 1;
     };
 
     $scope.save = function () {
@@ -39,7 +39,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope
             type: 'POST',
             url: "./saveUser",
             data: angular.toJson($scope.user),
-            //                dataType: "json",
+            // dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 alert(response);
@@ -74,17 +74,61 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope
         }, 2000);
     };
 
+    $scope.listOffices = function () {
+       
+        jQuery.ajax({
+            type: 'GET',
+            url: "./listOffices",
+            success: function (response) {
+                /*var scope = angular.element($("#createuserCtrl")).scope();*/
+                scope.$apply(function () {
+                    scope.offices = response;
+                    console.info(scope.offices);
+                    console.info(scope.offices.length);
+                });
+            },
+            error: function (xhr) {
+                alert(xhr.status + " = " + xhr)
+                alert("Sorry, there was an error while trying to process the request.");
+            }
+        });
+    };
+    $scope.listOffices();
+    
+    
+    $scope.listOfficeCells = function (officecode = 1) {
+    	console.info(officecode);
+    	jQuery.ajax({
+    		type: 'GET',
+    		url: "./listCells/"+$scope.officecode.officecode,
+    		success: function (response) {
+    			var scope = angular.element($("#createuserCtrl")).scope();
+    			scope.$apply(function () {
+    				scope.cells = response;
+    				console.info('cells');
+    				console.info($scope.cells.length);
+    				
+    				console.info($scope.cells.cellcode);
+    			});
+    		},
+    		error: function (xhr) {
+    			alert(xhr.status + " = " + xhr)
+    			alert("Sorry, there was an error while trying to process the request.");
+    		}
+    	});
+    };
+    
     $scope.listUsers = function () {
         jQuery.ajax({
-            type: 'POST',
+            type: 'GET',
             url: "./listUsers",
-            //                    dataType: "json",
+            // dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {
-                var scope = angular.element($("#createuserCtrl")).scope();
+//                var scope = angular.element($("#createuserCtrl")).scope();
                 scope.$apply(function () {
                     scope.users = response;
-                    scope.setDataTable(scope.users);
+//                    scope.setDataTable(scope.users);
                 });
             },
             error: function (xhr) {
@@ -93,35 +137,10 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope
             }
         });
     };
-    $scope.listDesignation = function () {
-        var paran = {};
-
-        paran.departmentcode = ($scope.department !== null) ? $scope.department.key : "";
-        paran.cdrgrpid = ($scope.designationgrp.key !== null && $scope.designationgrp.key !== "") ? $scope.designationgrp.key.substring(0, 1) : "";
-
-        if (paran.departmentcode === "" || paran.departmentcode === undefined) {
-            return false;
-        }
-
-        if (paran.cdrgrpid === "" || paran.cdrgrpid === undefined) {
-            return false;
-        }
-        jQuery.ajax({
-            type: 'POST',
-            url: "./listDepartmentDesignations",
-            data: paran,
-            success: function (response) {
-                var scope = angular.element($("#createuserCtrl")).scope();
-                scope.$apply(function () {
-                    scope.designations = response;
-                });
-            },
-            error: function (xhr) {
-                alert(xhr.status + " = " + xhr)
-                alert("Sorry, there was an error while trying to process the request.");
-            }
-        });
-    };
+   
+    $scope.listUsers();
+   
+    
     $scope.setDataTable = function (obj) {
         jQuery("#displayRecords").html("");
         jQuery("#displayRecords").html("<table id='displayRecordsTable' style='width:100%' border='1'>\n\
@@ -153,7 +172,8 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope
                     "data": "usercode",
                     "render": function (data, type, full, meta) {
                         return '<div style="text-align:center"><button style="padding:5px" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button></div>';
-//                                        return '<center><button style="padding:5px" value="Edit" ng-click="edit(' + data + ')">Edit</button></center>';
+// return '<center><button style="padding:5px" value="Edit" ng-click="edit(' +
+// data + ')">Edit</button></center>';
                     }
                 }
             ],
@@ -169,8 +189,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope
     };
     
     $scope.validateUserForm = function() {
-//                        alert("validateUserForm");
-//                        $scope.user;
+
         if($scope.user.officername === "" || $scope.user.officername === null){
             jQuery("#officername").focus();
             alert("Officer name cannot be empty");

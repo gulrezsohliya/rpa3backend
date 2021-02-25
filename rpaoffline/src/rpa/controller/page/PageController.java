@@ -3,26 +3,26 @@ package rpa.controller.page;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import rpa.services.admin.AdminService;
-import rpa.services.admin.PageurlsService;
+import rpa.services.admin.IntializationServiceInterface;
+import rpa.services.admin.PageurlsServiceInterface;
 
 @Controller
 public class PageController {
 
 	private static final Logger LOG = Logger.getLogger(PageController.class);
-	@Autowired private AdminService service;
-	@Autowired PageurlsService pageser;
+	@Autowired private IntializationServiceInterface service;
+	@Autowired PageurlsServiceInterface pageser;
 	/********************************************************
 	 * PAGEURLs
 	 ***********************************************************/
 	 
 	@RequestMapping(value = "/createuser", method = RequestMethod.GET)
-	public String createUser() {
-		LOG.info("createuser");
+	public String createUser(Model model) {
 		return "init/createuser";
 	}
 

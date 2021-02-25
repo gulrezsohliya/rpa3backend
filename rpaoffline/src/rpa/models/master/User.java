@@ -100,4 +100,10 @@ public class User {
 		this.mappedpages = mappedpages;
 	}
 	
+	@Override
+	public String toString() {
+		return "User [cellcode=" + cellcode + ", usercode=" + usercode + ", username=" + username + ", passwords="
+				+ passwords + ", fullname=" + fullname + ", mobileno=" + mobileno + ", designation=" + designation
+				+ ", enabled=" + enabled + ", entrydate=" + entrydate + ", mappedpages=" + mappedpages + "]";
+	}
 }

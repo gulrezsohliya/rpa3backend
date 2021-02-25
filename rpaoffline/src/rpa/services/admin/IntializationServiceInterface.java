@@ -8,19 +8,21 @@ import rpa.models.master.User;
 
 public interface IntializationServiceInterface {
 	/* READ DATA */
-	public Cell listCells(Integer officecode);
-
-	public Office listOffice(String officecode);
 
 	public User listUser(Integer usercode);
 
 	public User listUser(String username);
 
 	/* List */
-	public List<User> listUser();
 
 	public List<Cell> listCells();
 
+	public List<Cell> listCells(Integer officecode);
+
 	public List<Office> listOffices();
+	
+	public List<Office> listOffices(Integer officecode);
+
+	public List<User> listUser();
 
 }

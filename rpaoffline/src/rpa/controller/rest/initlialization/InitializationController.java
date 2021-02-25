@@ -1,8 +1,8 @@
 package rpa.controller.rest.initlialization;
 
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,40 +19,64 @@ import org.springframework.web.bind.annotation.RestController;
 import rpa.models.master.Cell;
 import rpa.models.master.Office;
 import rpa.models.master.User;
-import rpa.services.admin.AdminService;
+import rpa.services.admin.IntializationServiceInterface;
 
 @RestController
 public class InitializationController {
 
-	private static final Logger LOG = Logger.getLogger(InitializationController.class);
-	@Autowired private AdminService service;
+	private static final Logger LOG = Logger.getLogger(InitializationController.class.getName());
+	@Autowired private IntializationServiceInterface service;
 
 	/*********************************************************
 	 * READ DATA
 	 **********************************************************/
 
-	@GetMapping(value = "/listCells/{cellcode}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody JSONObject listCell(@PathVariable String cellcode) {
-		JSONObject json = new JSONObject();
-		return json;
+	@GetMapping(value = "/listCells/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Cell>> listCell(@PathVariable Integer officecode) {
+		try {
+			List<Cell> cells = service.listCells(officecode);
+			return ResponseEntity.accepted().body(cells);
+		}catch(Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+		
 	}
 
 	@GetMapping(value = "/listCells", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody JSONObject listCells() {
-		JSONObject json = new JSONObject();
-		return json;
+	public ResponseEntity<List<Cell>> listCells() {
+		LOG.info("listCells");
+		System.out.println("listCells");
+		try {
+			List<Cell> cells = service.listCells();
+			LOG.info("cells: "+cells);
+			System.out.println("Cells: "+cells);
+			return ResponseEntity.ok().body(cells);
+		}catch(Exception e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@GetMapping(value = "/listOffices/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody JSONObject listOffice(@PathVariable String officecode) {
-		JSONObject json = new JSONObject();
-		return json;
+	public ResponseEntity<List<Office>> listOffice(@PathVariable Integer officecode) {
+		try {
+			List<Office> offices= service.listOffices(officecode);
+			return ResponseEntity.ok().body(offices);
+		}catch(Exception e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@GetMapping(value = "/listOffices", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody JSONObject listOffices() {
-		JSONObject json = new JSONObject();
-		return json;
+	public ResponseEntity<List<Office>> listOffices() {
+		LOG.info("listOffices");
+		System.out.println("listOffices");
+		try {
+			List<Office> offices = service.listOffices();
+			LOG.info("Offices: "+offices);
+			return ResponseEntity.ok().body(offices);
+		}catch(Exception e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@GetMapping(value = "/listUsers/{usercode}", produces = MediaType.APPLICATION_JSON_VALUE)

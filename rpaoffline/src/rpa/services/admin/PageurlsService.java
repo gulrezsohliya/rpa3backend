@@ -4,14 +4,6 @@
  */
 package rpa.services.admin;
 
-import rpa.dao.admin.AdminDao;
-import rpa.dao.admin.PageurlsDao;
-import rpa.models.master.Pageurls;
-import rpa.models.master.User;
-import rpa.models.master.UserPages;
-
-import java.util.AbstractList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-@Service("PageurlsService")
-public class PageurlsService {
+import rpa.dao.admin.InitializationDaoInterface;
+import rpa.dao.admin.PageurlsDaoInterface;
+import rpa.models.master.Pageurls;
+import rpa.models.master.User;
+import rpa.models.master.UserPages;
 
-    @Autowired PageurlsDao dao;
-    @Autowired AdminDao admindao;
+@Service("PageurlsService")
+public class PageurlsService implements PageurlsServiceInterface{
+
+    @Autowired PageurlsDaoInterface dao;
+    @Autowired InitializationDaoInterface admindao;
 
     public JSONArray getPageurls() {
 
@@ -122,6 +120,7 @@ public class PageurlsService {
         return dao.getPageurls();
     }
 //
+    @Override
     public String getHeaders() {
         JSONArray jarr = new JSONArray();
         JSONObject jo = null;
