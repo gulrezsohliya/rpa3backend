@@ -23,39 +23,58 @@ import rpa.utility.UtilityInterface;
 
 @Repository("PageurlsDao")
 @Transactional
-public class PageurlsDao implements PageurlsDaoInterface{
+public class PageurlsDao implements PageurlsDaoInterface {
 
-	@Autowired private UtilityInterface util;
-	
+	@Autowired
+	private UtilityInterface util;
+
 	private ObjectMapper mapper = new ObjectMapper();
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
 	@Autowired
 	public void createTemplate(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
-//    @Autowired
-//    utilitycommon.UtilityCommonDao commonDao;
 
-//    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = HibernateException.class, readOnly = false)
-//    public boolean savePageurlsDao(Pageurls url) {
-//        boolean response = false;
-//        Session session = sessionFactory.getCurrentSession();
-//        try {
-//            if (url.getUrlcode() != 0) {
-//                session.update(url);
-//            } else {
-//                int max = commonDao.getMax("model.persitent.Pageurls", "urlcode");
-//                url.setUrlcode(max);
-//                session.save(url);
-//            }
-//            response = true;
-//        } catch (Exception ex) {
-//            System.out.println("Error in savePageurlsDao" + ex);
-//        }
-//        return response;
-//    }
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public boolean savePageurlsDao(Pageurls url) {
+		boolean response = false;
+		try {
+			MapSqlParameterSource parameters = new MapSqlParameterSource().addValue("pageurl", url.getPageurl())
+					.addValue("subsubmenu", url.getSubsubmenu()).addValue("subsubmenuicon", url.getSubsubmenuicon())
+					.addValue("submenu", url.getSubmenu()).addValue("submenuicon", url.getSubmenuicon())
+					.addValue("parent", url.getParent()).addValue("parenticon", url.getParenticon())
+					.addValue("urlcode", url.getUrlcode());
+
+			if (url.getUrlcode() != 0) {
+				String sql = (new StringBuilder("UPDATE backend.pageurls "))
+						.append("   SET pageurl=:pageurl, subsubmenu=:subsubmenu, subsubmenuicon=:subsubmenuicon,  ")
+						.append("   submenu=:submenu, submenuicon=:submenuicon, parent=:parent, parenticon=:parenticon  ")
+						.append(" WHERE urlcode=:urlcode ").toString();
+				if (namedParameterJdbcTemplate.update(sql, parameters) < 0) {
+					return false;
+				}
+			} else {
+				int max = util.getMax("backend", "pageurl", "urlcode");
+				url.setUrlcode(max);
+				parameters.addValue("urlcode", url.getUrlcode());
+				String sql = (new StringBuilder("INSERT INTO backend.pageurls("))
+						.append("urlcode, menuheadercode, menuname, pageurl, subsubmenu, subsubmenuicon, ")
+						.append("submenu, submenuicon, parent, parenticon, pageurlicon)")
+						.append("VALUES (:urlcode, :menuheadercode, :menuname, :pageurl, :subsubmenu, :subsubmenuicon,")
+						.append(":submenu, :submenuicon, :parent, :parenticon, :pageurlicon)").toString();
+				if (namedParameterJdbcTemplate.update(sql, parameters) < 0) {
+					return false;
+				}
+			}
+			response = true;
+		} catch (Exception ex) {
+			System.out.println("Error in savePageurlsDao" + ex);
+		}
+		return response;
+	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
@@ -89,7 +108,7 @@ public class PageurlsDao implements PageurlsDaoInterface{
 			String sql = "Select url.* From backend.userlogins u ,backend.UserPages up,backend.pageurls url "
 					+ "WHERE u.usercode=up.usercode " + "and up.urlcode=url.urlcode " + "and username=:username "
 					+ "order by url.parent, url.submenu, url.subsubmenu";
-			SqlParameterSource parameters = new MapSqlParameterSource().addValue("username",username);
+			SqlParameterSource parameters = new MapSqlParameterSource().addValue("username", username);
 			rowList = (List<Map<String, Object>>) namedParameterJdbcTemplate.queryForList(sql, parameters);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -145,28 +164,28 @@ public class PageurlsDao implements PageurlsDaoInterface{
 		}
 		return (list != null) ? list : new LinkedList();
 	}
-	
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-    public boolean mapUserpages(List<UserPages> upage) {
-        boolean response = false;
-        try {
-            String sql = "DELETE From backend.UserPages WHERE usercode=? ";
-            if(jdbcTemplate.update(sql, upage.get(0).getUsercode())<0) {
-            	return false;
-            }
-            /////////////////////////////////////
-            sql="INSERT INTO backend.userpages(userpagecode, usercode, urlcode) VALUES (?, ?, ?)";
-            int max=util.getMax("backend", "UserPages","userpagecode");
-            for (UserPages up : upage) {
-                up.setUserpagecode(++max);
-                jdbcTemplate.update(sql, up.getUserpagecode(),up.getUsercode(),up.getUrl().getUrlcode());
-            }
-            response = true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("\n\nError in mapUserpages " + ex);
-        }
-        return response;
-    }
+	public boolean mapUserpages(List<UserPages> upage) {
+		boolean response = false;
+		try {
+			String sql = "DELETE From backend.UserPages WHERE usercode=? ";
+			if (jdbcTemplate.update(sql, upage.get(0).getUsercode()) < 0) {
+				return false;
+			}
+			/////////////////////////////////////
+			sql = "INSERT INTO backend.userpages(userpagecode, usercode, urlcode) VALUES (?, ?, ?)";
+			int max = util.getMax("backend", "UserPages", "userpagecode");
+			for (UserPages up : upage) {
+				up.setUserpagecode(++max);
+				jdbcTemplate.update(sql, up.getUserpagecode(), up.getUsercode(), up.getUrl().getUrlcode());
+			}
+			response = true;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("\n\nError in mapUserpages " + ex);
+		}
+		return response;
+	}
 }

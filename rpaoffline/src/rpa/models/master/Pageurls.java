@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Pageurls {
 
     private int urlcode;
-//    private String pagename;
     private String pageurl;
-//    private String pageurlicon;
     private String subsubmenu;
     private String subsubmenuicon;
     private String submenu;

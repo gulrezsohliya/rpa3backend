@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,14 +22,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import rpa.models.master.Pageurls;
 import rpa.models.master.User;
 import rpa.models.master.UserPages;
-import rpa.services.admin.PageurlsService;
+import rpa.services.admin.PageurlsServiceInterface;
 
 @RestController
 public class PageurlsController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(PageurlsController.class);
 	@Autowired
-	PageurlsService pageser;
+	PageurlsServiceInterface pageser;
 
 	public static HttpSession session() {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -68,4 +69,9 @@ public class PageurlsController {
 		return pageser.saveUserpages(userpages);
 	}
 
+	@PostMapping(value = "/saveMenu.htm")
+    public ResponseEntity<String> saveMenu(@RequestBody Pageurls url) {
+                
+		return ResponseEntity.ok().body(pageser.savePageurl(url));
+    }
 }

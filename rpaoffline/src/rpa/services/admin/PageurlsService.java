@@ -21,133 +21,138 @@ import rpa.models.master.User;
 import rpa.models.master.UserPages;
 
 @Service("PageurlsService")
-public class PageurlsService implements PageurlsServiceInterface{
+public class PageurlsService implements PageurlsServiceInterface {
 
-    @Autowired PageurlsDaoInterface dao;
-    @Autowired InitializationDaoInterface admindao;
+	@Autowired
+	PageurlsDaoInterface dao;
+	@Autowired
+	InitializationDaoInterface admindao;
 
-    public JSONArray getPageurls() {
+	public JSONArray getPageurls() {
 
-        JSONArray arrParent = new JSONArray();
-        JSONObject objParent = null;
-        JSONObject objSubmenu = null;
-        JSONObject objSubsubmenu = null;
-        JSONArray arrSubmenu = null;
-        JSONArray arrSubSubmenu = null;
-        List<String> parent = new LinkedList<String>();
-        List<String> submenu = new LinkedList<String>();
-        for (Pageurls url : dao.getMappedPageurls(SecurityContextHolder.getContext().getAuthentication().getName())) {
-            if (!parent.contains(url.getParent())) {
-                parent.add(url.getParent());
-                submenu = new LinkedList<String>();
-                if (objSubmenu != null) {
-                    objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
-                    arrSubmenu.add(objSubmenu);
-                }
-                if (objParent != null) {
-                    objParent.put("value", arrSubmenu);
-                    arrParent.add(objParent);
-                }
-                objParent = new JSONObject();
-                objParent.put("parent", url.getParent());
-                objParent.put("parenticon", (url.getParenticon() != null) ? url.getParenticon() : "");
-                objParent.put("pageurl", (url.getSubmenu() == null) ? url.getPageurl() : "");
+		JSONArray arrParent = new JSONArray();
+		JSONObject objParent = null;
+		JSONObject objSubmenu = null;
+		JSONObject objSubsubmenu = null;
+		JSONArray arrSubmenu = null;
+		JSONArray arrSubSubmenu = null;
+		List<String> parent = new LinkedList<String>();
+		List<String> submenu = new LinkedList<String>();
+		for (Pageurls url : dao.getMappedPageurls(SecurityContextHolder.getContext().getAuthentication().getName())) {
+			if (!parent.contains(url.getParent())) {
+				parent.add(url.getParent());
+				submenu = new LinkedList<String>();
+				if (objSubmenu != null) {
+					objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
+					arrSubmenu.add(objSubmenu);
+				}
+				if (objParent != null) {
+					objParent.put("value", arrSubmenu);
+					arrParent.add(objParent);
+				}
+				objParent = new JSONObject();
+				objParent.put("parent", url.getParent());
+				objParent.put("parenticon", (url.getParenticon() != null) ? url.getParenticon() : "");
+				objParent.put("pageurl", (url.getSubmenu() == null) ? url.getPageurl() : "");
 
-                arrSubmenu = new JSONArray();
-                objSubmenu = new JSONObject();
-                submenu.add(url.getSubmenu());
-                objSubmenu.put("submenu", url.getSubmenu());
-                objSubmenu.put("submenuicon", (url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
-                objSubmenu.put("pageurl", (url.getSubsubmenu() == null) ? url.getPageurl() : "");
-                //                
-                arrSubSubmenu = new JSONArray();
-                objSubsubmenu = new JSONObject();
-                objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
-                objSubsubmenu.put("subsubmenuicon", (url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
-                objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
-                arrSubSubmenu.add(objSubsubmenu);
-                objSubmenu.put("value", arrSubSubmenu);
-                //
-                arrSubmenu.add(objSubmenu);
-                objSubmenu = null;
-            } else {
-                if (!submenu.contains(url.getSubmenu())) {
-                    submenu.add(url.getSubmenu());
-                    if (objSubmenu != null) {
-                        objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
-                        arrSubmenu.add(objSubmenu);
-                    }
-                    objSubmenu = new JSONObject();
-                    objSubmenu.put("submenu", url.getSubmenu());
-                    objSubmenu.put("submenuicon", (url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
-                    objSubmenu.put("pageurl", (url.getSubsubmenu() == null) ? url.getPageurl() : "");
-                    //                
-                    arrSubSubmenu = new JSONArray();
-                    objSubsubmenu = new JSONObject();
-                    objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
-                    objSubsubmenu.put("subsubmenuicon", (url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
-                    objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
-                    arrSubSubmenu.add(objSubsubmenu);
-                    objSubsubmenu = null;
-                    //
-                } else {
-                    objSubsubmenu = new JSONObject();
-                    objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
-                    objSubsubmenu.put("subsubmenuicon", (url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
-                    objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
-                    arrSubSubmenu.add(objSubsubmenu);
-                }
-            }
-        }
-        if (objSubmenu != null) {
-            objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
-            arrSubmenu.add(objSubmenu);
-        }
-        if (objParent != null) {
-            objParent.put("value", arrSubmenu);
-            arrParent.add(objParent);
-        }
+				arrSubmenu = new JSONArray();
+				objSubmenu = new JSONObject();
+				submenu.add(url.getSubmenu());
+				objSubmenu.put("submenu", url.getSubmenu());
+				objSubmenu.put("submenuicon", (url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
+				objSubmenu.put("pageurl", (url.getSubsubmenu() == null) ? url.getPageurl() : "");
+				//
+				arrSubSubmenu = new JSONArray();
+				objSubsubmenu = new JSONObject();
+				objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
+				objSubsubmenu.put("subsubmenuicon", (url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
+				objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
+				arrSubSubmenu.add(objSubsubmenu);
+				objSubmenu.put("value", arrSubSubmenu);
+				//
+				arrSubmenu.add(objSubmenu);
+				objSubmenu = null;
+			} else {
+				if (!submenu.contains(url.getSubmenu())) {
+					submenu.add(url.getSubmenu());
+					if (objSubmenu != null) {
+						objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
+						arrSubmenu.add(objSubmenu);
+					}
+					objSubmenu = new JSONObject();
+					objSubmenu.put("submenu", url.getSubmenu());
+					objSubmenu.put("submenuicon", (url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
+					objSubmenu.put("pageurl", (url.getSubsubmenu() == null) ? url.getPageurl() : "");
+					//
+					arrSubSubmenu = new JSONArray();
+					objSubsubmenu = new JSONObject();
+					objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
+					objSubsubmenu.put("subsubmenuicon",
+							(url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
+					objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
+					arrSubSubmenu.add(objSubsubmenu);
+					objSubsubmenu = null;
+					//
+				} else {
+					objSubsubmenu = new JSONObject();
+					objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
+					objSubsubmenu.put("subsubmenuicon",
+							(url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
+					objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
+					arrSubSubmenu.add(objSubsubmenu);
+				}
+			}
+		}
+		if (objSubmenu != null) {
+			objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
+			arrSubmenu.add(objSubmenu);
+		}
+		if (objParent != null) {
+			objParent.put("value", arrSubmenu);
+			arrParent.add(objParent);
+		}
 
-        return arrParent;
-    }
+		return arrParent;
+	}
 
-//    public String savePageurl(Pageurls url) {
-//        return (dao.savePageurlsDao(url)) ? "Saved" : "Failed";
-//    }
+	public String savePageurl(Pageurls url) {
+		return (dao.savePageurlsDao(url)) ? "Saved" : "Failed";
+	}
+
 //
-    public List<Pageurls> listUrls() {
+	public List<Pageurls> listUrls() {
+		return dao.getPageurls();
+	}
 
-        return dao.getPageurls();
-    }
 //
-    @Override
-    public String getHeaders() {
-        JSONArray jarr = new JSONArray();
-        JSONObject jo = null;
-        for (Map<String, Object> obj : dao.getHeaders()) {
-            jo = new JSONObject();
-            jo.put("key", obj.get("parent").toString());
-            jo.put("icon", (obj.get("parenticon") != null) ? obj.get("parenticon").toString() : "");
-            jarr.add(jo);
-        }
-        return jarr.toJSONString();
-    }
+	@Override
+	public String getHeaders() {
+		JSONArray jarr = new JSONArray();
+		JSONObject jo = null;
+		for (Map<String, Object> obj : dao.getHeaders()) {
+			jo = new JSONObject();
+			jo.put("key", obj.get("parent").toString());
+			jo.put("icon", (obj.get("parenticon") != null) ? obj.get("parenticon").toString() : "");
+			jarr.add(jo);
+		}
+		return jarr.toJSONString();
+	}
 
-    public List<Map<String, Object>> getSubmenu(String parent) {
-        return dao.getSubmenu(parent);
-    }
-    
-    public List<User> listUserAndMappedPages() {
-    	
-    	List<User> list=admindao.listUsers();
-    	for(User user:list) {
-    		user.setMappedpages(dao.getMappedPageurls(user.getUsername()));
-    	}    	
-    	return list;
-    }
+	public List<Map<String, Object>> getSubmenu(String parent) {
+		return dao.getSubmenu(parent);
+	}
 
-    public String saveUserpages(List<UserPages> upages) {
+	public List<User> listUserAndMappedPages() {
 
-        return (dao.mapUserpages(upages)) ? "Mapped" : "Failed";
-    }
+		List<User> list = admindao.listUsers();
+		for (User user : list) {
+			user.setMappedpages(dao.getMappedPageurls(user.getUsername()));
+		}
+		return list;
+	}
+
+	public String saveUserpages(List<UserPages> upages) {
+
+		return (dao.mapUserpages(upages)) ? "Mapped" : "Failed";
+	}
 }

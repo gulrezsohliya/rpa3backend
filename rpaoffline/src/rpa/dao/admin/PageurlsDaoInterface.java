@@ -19,5 +19,7 @@ public interface PageurlsDaoInterface {
 	public List<Pageurls> getMappedPageurls(String name);
 
 	public List<Pageurls> getPageurls();
+	
+	public boolean savePageurlsDao(Pageurls url);
 
 }
