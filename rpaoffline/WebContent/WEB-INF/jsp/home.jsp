@@ -23,5 +23,6 @@
 	        </div>
 	    </div>
     </body>
+    <script src="resources/application/js/factories/commonFactory.js"></script>
     <script src="resources/application/js/controllers/home.js"></script>
 </html>

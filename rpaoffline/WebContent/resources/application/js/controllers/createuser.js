@@ -9,7 +9,7 @@ $(document).ready(function () {
 //    });
 });
 
-app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope, $sce, $compile) {
+app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commonFactory', function ($scope, $sce, $compile,$timeout,commonFactory) {
 	var scope = angular.element($("#createuserCtrl")).scope();
 	$scope.actionButton = 1;
 	$scope.cellcode = null;
@@ -83,8 +83,8 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope
                 /*var scope = angular.element($("#createuserCtrl")).scope();*/
                 scope.$apply(function () {
                     scope.offices = response;
-                    console.info(scope.offices);
-                    console.info(scope.offices.length);
+//                    console.info(scope.offices);
+//                    console.info(scope.offices.length);
                 });
             },
             error: function (xhr) {
@@ -118,28 +118,31 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile', function ($scope
     	});
     };
     
-    $scope.listUsers = function () {
-        jQuery.ajax({
-            type: 'GET',
-            url: "./listUsers",
-            // dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (response) {
-//                var scope = angular.element($("#createuserCtrl")).scope();
-                scope.$apply(function () {
-                    scope.users = response;
-//                    scope.setDataTable(scope.users);
-                });
-            },
-            error: function (xhr) {
-                alert(xhr.status + " = " + xhr)
-                alert("Sorry, there was an error while trying to process the request.");
-            }
-        });
-    };
-   
-    $scope.listUsers();
-   
+//    $scope.listUsers = function () {
+//        jQuery.ajax({
+//            type: 'GET',
+//            url: "./listUsers",
+//            // dataType: "json",
+//            contentType: "application/json; charset=utf-8",
+//            success: function (response) {
+////                var scope = angular.element($("#createuserCtrl")).scope();
+//                scope.$apply(function () {
+//                    scope.users = response;
+////                    scope.setDataTable(scope.users);
+//                });
+//            },
+//            error: function (xhr) {
+//                alert(xhr.status + " = " + xhr)
+//                alert("Sorry, there was an error while trying to process the request.");
+//            }
+//        });
+//    };   
+//    $scope.listUsers();
+    
+    commonFactory.listUsers((response)=>{
+		$scope.users=response;
+	});
+//    $timeout(()=>console.log($scope.users),0);
     
     $scope.setDataTable = function (obj) {
         jQuery("#displayRecords").html("");

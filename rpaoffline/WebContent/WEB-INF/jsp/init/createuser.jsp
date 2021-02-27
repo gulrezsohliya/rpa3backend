@@ -71,6 +71,7 @@
         <script type="text/javascript">
 		        /* var offices = '${offices}'; */
         </script>
+        <script src="resources/application/js/factories/commonFactory.js"></script>
         <script src="resources/application/js/controllers/createuser.js"></script>
     </body>
 </html>

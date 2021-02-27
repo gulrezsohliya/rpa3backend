@@ -57,14 +57,14 @@ public class PageurlsDao implements PageurlsDaoInterface {
 					return false;
 				}
 			} else {
-				int max = util.getMax("backend", "pageurl", "urlcode");
-				url.setUrlcode(max);
+				int max = util.getMax("backend", "pageurls", "urlcode");
+				url.setUrlcode(max+1);
 				parameters.addValue("urlcode", url.getUrlcode());
 				String sql = (new StringBuilder("INSERT INTO backend.pageurls("))
-						.append("urlcode, menuheadercode, menuname, pageurl, subsubmenu, subsubmenuicon, ")
-						.append("submenu, submenuicon, parent, parenticon, pageurlicon)")
-						.append("VALUES (:urlcode, :menuheadercode, :menuname, :pageurl, :subsubmenu, :subsubmenuicon,")
-						.append(":submenu, :submenuicon, :parent, :parenticon, :pageurlicon)").toString();
+						.append("urlcode, pageurl, subsubmenu, subsubmenuicon, ")
+						.append("submenu, submenuicon, parent, parenticon)")
+						.append("VALUES (:urlcode, :pageurl, :subsubmenu, :subsubmenuicon,")
+						.append(":submenu, :submenuicon, :parent, :parenticon)").toString();
 				if (namedParameterJdbcTemplate.update(sql, parameters) < 0) {
 					return false;
 				}

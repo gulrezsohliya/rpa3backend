@@ -1,5 +1,4 @@
 function GlobalCsrfTokenInterceptorService($q) {
-
     // Private constants.
     var CSRF_TOKEN_HEADER = $("meta[name='_csrf_header']").attr("content"),
         HTTP_TYPES_TO_ADD_TOKEN = ['DELETE', 'POST', 'PUT','GET'];
@@ -29,7 +28,6 @@ function GlobalCsrfTokenInterceptorService($q) {
         if (HTTP_TYPES_TO_ADD_TOKEN.indexOf(config.method.toUpperCase()) !== -1) {
             config.headers[CSRF_TOKEN_HEADER] = token;
         }
-console.log("called");
         return config;
     }
 
