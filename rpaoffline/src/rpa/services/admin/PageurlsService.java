@@ -28,7 +28,7 @@ public class PageurlsService implements PageurlsServiceInterface {
 	@Autowired
 	InitializationDaoInterface admindao;
 
-	public JSONArray getPageurls() {
+	public JSONArray getPageurls(String username) {
 
 		JSONArray arrParent = new JSONArray();
 		JSONObject objParent = null;
@@ -38,7 +38,7 @@ public class PageurlsService implements PageurlsServiceInterface {
 		JSONArray arrSubSubmenu = null;
 		List<String> parent = new LinkedList<String>();
 		List<String> submenu = new LinkedList<String>();
-		for (Pageurls url : dao.getMappedPageurls(SecurityContextHolder.getContext().getAuthentication().getName())) {
+		for (Pageurls url : dao.getMappedPageurls(username)) {
 			if (!parent.contains(url.getParent())) {
 				parent.add(url.getParent());
 				submenu = new LinkedList<String>();

@@ -52,7 +52,7 @@ public class InitializationDao implements InitializationDaoInterface {
 		List<User> list = null;
 		try {
 			String sql = "Select * From backend.userlogins Where usercode=? Order by username";
-			list = (List<User>) jdbcTemplate.queryForList(sql, User.class, usercode);
+			list = (List<User>) jdbcTemplate.query(sql, new BeanPropertyRowMapper<User>(User.class), usercode);
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listUsers " + ex);
 		}
@@ -63,14 +63,14 @@ public class InitializationDao implements InitializationDaoInterface {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
 	public User listUsers(String username) {
 
-		List<User> list = null;
+		User list = null;
 		try {
 			String sql = "Select * From backend.userlogins Where username=? Order by username";
-			list = (List<User>) jdbcTemplate.queryForList(sql, User.class, username);
+			list = (User) jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), "su");
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listUsers " + ex);
 		}
-		return (list != null) ? list.get(0) : new User();
+		return (list != null) ? list : new User();
 	}
 
 	

@@ -74,7 +74,6 @@ public class IntializationService implements IntializationServiceInterface {
 
 	@Override
 	public List<User> listUser() {
-		LOG.info("SERIVCE LIST USER");
 		String sql = "SELECT * FROM backend.userlogins ORDER BY username";
 		List<User> users = UI.listGeneric(User.class, sql);
 //		return dao.listUsers();

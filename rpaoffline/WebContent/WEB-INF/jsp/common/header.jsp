@@ -40,8 +40,8 @@ body {
 }
 
 .gn-menu-main {
-	background: url('resources/images/estateBanner.jpg') black no-repeat
-		round;
+	background: url('resources/images/estateBanner.jpg') black no-repeat round;
+	/*background: white;*/
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -129,20 +129,17 @@ thead {
 </style>
 <div>
 	<ul id="gn-menu" class="gn-menu-main">
-		<li id="menu"><core:if
-				test="${pageContext.request.userPrincipal.authenticated eq true}">
+		<li id="menu">
+			<core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
 				<%@include file="menu.jsp"%>
-			</core:if></li>
-		<li style="float: right; padding-top: 68px; padding-right: 335px">
-			<core:if
-				test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
+			</core:if>
+		</li>
+		<li style="padding-top: 68px; padding-right: 335px">
+			<core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
 				<h6 style="line-height: 0; text-align: right;">
 					Logged in as
 					<%=session.getAttribute("user")%></h6>
-			</core:if> <core:if
-				test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user eq null}">
-				<h6 style="line-height: 0; text-align: right;">&nbsp;</h6>
-			</core:if>
+			</core:if> 
 		</li>
 	</ul>
 	<div style="display: none">

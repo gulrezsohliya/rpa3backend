@@ -2,19 +2,21 @@
     .gn-menu-main{
         z-index: 1;
     }
-    .gn-menu-main nav li:hover {
+    /*.gn-menu-main nav :hover {
         background: #6d7e90;
-    }.gn-menu-main nav li:hover >a{
+    }*/
+    .gn-menu-main nav :hover >a{
         color: white;
     }
     #menu {
         position: relative;
         width: 60px;
         padding:0;
-        top: 120px;
-    }#menu:hover{
-        background-color:#34495e;
+        /*top: 120px;*/
     }
+    /*#menu:hover{
+        background-color:#34495e;
+    }*/
     .gn-menu-wrapper {
         position: fixed;
         top: 120px;
@@ -85,12 +87,10 @@
                 </ul>
             </li>
             <li>
-            <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
+            <!-- <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
                 <a class="gn-icon icon-exit" href='/rpaoffline/logout'>Log Out</a>
-            </core:if>
-            <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user eq null}">
+            </core:if>-->
                 <a class="gn-icon icon-exit" href='/rpaoffline/logout'>Log Out</a>
-            </core:if>
             </li>
         </ul>
     </div>

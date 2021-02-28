@@ -11,7 +11,7 @@ import rpa.models.master.UserPages;
 
 public interface PageurlsServiceInterface {
 
-	public JSONArray getPageurls();
+	public JSONArray getPageurls(String username);
 
 	public List<Pageurls> listUrls();
 
