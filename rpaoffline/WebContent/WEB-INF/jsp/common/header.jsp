@@ -40,8 +40,8 @@ body {
 }
 
 .gn-menu-main {
-	background: url('resources/images/estateBanner.jpg') black no-repeat round;
-	/*background: white;*/
+ 	background: url('resources/images/estateBanner.jpg') black no-repeat round; 
+	/* background: #deedf7; */
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -142,6 +142,25 @@ thead {
 			</core:if> 
 		</li>
 	</ul>
+	<!-------------------- Header Start --------------------------->
+	<%-- <div  id="gn-menu" class="gn-menu-main" style="display:flex;flex-flow: row nowrap">
+		<div style="width:60px">
+			<core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
+				<%@include file="menu.jsp"%>
+			</core:if>
+		</div>
+		<div style="flex-grow:1;display:flex;flex-direction:row">
+			<div style="flex-grow:12;background:yellow"></div>
+			<div style="flex-grow:4;background:green;justify-content:center">
+				<core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
+					<h6 style="color:#34495e">
+					Logged in as <%=session.getAttribute("user")%>
+					</h6>
+				</core:if>
+			</div>
+		</div>
+	</div> --%>
+	<!-------------------- Header End ----------------------------->
 	<div style="display: none">
 		<div id="MsgBox" style="min-width: 200px; height: auto;"
 			align="center">
