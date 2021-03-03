@@ -76,7 +76,6 @@ public class IntializationService implements IntializationServiceInterface {
 	public List<User> listUser() {
 		String sql = "SELECT * FROM backend.userlogins ORDER BY username";
 		List<User> users = UI.listGeneric(User.class, sql);
-//		return dao.listUsers();
 		return users;
 	}
 

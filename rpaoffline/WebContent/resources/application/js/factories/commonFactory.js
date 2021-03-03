@@ -6,7 +6,6 @@ app.factory('commonFactory', function($http) {
 					function(response, status, headers, config) {
 						callback(response);
 					});
-		},
-		
+		},		
 	}
 });

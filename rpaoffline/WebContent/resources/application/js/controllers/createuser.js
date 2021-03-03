@@ -141,6 +141,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
     
     commonFactory.listUsers((response)=>{
 		$scope.users=response;
+		$scope.setDataTable(response);
 	});
 //    $timeout(()=>console.log($scope.users),0);
     
@@ -156,16 +157,16 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
                     "data": "usercode",
                 }, {
                     "title": "User Name",
-                    "data": "officername"
+                    "data": "username"
                 }, {
                     "title": "Designation",
-                    "data": "designation.designationname"
+                    "data": "designation"
                 }, {
-                    "title": "Department",
-                    "data": "designation.departments.departmentname"
+                    "title": "Cell Code",
+                    "data": "cellcode"
                 }, {
-                    "title": "Role",
-                    "data": "userrole"
+                    "title": "Mobile No.",
+                    "data": "mobileno"
                 }, {
                     "title": "Status",
                     "data": "enabled"
