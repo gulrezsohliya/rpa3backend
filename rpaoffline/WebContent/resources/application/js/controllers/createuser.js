@@ -9,9 +9,10 @@ $(document).ready(function () {
 //    });
 });
 
-app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commonFactory', 'commonService', function ($scope, $sce, $compile,$timeout,commonFactory, commonService) {
+app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
+	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	var scope = angular.element($("#createuserCtrl")).scope();
-	commonService.success();
+	commonInitService.success();
 	/*Common Ajax Params*/
 	var successMsg = "Success: User created or updated successfully";
 	var errorMsg = "Error: Unable to perform action";
@@ -67,7 +68,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         $scope.method = "POST";
         $scope.urlEndpoint = "./createuser";
     	
-        commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
+        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
     };
     
     $scope.toggleUserStatus= function (usercode) {
@@ -78,7 +79,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         });
     	$scope.method = "PUT";
     	$scope.urlEndpoint = "./updateuser/status";
-    	commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(usercode);}, () =>{alert("failed")});
+    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(usercode);}, () =>{alert("failed")});
     	
     };
     
@@ -87,7 +88,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
              return false;
 	    $scope.method = "PUT";
     	$scope.urlEndpoint = "./updateuser";
-    	commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(), MsgBox(successMsg)}, () => {MsgBox(errorMsg)});
+    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(), MsgBox(successMsg)}, () => {MsgBox(errorMsg)});
     }
     
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
@@ -100,7 +101,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
             data: obj,
             columns: [
                 {
-                    "title": "User Code",
+                    "title": "Slno",
                     "data": "usercode",
                     render: function (data, type, row, meta){
                     	return meta.row+1;
@@ -126,8 +127,6 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
                     	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
                     		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="toggleUserStatus(' + data + ')" class="button-primary">'+status+'</button></div>';
                         return div;
-// return '<center><button style="padding:5px" value="Edit" ng-click="edit(' +
-// data + ')">Edit</button></center>';
                     }
                 }
             ],
@@ -191,14 +190,14 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
 
         /*READ DATA*/
         $scope.listOffices = () => {
-            commonFactory.listOffices((response)=>{
+            commonInitFactory.listOffices((response)=>{
         		$scope.offices=response;
         	});
         };
         $scope.listOffices();
         
         $scope.listOfficeCells = function (officecode = 0) {
-        	commonFactory.listOfficeCells((response)=>{
+        	commonInitFactory.listOfficeCells((response)=>{
         		$scope.cells=response;
         	}, officecode);
         };
@@ -206,12 +205,12 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         $scope.listUsers = (usercode = 0) => {
         	
         	if(usercode == 0){
-        		commonFactory.listUsers((response)=>{
+        		commonInitFactory.listUsers((response)=>{
             		$scope.users=response;
             		$scope.setDataTable($scope.users);
             	});
         	}else{
-        		commonFactory.listUser((response)=>{
+        		commonInitFactory.listUser((response)=>{
         			$scope.users.forEach((o, x) => {
         				if(o.usercode == usercode){
         					$scope.users[x] = response;

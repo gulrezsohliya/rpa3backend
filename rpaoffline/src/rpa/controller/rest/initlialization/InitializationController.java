@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import rpa.models.master.Cell;
+import rpa.models.master.ExamCenter;
 import rpa.models.master.Office;
 import rpa.models.master.User;
 import rpa.services.admin.IntializationServiceInterface;
@@ -57,6 +58,19 @@ public class InitializationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@GetMapping(value = "/listExamCenters", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ExamCenter>> listExamCenters() {
+		LOG.info("listExamCenters");
+		try {
+			List<ExamCenter> examCenters = IS.listExamCenters();
+			LOG.info("cells: "+examCenters);
+			System.out.println("ExamCenter: "+examCenters);
+			return ResponseEntity.ok().body(examCenters);
+		}catch(Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 	@GetMapping(value = "/listOffices/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffice(@PathVariable Integer officecode) {
@@ -71,10 +85,8 @@ public class InitializationController {
 	@GetMapping(value = "/listOffices", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffices() {
 		LOG.info("listOffices");
-		System.out.println("listOffices");
 		try {
 			List<Office> offices = IS.listOffices();
-			LOG.info("Offices: "+offices);
 			return ResponseEntity.ok().body(offices);
 		}catch(Exception e) {
 			return ResponseEntity.notFound().build();

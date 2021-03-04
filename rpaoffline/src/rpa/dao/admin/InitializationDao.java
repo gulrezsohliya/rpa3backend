@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import rpa.models.master.ExamCenter;
 import rpa.models.master.User;
 import rpa.utility.UtilityInterface;
 
@@ -100,6 +101,42 @@ public class InitializationDao implements InitializationDaoInterface {
 		return response;
 	}
 	
+	@Override
+	public boolean saveExamCenter(ExamCenter examCenter) {
+		String sql = "";
+		boolean response = false;
+		try {
+			examCenter.setCentercode(UI.getMax("backend", "examcenters", "centercode")+1);
+			sql = "INSERT INTO";
+			
+			Object[] param = new Object[] { examCenter.getCentercode(), examCenter.getCentername()};
+			response = jdbcTemplate.update(sql, param) > 0;
+			LOG.log(Level.FINE, response ? "Success" : "Failed");
+		} catch (Exception e) {
+			response = false;
+			LOG.log(Level.SEVERE, e.toString());
+		}
+		return response;
+	}
+
+	@Override
+	public boolean updateExamCenter(ExamCenter examCenter) {
+		String sql = "";
+		boolean response = false;
+		try {
+			LOG.info(examCenter.toString());
+			sql = "INSERT INTO";
+			
+			Object[] param = new Object[] { examCenter.getCentername(), examCenter.getCentercode() };
+			response = jdbcTemplate.update(sql, param) > 0;
+			LOG.log(Level.FINE, response ? "Success" : "Failed");
+		} catch (Exception e) {
+			response = false;
+			LOG.log(Level.SEVERE, e.toString());
+		}
+		return response;
+	}
+
 	@Override
 	public boolean updateUser(User user) {
 		LOG.info("DAO: updateUser");

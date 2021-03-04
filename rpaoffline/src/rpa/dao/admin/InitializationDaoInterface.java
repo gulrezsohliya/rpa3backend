@@ -3,6 +3,7 @@ package rpa.dao.admin;
 import java.util.List;
 
 import rpa.models.master.Cell;
+import rpa.models.master.ExamCenter;
 import rpa.models.master.User;
 
 public interface InitializationDaoInterface {
@@ -18,9 +19,12 @@ public interface InitializationDaoInterface {
 	/* CREATE DATA */
 	public boolean saveUser(User user);
 
+	public boolean saveExamCenter(ExamCenter examCenter);
+
+	public boolean updateExamCenter(ExamCenter examCenter);
+
 	public boolean updateUser(User user);
 
 	public boolean updateUserStatus(User user);
-	
-	
+
 }

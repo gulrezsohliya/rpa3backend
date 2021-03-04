@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import rpa.dao.admin.InitializationDaoInterface;
 import rpa.models.master.Cell;
+import rpa.models.master.ExamCenter;
 import rpa.models.master.Office;
 import rpa.models.master.User;
 import rpa.utility.UtilityInterface;
@@ -52,10 +53,20 @@ public class IntializationService implements IntializationServiceInterface {
 	}
 
 	@Override
+	public List<ExamCenter> listExamCenters() {
+		LOG.info("SERIVCE listExamCenters");
+		String sql = "";
+		List<ExamCenter> examCenters = UI.listGeneric(ExamCenter.class, sql);
+		LOG.info(examCenters.toString());
+		return examCenters;
+	}
+
+	@Override
 	public List<Office> listOffices() {
 		String sql = "SELECT  officecode, officename1, officename2, officename3, officeshortname, "
 				+ "       signatoryname, signatorydesignation, emailid, emailidpassword, "
-				+ "       smsusername, smspassword, smssenderid, enabled " + "FROM MASTERS.offices "
+				+ "       smsusername, smspassword, smssenderid, enabled " 
+				+ "FROM MASTERS.offices "
 				+ "ORDER BY officename1, officename2, officename3";
 		List<Office> offices = UI.listGeneric(Office.class, sql);
 		return offices;
@@ -105,10 +116,19 @@ public class IntializationService implements IntializationServiceInterface {
 	/* CREATE DATA */
 	@Override
 	public boolean saveUser(User user) {
-		LOG.info("saveUser");
 		return ID.saveUser(user);
 	}
 	
+	@Override
+	public boolean saveExamCenter(ExamCenter examCenter) {
+		return ID.saveExamCenter(examCenter);
+	}
+
+	@Override
+	public boolean updateExamCenter(ExamCenter examCenter) {
+		return ID.updateExamCenter(examCenter);
+	}
+
 	@Override
 	public boolean updateUser(User user) {
 		LOG.info("updateUser");

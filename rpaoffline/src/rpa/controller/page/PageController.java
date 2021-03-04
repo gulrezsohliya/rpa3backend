@@ -21,21 +21,27 @@ public class PageController {
 	 * PAGEURLs
 	 ***********************************************************/
 	 
-	@RequestMapping(value = "/createuser", method = RequestMethod.GET)
+	@RequestMapping(value = "/createuser.htm", method = RequestMethod.GET)
 	public String createUser(Model model) {
 		return "init/createuser";
 	}
 
-	@RequestMapping(value = "/initializecell", method = RequestMethod.GET)
+	@RequestMapping(value = "/cell.htm", method = RequestMethod.GET)
 	public String initCell() {
-		LOG.info("initializecell");
-		return "init/initializecell";
+		LOG.info("cell");
+		return "init/cell";
 	}
 
-	@RequestMapping(value = "/initializeoffice", method = RequestMethod.GET)
+	@RequestMapping(value = "/examcenter.htm", method = RequestMethod.GET)
+	public String initExamCenter() {
+		LOG.info("ExamCenter");
+		return "init/examcenter";
+	}
+
+	@RequestMapping(value = "/office.htm", method = RequestMethod.GET)
 	public String initOffice() {
-		LOG.info("initializeoffice");
-		return "init/initializeoffice";
+		LOG.info("office");
+		return "init/office";
 	}
 	
 	@RequestMapping(value = "accesscontrol.htm", method = RequestMethod.GET)

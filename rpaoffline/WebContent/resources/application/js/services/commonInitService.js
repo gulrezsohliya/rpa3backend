@@ -1,15 +1,15 @@
 /*@author Decent Khongstia*/
 
-app.service("commonService", function($http) {
-	console.info("commonService");
+app.service("commonInitService", function($http) {
+	console.info("commonInitService");
 	
 	this.success = (elementID, msg, ...arg) => {
-		console.info("commonService.success");
+		console.info("commonInitService.success");
 		console.info(elementID, msg, ...arg);
 	};
 
 	this.danger = (elementID, msg, ...arg) => {
-		console.info("commonService.danger");
+		console.info("commonInitService.danger");
 		console.info(elementID, msg, ...arg);
 	};
 	
@@ -31,7 +31,6 @@ app.service("commonService", function($http) {
             	}else{
 //            		failed
             		errorCallback();
-//            		alert("failed");
             	}
                 
             },
@@ -45,32 +44,5 @@ app.service("commonService", function($http) {
         	
         });
 	}
-	
-	/*this.updateUsers = (data, callback)=>{
-		$.ajax({
-            type: 'POST',
-            url: "./updateuser",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data: angular.toJson(data),
-            success: function (res) {
-            	if(res.response === CREATED){
-//            		success
-            		$scope.reset();
-                    $scope.listUsers();
-                    successCallback();
-            	}else{
-//            		failed
-            		errorCallback();
-            	}
-                
-            },
-            error: function (xhr) {
-                alert(xhr.status + " = " + xhr)
-                alert("Sorry, there was an error while trying to process the request.");
-                errorCallback();
-            }
-        });
-	}*/
 	
 });

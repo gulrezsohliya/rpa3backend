@@ -1,11 +1,17 @@
 //Common Factories
-app.factory('commonFactory', function($http) {
+app.factory('commonInitFactory', function($http) {
 	return {
-		listOffices:  function(callback) {
-			$http.get("./listOffices").success(
+		listExamCenters:  function(callback) {
+			$http.get("./listExamCenters").success(
 			function(response, status, headers, config) {
 				callback(response);
 			});
+		},
+		listOffices:  function(callback) {
+			$http.get("./listOffices").success(
+					function(response, status, headers, config) {
+						callback(response);
+					});
 		},
 		listOfficeCells: function(callback, officecode) {
 			$http.get("./listCells/"+officecode).success(
