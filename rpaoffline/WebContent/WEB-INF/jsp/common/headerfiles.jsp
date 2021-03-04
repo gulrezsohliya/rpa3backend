@@ -34,7 +34,11 @@
 
 
 <!-- App Scripts -->
+<script src="resources/application/js/constants.js"></script>
+<script src="resources/application/js/commonrequests.js"></script>
 <script src="resources/application/js/models/classes.js"></script>
-<script src="resources/application/js/commonmodules.js"></script>  
+<script src="resources/application/js/commonmodules.js"></script>
 <script src="resources/application/js/factories/setHttpHeader.js"></script>
+<script src="resources/application/js/factories/commonFactory.js"></script>
+<script src="resources/application/js/services/commonService.js"></script>  
 <script src="resources/application/js/directives/ngdirectives.js"></script>

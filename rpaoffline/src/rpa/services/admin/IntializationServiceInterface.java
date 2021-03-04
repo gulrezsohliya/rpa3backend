@@ -25,4 +25,9 @@ public interface IntializationServiceInterface {
 
 	public List<User> listUser();
 
+	/* CREATE DATA */
+	public boolean saveUser(User user);
+
+	public boolean updateUser(User user);
+
 }

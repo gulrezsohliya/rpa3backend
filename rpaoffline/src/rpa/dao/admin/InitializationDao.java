@@ -1,12 +1,13 @@
 package rpa.dao.admin;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+/*import org.apache.log4j.Logger;*/
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,15 +17,17 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import rpa.models.master.User;
+import rpa.utility.UtilityInterface;
 
 @Repository("InitializationDao")
 @Transactional
 public class InitializationDao implements InitializationDaoInterface {
 
-	private static final Logger LOG = Logger.getLogger(InitializationDao.class);
+	private static final Logger LOG = Logger.getLogger(InitializationDao.class.getName());
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
+	@Autowired private UtilityInterface UI;
+	
 	@Autowired
 	public void createTemplate(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -73,5 +76,52 @@ public class InitializationDao implements InitializationDaoInterface {
 		return (list != null) ? list : new User();
 	}
 
+	/* CREATE DATA */
+	@Override
+	public boolean saveUser(User user) {
+		String sql = "";
+		boolean response = false;
+		try {
+			user.setUsercode(UI.getMax("backend", "userlogins", "usercode")+1);
+			LOG.info(user.toString());
+			sql = "INSERT INTO backend.userlogins(   " 
+					+ "            cellcode, usercode, username, passwords, "
+					+ " 			fullname, mobileno, designation, entrydate)   "
+					+ "    VALUES (?, ?, ?, ?, ?, ?, ?, now())";
+			
+			Object[] param = new Object[] { user.getCellcode(), user.getUsercode(), user.getUsername(),
+					user.getPasswords(), user.getFullname(), user.getMobileno(), user.getDesignation() };
+			response = jdbcTemplate.update(sql, param) > 0;
+			LOG.log(Level.FINE, response ? "Success" : "Failed");
+		} catch (Exception e) {
+			response = false;
+			LOG.log(Level.SEVERE, e.toString());
+		}
+		return response;
+	}
 	
+	@Override
+	public boolean updateUser(User user) {
+		LOG.info("DAO: updateUser");
+		
+		String sql = "";
+		boolean response = false;
+		try {
+			sql = "UPDATE backend.userlogins SET  " 
+					+ "            cellcode = ?, username = ?, passwords = ?, "
+					+ " 		   fullname = ?, mobileno = ?, designation = ?   "
+					+ "    WHERE usercode = ?";
+			
+			Object[] param = new Object[] { 
+					user.getCellcode(), user.getUsername(), user.getPasswords(), 
+					user.getFullname(), user.getMobileno(), user.getDesignation(), user.getUsercode() 
+			};
+			response = jdbcTemplate.update(sql, param) > 0;
+			LOG.log(Level.FINE, response ? "Success" : "Failed");
+		} catch (Exception e) {
+			response = false;
+			LOG.log(Level.SEVERE, e.toString());
+		}
+		return response;
+	}
 }

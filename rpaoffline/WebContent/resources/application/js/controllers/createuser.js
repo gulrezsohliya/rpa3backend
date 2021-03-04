@@ -9,8 +9,17 @@ $(document).ready(function () {
 //    });
 });
 
-app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commonFactory', function ($scope, $sce, $compile,$timeout,commonFactory) {
+app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commonFactory', 'commonService', function ($scope, $sce, $compile,$timeout,commonFactory, commonService) {
 	var scope = angular.element($("#createuserCtrl")).scope();
+	commonService.success();
+	/*Common Ajax Params*/
+	$scope.errorCallback = "";
+	$scope.method = "POST";
+	$scope.successCallback = "";
+	$scope.urlEndpoint = "";
+	
+	/*------------------------*/
+	
 	$scope.actionButton = 1;
 	$scope.cellcode = null;
 	$scope.cells = [];
@@ -30,120 +39,48 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
     	$scope.actionButton = 1;
     };
 
-    $scope.save = function () {
-        if(!$scope.validateUserForm())
-            return false;
-        
-        $scope.user.password = ($scope.user.password === '') ? "" : sha256_digest($scope.user.password);
-        jQuery.ajax({
-            type: 'POST',
-            url: "./saveUser",
-            data: angular.toJson($scope.user),
-            // dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (response) {
-                alert(response);
-                $scope.reset();
-                $scope.listUsers();
-                jQuery("#add").html("Save");
-            },
-            error: function (xhr) {
-                alert(xhr.status + " = " + xhr)
-                alert("Sorry, there was an error while trying to process the request.");
-            }
-        });
-    };
 
     $scope.edit = function (usercode) {
-        jQuery("#add").html("Update");
-        for (var i = 0; i < $scope.users.length; i++) {
-            if ($scope.users[i].usercode === usercode)
-                $scope.user = $scope.users[i];
-        }
-        $scope.department = {
-            "key": $scope.user.designation.departments.departmentcode,
-            "value": $scope.user.designation.departments.departmentname
-        };
-        $scope.designationgrp = {
-            "key": $scope.user.designation.cdr_grp_id,
-            "value": ""
-        };
-        $scope.listDesignation();
+    	$scope.actionButton = 2;
+    	$scope.user = new Userlogins();
+    	$scope.user.repasswords = "";
+        $scope.users.forEach((o, x) => {
+        	console.log(o)
+        	if (o.usercode == usercode){
+        		$scope.user = o;
+        	}
+        });
+        $scope.listOfficeCells($scope.user.officecode);
+        console.info("$scope.user: ",$scope.user);
         jQuery('html, body').animate({
             scrollTop: 0
         }, 2000);
     };
-
-    $scope.listOffices = function () {
-       
-        jQuery.ajax({
-            type: 'GET',
-            url: "./listOffices",
-            success: function (response) {
-                /*var scope = angular.element($("#createuserCtrl")).scope();*/
-                scope.$apply(function () {
-                    scope.offices = response;
-//                    console.info(scope.offices);
-//                    console.info(scope.offices.length);
-                });
-            },
-            error: function (xhr) {
-                alert(xhr.status + " = " + xhr)
-                alert("Sorry, there was an error while trying to process the request.");
-            }
-        });
+    
+    $scope.save = function () {
+    	
+        if($scope.userForm.$invalid)
+            return false;
+//        $scope.user.password = ($scope.user.password === '') ? "" : sha256_digest($scope.user.password);
+        $scope.user.mobileno = "";
+        $scope.user.cellcode = $scope.user.cellcode!==""?parseInt($scope.user.cellcode):"";
+        
+        $scope.urlEndpoint = "./createuser";
+    	
+        commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers()}, () =>{alert("failed")});
     };
-    $scope.listOffices();
+   
+    $scope.update = () => {
+	    if($scope.userForm.$invalid)
+             return false;
+    	
+	    $scope.method = "PUT";
+    	$scope.urlEndpoint = "./updateuser";
+    	console.info("user:, ", $scope.user);
+    	commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers()}, () => {});
+    }
     
-    
-    $scope.listOfficeCells = function (officecode = 1) {
-    	console.info(officecode);
-    	jQuery.ajax({
-    		type: 'GET',
-    		url: "./listCells/"+$scope.officecode.officecode,
-    		success: function (response) {
-    			var scope = angular.element($("#createuserCtrl")).scope();
-    			scope.$apply(function () {
-    				scope.cells = response;
-    				console.info('cells');
-    				console.info($scope.cells.length);
-    				
-    				console.info($scope.cells.cellcode);
-    			});
-    		},
-    		error: function (xhr) {
-    			alert(xhr.status + " = " + xhr)
-    			alert("Sorry, there was an error while trying to process the request.");
-    		}
-    	});
-    };
-    
-//    $scope.listUsers = function () {
-//        jQuery.ajax({
-//            type: 'GET',
-//            url: "./listUsers",
-//            // dataType: "json",
-//            contentType: "application/json; charset=utf-8",
-//            success: function (response) {
-////                var scope = angular.element($("#createuserCtrl")).scope();
-//                scope.$apply(function () {
-//                    scope.users = response;
-////                    scope.setDataTable(scope.users);
-//                });
-//            },
-//            error: function (xhr) {
-//                alert(xhr.status + " = " + xhr)
-//                alert("Sorry, there was an error while trying to process the request.");
-//            }
-//        });
-//    };   
-//    $scope.listUsers();
-    
-    commonFactory.listUsers((response)=>{
-		$scope.users=response;
-		$scope.setDataTable(response);
-	});
-//    $timeout(()=>console.log($scope.users),0);
+/*-----------------------------------------------------------------------------------------------------------------------------------*/
     
     $scope.setDataTable = function (obj) {
         jQuery("#displayRecords").html("");
@@ -162,11 +99,11 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
                     "title": "Designation",
                     "data": "designation"
                 }, {
-                    "title": "Cell Code",
-                    "data": "cellcode"
-                }, {
-                    "title": "Mobile No.",
+                    "title": "Mobileno",
                     "data": "mobileno"
+                }, {
+                    "title": "Cell",
+                    "data": "cellcode"
                 }, {
                     "title": "Status",
                     "data": "enabled"
@@ -191,6 +128,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
             }
         });
     };
+    
     
     $scope.validateUserForm = function() {
 
@@ -236,4 +174,29 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
             }
             return true;
         };
+        
+
+        /*READ DATA*/
+        $scope.listOffices = () => {
+            commonFactory.listOffices((response)=>{
+        		$scope.offices=response;
+        	});
+        };
+        $scope.listOffices();
+        
+        $scope.listOfficeCells = function (officecode = 0) {
+        	commonFactory.listOfficeCells((response)=>{
+        		$scope.cells=response;
+        	}, officecode);
+        };
+
+        $scope.listUsers = () => {
+        	commonFactory.listUsers((response)=>{
+        		$scope.users=response;
+        		$scope.setDataTable(response);
+        	});
+        };
+        $scope.listUsers();
+        
     }]);
+

@@ -14,6 +14,11 @@ public interface InitializationDaoInterface {
 
 	/* List */
 	public List<User> listUsers();
+
+	/* CREATE DATA */
+	public boolean saveUser(User user);
+
+	public boolean updateUser(User user);
 	
 	
 }

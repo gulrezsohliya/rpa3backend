@@ -18,18 +18,18 @@ public class IntializationService implements IntializationServiceInterface {
 	private static final Logger LOG = Logger.getLogger(IntializationService.class.getName());
 
 	@Autowired
-	private InitializationDaoInterface dao;
+	private InitializationDaoInterface ID;
 	@Autowired
 	private UtilityInterface UI;
 
 	@Override
 	public User listUser(Integer usercode) {
-		return dao.listUsers(usercode);
+		return ID.listUsers(usercode);
 	}
 
 	@Override
 	public User listUser(String username) {
-		return dao.listUsers(username);
+		return ID.listUsers(username);
 	}
 
 	/* List */
@@ -74,9 +74,28 @@ public class IntializationService implements IntializationServiceInterface {
 
 	@Override
 	public List<User> listUser() {
-		String sql = "SELECT * FROM backend.userlogins ORDER BY username";
+		String sql = "SELECT UL.cellcode, UL.usercode, UL.username,    " + 
+				"	UL.fullname, UL.mobileno, UL.designation, UL.enabled,    " + 
+				"	MC.celldescription,   " + 
+				"	MO.officecode, MO.officename1, MO.officename2, " + 
+				"	MO.officename3, MO.officeshortname    " + 
+				"FROM backend.userlogins UL   " + 
+				"INNER JOIN masters.cells MC ON MC.cellcode = UL.cellcode   " + 
+				"INNER JOIN masters.offices MO ON MO.officecode = MC.officecode   " + 
+				"";
 		List<User> users = UI.listGeneric(User.class, sql);
 		return users;
 	}
-
+	
+	/* CREATE DATA */
+	@Override
+	public boolean saveUser(User user) {
+		LOG.info("saveUser");
+		return ID.saveUser(user);
+	}
+	@Override
+	public boolean updateUser(User user) {
+		LOG.info("updateUser");
+		return ID.updateUser(user);
+	}
 }

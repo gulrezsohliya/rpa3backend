@@ -1,10 +1,12 @@
 package rpa.controller.rest.initlialization;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +27,7 @@ import rpa.services.admin.IntializationServiceInterface;
 public class InitializationController {
 
 	private static final Logger LOG = Logger.getLogger(InitializationController.class.getName());
-	@Autowired private IntializationServiceInterface service;
+	@Autowired private IntializationServiceInterface IS;
 
 	/*********************************************************
 	 * READ DATA
@@ -34,7 +36,7 @@ public class InitializationController {
 	@GetMapping(value = "/listCells/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cell>> listCell(@PathVariable Integer officecode) {
 		try {
-			List<Cell> cells = service.listCells(officecode);
+			List<Cell> cells = IS.listCells(officecode);
 			return ResponseEntity.accepted().body(cells);
 		}catch(Exception e) {
 			return ResponseEntity.notFound().build();
@@ -47,7 +49,7 @@ public class InitializationController {
 		LOG.info("listCells");
 		System.out.println("listCells");
 		try {
-			List<Cell> cells = service.listCells();
+			List<Cell> cells = IS.listCells();
 			LOG.info("cells: "+cells);
 			System.out.println("Cells: "+cells);
 			return ResponseEntity.ok().body(cells);
@@ -59,7 +61,7 @@ public class InitializationController {
 	@GetMapping(value = "/listOffices/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffice(@PathVariable Integer officecode) {
 		try {
-			List<Office> offices= service.listOffices(officecode);
+			List<Office> offices= IS.listOffices(officecode);
 			return ResponseEntity.ok().body(offices);
 		}catch(Exception e) {
 			return ResponseEntity.notFound().build();
@@ -71,7 +73,7 @@ public class InitializationController {
 		LOG.info("listOffices");
 		System.out.println("listOffices");
 		try {
-			List<Office> offices = service.listOffices();
+			List<Office> offices = IS.listOffices();
 			LOG.info("Offices: "+offices);
 			return ResponseEntity.ok().body(offices);
 		}catch(Exception e) {
@@ -81,55 +83,74 @@ public class InitializationController {
 
 	@GetMapping(value = "/listUsers/{usercode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody User listUser(@PathVariable Integer usercode) {
-		return service.listUser(usercode);
+		return IS.listUser(usercode);
 	}
 
 	@GetMapping(value = "/listUsers/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody User listUser(@PathVariable String username) {
-		return service.listUser(username);
+		return IS.listUser(username);
 	}
 
 	@GetMapping(value = "/listUsers", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<User> listUsers() {
-		return service.listUser();
+		return IS.listUser();
 	}
 
 	/*******************************************************
 	 * CREATE DATA
 	 ***********************************************************/
 
-	@PostMapping(value = "/createcell", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createcell", consumes = "application/json")
 	public @ResponseBody ResponseEntity<JSONObject> createCell(@RequestBody Cell cell) {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping(value = "/createoffice", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createoffice", consumes = "application/json")
 	public ResponseEntity<JSONObject> createOffice(@RequestBody Office office) {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping(value = "/createuser", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONObject> createUser(@RequestBody User user) {
-		return ResponseEntity.notFound().build();
+	@PostMapping(value = "/createuser", consumes = "application/json")
+	public ResponseEntity<HashMap<String, Object>> createUser(@RequestBody User user) {
+		LOG.info("createuser");
+		LOG.info(user.toString());
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		if(IS.saveUser(user)) {
+			response.put("response", HttpStatus.CREATED);
+			response.put("data", 1);
+			return ResponseEntity.ok().body(response);
+		}
+		response.put("response", HttpStatus.OK);
+		response.put("data", -1);
+		return ResponseEntity.ok().body(response);
 	}
 
 	/*******************************************************
 	 * UPDATE DATA
 	 ***********************************************************/
 
-	@PutMapping(value = "/updatecell", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/updatecell", consumes = "application/json")
 	public ResponseEntity<JSONObject> updateCell(@RequestBody Cell cell) {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PutMapping(value = "/updateoffice", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/updateoffice", consumes = "application/json")
 	public ResponseEntity<JSONObject> updateOffice(@RequestBody Office office) {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PutMapping(value = "/updateuser", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONObject> updateUser(@RequestBody User user) {
-		return ResponseEntity.notFound().build();
+	@PutMapping(value = "/updateuser", consumes = "application/json")
+	public ResponseEntity<HashMap<String, Object>> updateUser(@RequestBody User user) {
+		LOG.info("updateUser: \n"+user);
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		if(IS.updateUser(user)) {
+			response.put("response", HttpStatus.CREATED);
+			response.put("data", 1);
+			return ResponseEntity.ok().body(response);
+		}
+		response.put("response", HttpStatus.OK);
+		response.put("data", -1);
+		return ResponseEntity.ok().body(response);
 	}
 
 	/*******************************************************

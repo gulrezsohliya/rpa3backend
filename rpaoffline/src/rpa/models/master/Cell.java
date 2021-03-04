@@ -5,15 +5,15 @@ import java.io.Serializable;
 public class Cell extends Office implements Serializable{
 	private final static long serialVersionUID = 1L;
 	
-	private String cellcode;
+	private Integer cellcode;
 	private String celldescription;
 	private String enabled;
 
-	public String getCellcode() {
+	public Integer getCellcode() {
 		return cellcode;
 	}
 
-	public void setCellcode(String cellcode) {
+	public void setCellcode(Integer cellcode) {
 		this.cellcode = cellcode;
 	}
 

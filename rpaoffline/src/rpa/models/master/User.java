@@ -1,13 +1,15 @@
 package rpa.models.master;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
-public class User {
-
+public class User extends Cell implements Serializable{
+	private final static long serialVersionUID = 3L;
+	
 	private Integer cellcode;
 	private Integer usercode;
 	private String username;
@@ -19,11 +21,13 @@ public class User {
 	@JsonSerialize(using = DateSerializer.class)
 	private Date entrydate;
 	private List<Pageurls> mappedpages;
-
+	
+	@Override
 	public Integer getCellcode() {
 		return cellcode;
 	}
-
+	
+	@Override
 	public void setCellcode(Integer cellcode) {
 		this.cellcode = cellcode;
 	}
