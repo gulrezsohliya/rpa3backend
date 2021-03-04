@@ -128,7 +128,7 @@ public class PageurlsDao implements PageurlsDaoInterface {
 	public List<Map<String, Object>> getHeaders() {
 		List<Map<String, Object>> list = null;
 		try {
-			String sql = "Select DISTINCT parent ,parenticon " + "From backend.Pageurls Order by parent ";
+			String sql = "Select DISTINCT ON (parent) parent ,parenticon " + "From backend.Pageurls Order by parent ";
 			list = jdbcTemplate.queryForList(sql);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -142,7 +142,7 @@ public class PageurlsDao implements PageurlsDaoInterface {
 	public List<Map<String, Object>> getSubmenu(String parent) {
 		List<Map<String, Object>> list = null;
 		try {
-			String sql = "Select Distinct submenu,submenuicon From backend.Pageurls Where parent=? Order by submenu ";
+			String sql = "Select Distinct ON (submenu) submenu,submenuicon From backend.Pageurls Where parent=? Order by submenu ";
 			list = jdbcTemplate.queryForList(sql, parent);
 		} catch (Exception ex) {
 			ex.printStackTrace();

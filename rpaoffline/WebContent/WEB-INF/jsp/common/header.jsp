@@ -22,16 +22,19 @@
 *, *:after, *::before {
 	box-sizing: border-box;
 }
-
+:root{
+	--main-head-color:#34495e;
+	--main-head-fontcolor: #deedf7;
+}
 body {
 	background-color: #fff;
+	min-width:460px;
 }
 
 .gn-menu-main, .gn-menu-main ul {
 	margin: 0;
 	padding: 0;
-	background: #34495e;
-	color: white;
+	color: var(--main-head-fontcolor);
 	list-style: none;
 	text-transform: none;
 	font-weight: 300;
@@ -40,17 +43,51 @@ body {
 }
 
 .gn-menu-main {
- 	background: url('resources/images/estateBanner.jpg') black no-repeat round; 
-	/* background: #deedf7; */
+/*  	background: url('resources/images/estateBanner.jpg') black no-repeat round;  */
+	background: var(--main-head-color);
 	position: fixed;
 	top: 0;
 	left: 0;
 	max-width: 362vh;
-	min-width: 100%;
+	width:100%;
 	height: 120px;
 	font-size: 18px;
 	padding: 13px 0;
 	z-index: 1;
+}
+.menucontainer{
+	min-width:5px;
+	width:50px;
+}
+.header{
+	flex-grow:1;
+	display:flex;
+	flex-flow:row wrap; 
+}
+.headerA{
+	flex-grow:12;
+	line-height:5px;
+}
+.headerB{
+	flex-grow:4;
+	min-width:100px;
+}
+.headerB h6{
+	position:absolute;
+	bottom:0;
+	margin:0;
+}
+@media only screen and (max-width:500px) {
+	.headerA{
+		font-size:14px;
+		width:350px;
+	}
+	.headerA h2{
+		line-height:15px;
+	}
+	.gn-menu-main{
+		padding:0;
+	}
 }
 
 .gn-menu-main a {
@@ -80,13 +117,6 @@ body {
 
 .containerBody {
 	margin: 135px 0 0 60px;
-	/*        overflow-y: auto;
-        background: linear-gradient(rgba(255,255,255,.7), rgba(255,255,255,.7)), url(resources/images/estate.jpeg);
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-size: 100% 100%;
-        height: auto;  
-        min-height: 550px;*/
 	z-index: 0;
 }
 
@@ -128,7 +158,7 @@ thead {
 }
 </style>
 <div>
-	<ul id="gn-menu" class="gn-menu-main">
+	<%-- <ul id="gn-menu" class="gn-menu-main">
 		<li id="menu">
 			<core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
 				<%@include file="menu.jsp"%>
@@ -141,25 +171,28 @@ thead {
 					<%=session.getAttribute("user")%></h6>
 			</core:if> 
 		</li>
-	</ul>
+	</ul> --%>
 	<!-------------------- Header Start --------------------------->
-	<%-- <div  id="gn-menu" class="gn-menu-main" style="display:flex;flex-flow: row nowrap">
-		<div style="width:60px">
+	<div  id="gn-menu" class="gn-menu-main" style="display:flex;">
+		<div class="menucontainer">
 			<core:if test="${pageContext.request.userPrincipal.authenticated eq true}">
 				<%@include file="menu.jsp"%>
 			</core:if>
 		</div>
-		<div style="flex-grow:1;display:flex;flex-direction:row">
-			<div style="flex-grow:12;background:yellow"></div>
-			<div style="flex-grow:4;background:green;justify-content:center">
+		<div class="header">
+			<div class="headerA">
+				<h2>Recruitment Processing Application</h2>
+				<h4>Meghalaya Public Service Commission Shillong</h4>
+			</div>
+			<div class="headerB">
 				<core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
-					<h6 style="color:#34495e">
-					Logged in as <%=session.getAttribute("user")%>
+					<h6>
+						Logged in as <%=session.getAttribute("user")%>
 					</h6>
 				</core:if>
 			</div>
 		</div>
-	</div> --%>
+	</div> 
 	<!-------------------- Header End ----------------------------->
 	<div style="display: none">
 		<div id="MsgBox" style="min-width: 200px; height: auto;"
@@ -169,8 +202,7 @@ thead {
 			</p>
 			<button id="msgboxbutton"
 				style="margin: 30px auto 5px auto; width: 70px; border-radius: 5px; border: #34495e solid 2px; text-align: center;"
-				onclick="jQuery.fancybox.close();
-        msgboxbuttonpressed(MsgCallBack);">OK</button>
+				onclick="jQuery.fancybox.close();msgboxbuttonpressed(MsgCallBack);">OK</button>
 		</div>
 	</div>
 	<script>
