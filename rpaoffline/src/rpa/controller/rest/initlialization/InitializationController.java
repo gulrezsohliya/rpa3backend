@@ -86,10 +86,10 @@ public class InitializationController {
 		return IS.listUser(usercode);
 	}
 
-	@GetMapping(value = "/listUsers/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody User listUser(@PathVariable String username) {
-		return IS.listUser(username);
-	}
+//	@GetMapping(value = "/listUsers/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+//	public @ResponseBody User listUser(@PathVariable String username) {
+//		return IS.listUser(username);
+//	}
 
 	@GetMapping(value = "/listUsers", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<User> listUsers() {
@@ -144,6 +144,19 @@ public class InitializationController {
 		LOG.info("updateUser: \n"+user);
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		if(IS.updateUser(user)) {
+			response.put("response", HttpStatus.CREATED);
+			response.put("data", 1);
+			return ResponseEntity.ok().body(response);
+		}
+		response.put("response", HttpStatus.OK);
+		response.put("data", -1);
+		return ResponseEntity.ok().body(response);
+	}
+	
+	@PutMapping(value = "/updateuser/status", consumes = "application/json")
+	public ResponseEntity<HashMap<String, Object>> updateUserStatus(@RequestBody User user) {
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		if(IS.updateUserStatus(user)) {
 			response.put("response", HttpStatus.CREATED);
 			response.put("data", 1);
 			return ResponseEntity.ok().body(response);

@@ -19,6 +19,8 @@ public interface InitializationDaoInterface {
 	public boolean saveUser(User user);
 
 	public boolean updateUser(User user);
+
+	public boolean updateUserStatus(User user);
 	
 	
 }

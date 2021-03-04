@@ -22,10 +22,10 @@ public class IntializationService implements IntializationServiceInterface {
 	@Autowired
 	private UtilityInterface UI;
 
-	@Override
-	public User listUser(Integer usercode) {
-		return ID.listUsers(usercode);
-	}
+	/*
+	 * @Override public User listUser(Integer usercode) { return
+	 * ID.listUsers(usercode); }
+	 */
 
 	@Override
 	public User listUser(String username) {
@@ -82,20 +82,42 @@ public class IntializationService implements IntializationServiceInterface {
 				"FROM backend.userlogins UL   " + 
 				"INNER JOIN masters.cells MC ON MC.cellcode = UL.cellcode   " + 
 				"INNER JOIN masters.offices MO ON MO.officecode = MC.officecode   " + 
-				"";
+				"ORDER BY UL.username";
 		List<User> users = UI.listGeneric(User.class, sql);
 		return users;
 	}
 	
+	@Override
+	public User listUser(Integer usercode) {
+		String sql = "SELECT UL.cellcode, UL.usercode, UL.username,    " + 
+				"	UL.fullname, UL.mobileno, UL.designation, UL.enabled,    " + 
+				"	MC.celldescription,   " + 
+				"	MO.officecode, MO.officename1, MO.officename2, " + 
+				"	MO.officename3, MO.officeshortname    " + 
+				"FROM backend.userlogins UL   " + 
+				"INNER JOIN masters.cells MC ON MC.cellcode = UL.cellcode   " + 
+				"INNER JOIN masters.offices MO ON MO.officecode = MC.officecode   " + 
+				"WHERE UL.usercode = ?   " + 
+				"ORDER BY UL.username";
+		List<User> users = UI.listGeneric(User.class, sql, new Object[] {usercode});
+		return users.get(0);
+	}
 	/* CREATE DATA */
 	@Override
 	public boolean saveUser(User user) {
 		LOG.info("saveUser");
 		return ID.saveUser(user);
 	}
+	
 	@Override
 	public boolean updateUser(User user) {
 		LOG.info("updateUser");
 		return ID.updateUser(user);
+	}
+
+	@Override
+	public boolean updateUserStatus(User user) {
+		LOG.info("updateUser");
+		return ID.updateUserStatus(user);
 	}
 }

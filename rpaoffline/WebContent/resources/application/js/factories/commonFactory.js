@@ -6,53 +6,27 @@ app.factory('commonFactory', function($http) {
 			function(response, status, headers, config) {
 				callback(response);
 			});
-//			$.ajax({
-//		        type: "GET",
-//		        url: "./listOffices",
-//		        async: false,
-//		        contentType: "application/json; charset=utf-8",
-//		        success: function (response) {
-//		          console.info("Success->response: ",response);
-//		          res = response;
-//		        },
-//		        error: function (xhr) {
-//		          alert(xhr.status + " = " + xhr);
-//		          alert(
-//		            "Sorry, there was an error while trying to process the request."
-//		          );
-//		          res = xhr;
-//		    
-//		        }
-//			})
-//			
-//			callback(res);
 		},
 		listOfficeCells: function(callback, officecode) {
 			$http.get("./listCells/"+officecode).success(
 					function(response, status, headers, config) {
 						callback(response);
 					});
-//			jQuery.ajax({
-//	    		type: 'GET',
-//	    		url: "./listCells/"+officecode,
-//	    		async: false,
-//	    		success: function (response) {
-//	    			res = response;
-//	    		},
-//	    		error: function (xhr) {
-//	    			alert(xhr.status + " = " + xhr)
-//	    			alert("Sorry, there was an error while trying to process the request.");
-//	    			res = xhr;
-//	    		}
-//	    	});
-			
-//			callback(res);
+		},
+		listUser : function(callback, usercode) {
+			console.info("listUsers: ", usercode);
+			$http.get("./listUsers/"+usercode).success(
+					function(response, status, headers, config) {
+						callback(response);
+					});
 		},
 		listUsers : function(callback) {
+			console.info("listUsers");
 			$http.get("./listUsers").success(
 					function(response, status, headers, config) {
 						callback(response);
 					});
 		},		
+			
 	}
 });

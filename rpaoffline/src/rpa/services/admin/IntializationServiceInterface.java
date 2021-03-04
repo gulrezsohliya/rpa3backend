@@ -30,4 +30,6 @@ public interface IntializationServiceInterface {
 
 	public boolean updateUser(User user);
 
+	public boolean updateUserStatus(User user);
+
 }

@@ -13,6 +13,8 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
 	var scope = angular.element($("#createuserCtrl")).scope();
 	commonService.success();
 	/*Common Ajax Params*/
+	var successMsg = "Success: User created or updated successfully";
+	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";
 	$scope.successCallback = "";
@@ -34,29 +36,26 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         return $sce.trustAsHtml(post);
     };
     
-    $scope.reset = function () {
-    	$scope.user = new Userlogins();
-    	$scope.actionButton = 1;
-    };
-
-
     $scope.edit = function (usercode) {
     	$scope.actionButton = 2;
     	$scope.user = new Userlogins();
     	$scope.user.repasswords = "";
         $scope.users.forEach((o, x) => {
-        	console.log(o)
         	if (o.usercode == usercode){
         		$scope.user = o;
         	}
         });
         $scope.listOfficeCells($scope.user.officecode);
-        console.info("$scope.user: ",$scope.user);
         jQuery('html, body').animate({
             scrollTop: 0
         }, 2000);
     };
-    
+
+    $scope.reset = function () {
+    	$scope.user = new Userlogins();
+    	$scope.actionButton = 1;
+    };
+
     $scope.save = function () {
     	
         if($scope.userForm.$invalid)
@@ -65,19 +64,30 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         $scope.user.mobileno = "";
         $scope.user.cellcode = $scope.user.cellcode!==""?parseInt($scope.user.cellcode):"";
         
+        $scope.method = "POST";
         $scope.urlEndpoint = "./createuser";
     	
-        commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers()}, () =>{alert("failed")});
+        commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
     };
-   
+    
+    $scope.toggleUserStatus= function (usercode) {
+    	$scope.users.forEach((o, x) => {
+        	if (o.usercode == usercode){
+        		$scope.user = o;
+        	}
+        });
+    	$scope.method = "PUT";
+    	$scope.urlEndpoint = "./updateuser/status";
+    	commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(usercode);}, () =>{alert("failed")});
+    	
+    };
+    
     $scope.update = () => {
 	    if($scope.userForm.$invalid)
              return false;
-    	
 	    $scope.method = "PUT";
     	$scope.urlEndpoint = "./updateuser";
-    	console.info("user:, ", $scope.user);
-    	commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers()}, () => {});
+    	commonService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(), MsgBox(successMsg)}, () => {MsgBox(errorMsg)});
     }
     
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
@@ -92,18 +102,18 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
                 {
                     "title": "User Code",
                     "data": "usercode",
+                    render: function (data, type, row, meta){
+                    	return meta.row+1;
+                    }
                 }, {
                     "title": "User Name",
                     "data": "username"
-                }, {
-                    "title": "Designation",
-                    "data": "designation"
-                }, {
-                    "title": "Mobileno",
-                    "data": "mobileno"
-                }, {
+                },{
                     "title": "Cell",
-                    "data": "cellcode"
+                    "data": "celldescription"
+                },{
+                    "title": "Office",
+                    "data": "officename1"
                 }, {
                     "title": "Status",
                     "data": "enabled"
@@ -111,8 +121,11 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
                     "title": "Action",
                     "sortable": false,
                     "data": "usercode",
-                    "render": function (data, type, full, meta) {
-                        return '<div style="text-align:center"><button style="padding:5px" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button></div>';
+                    "render": function (data, type, row, meta) {
+                    	let status = row.enabled == 'Y'?'Disable':'Enable';
+                    	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
+                    		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="toggleUserStatus(' + data + ')" class="button-primary">'+status+'</button></div>';
+                        return div;
 // return '<center><button style="padding:5px" value="Edit" ng-click="edit(' +
 // data + ')">Edit</button></center>';
                     }
@@ -190,11 +203,24 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         	}, officecode);
         };
 
-        $scope.listUsers = () => {
-        	commonFactory.listUsers((response)=>{
-        		$scope.users=response;
-        		$scope.setDataTable(response);
-        	});
+        $scope.listUsers = (usercode = 0) => {
+        	
+        	if(usercode == 0){
+        		commonFactory.listUsers((response)=>{
+            		$scope.users=response;
+            		$scope.setDataTable($scope.users);
+            	});
+        	}else{
+        		commonFactory.listUser((response)=>{
+        			$scope.users.forEach((o, x) => {
+        				if(o.usercode == usercode){
+        					$scope.users[x] = response;
+        				}
+        			});
+            		$scope.setDataTable($scope.users);
+            	}, usercode);
+        	}
+        	
         };
         $scope.listUsers();
         

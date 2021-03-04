@@ -178,7 +178,7 @@ button{
     /*border-color: #c0bfbf;*/
     text-transform: capitalize;
     border: #c0bfbf solid 2px;
-    border-radius: 5px;
+    border-radius: .3em;;
     font-weight: bold;
 }
 .button-primary{

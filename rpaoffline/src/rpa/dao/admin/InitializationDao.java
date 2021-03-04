@@ -124,4 +124,27 @@ public class InitializationDao implements InitializationDaoInterface {
 		}
 		return response;
 	}
+
+	@Override
+	public boolean updateUserStatus(User user) {
+		LOG.info("DAO: updateUserStatus");
+		
+		String sql = "";
+		boolean response = false;
+		try {
+			sql = "UPDATE backend.userlogins "
+				+ "SET enabled = (CASE WHEN enabled = 'Y' THEN 'N' ELSE 'Y' END) "
+				+ "WHERE usercode = ?";
+			
+			Object[] param = new Object[] { 
+					user.getUsercode() 
+			};
+			response = jdbcTemplate.update(sql, param) > 0;
+			LOG.log(Level.FINE, response ? "Success" : "Failed");
+		} catch (Exception e) {
+			response = false;
+			LOG.log(Level.SEVERE, e.toString());
+		}
+		return response;
+	}
 }
