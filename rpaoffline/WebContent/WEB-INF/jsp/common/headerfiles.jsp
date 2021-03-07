@@ -30,12 +30,10 @@
 <script src="resources/vendor/angular/angular1.3.js"></script> 
 <script src="resources/vendor/date.js"></script>
 <script type="text/javascript" src="resources/vendor/jQuery/fancybox/jquery.fancybox.pack.js"></script>
-<script src="resources/application/js/ajaxloading.js" type="text/javascript"></script>
-
 
 <!-- App Scripts -->
+<script src="resources/application/js/ajaxloading.js" type="text/javascript"></script>
 <script src="resources/application/js/constants.js"></script>
-<script src="resources/application/js/commonrequests.js"></script>
 <script src="resources/application/js/models/initializations.js"></script>
 <script src="resources/application/js/commonmodules.js"></script>
 <script src="resources/application/js/factories/setHttpHeader.js"></script>

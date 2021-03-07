@@ -64,4 +64,18 @@ public class Utility implements UtilityInterface{
 		}
 		return list;
 	}
+	
+	@Override
+	public <T> boolean update(String tablename,String sql, Object[] params) {
+	 
+		boolean response=false;		
+		try {
+			response=jdbcTemplate.update(sql,params)>0;
+		}catch(Exception e) {
+			response=false;
+			LOG.info("\n\nError in "+tablename+"::"+e);
+			System.out.println("\n\nError in "+tablename+"::"+e);
+		}
+		return response;
+	}
 }

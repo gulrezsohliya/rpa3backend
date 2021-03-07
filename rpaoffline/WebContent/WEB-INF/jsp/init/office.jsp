@@ -30,7 +30,7 @@
 									ng-model="office.officename1" required/>        
 								<span id="officename1Msg"></span>
 								<span class="alert alert-danger" 
-									ng-show="!officeForm.officename1.$pristine && officeForm.officename1.$invalid"> 
+									ng-show="officeForm.officename1.$pristine && officeForm.officename1.$invalid"> 
 									Required
 								</span>
                             </td>
@@ -42,7 +42,7 @@
 									ng-model="office.officename2" required/>        
 								<span id="officename2Msg"></span>
 								<span class="alert alert-danger" 
-									ng-show="!officeForm.officename2.$pristine && officeForm.officename2.$invalid"> 
+									ng-show="officeForm.officename2.$pristine && officeForm.officename2.$invalid"> 
 									Required
 								</span>
                             </td>
@@ -69,6 +69,10 @@
 								<input type="text" class="form-control" id="signatoryname" name="signatoryname"
 									ng-model="office.signatoryname" required/>        
 								<span id="signatorynameMsg"></span>
+								<span class="alert alert-danger" 
+									ng-show="officeForm.signatoryname.$pristine && officeForm.signatoryname.$invalid"> 
+									Required
+								</span>
                             </td>
                         </tr>
                         <tr class="form-group has-feedback">
@@ -77,6 +81,10 @@
 								<input type="text" class="form-control" id="signatorydesignation" name="signatorydesignation"
 									ng-model="office.signatorydesignation" required/>        
 								<span id="signatorydesignationMsg"></span>
+								<span class="alert alert-danger" 
+									ng-show="officeForm.signatorydesignation.$pristine && officeForm.signatorydesignation.$invalid"> 
+									Required
+								</span>
                             </td>
                         </tr>
                         <!-- <tr class="form-group has-feedback">
@@ -153,8 +161,8 @@
                         </tr>
                         <tr class="form-group has-feedback">
                             <td colspan="2" align="center">
-                                <button type="submit" id="add" ng-click="save()" class="button-primary" ng-if="actionButton === 1" ng-disabled="officeForm.$invalid">Add</button>
-                                <button name="submit" id="add" ng-click="update()" class="button-primary" ng-if="actionButton === 2" ng-disabled="officeForm.$invalid">Update</button>
+                                <button type="submit" id="add" ng-click="save()" class="button-primary" ng-if="actionButton === 'SAVE'" ng-disabled="officeForm.$invalid">Add</button>
+                                <button name="submit" id="add" ng-click="update()" class="button-primary" ng-if="actionButton === 'EDIT'" ng-disabled="officeForm.$invalid">Update</button>
                                 <input type="reset" value="Reset" ng-click="reset()" class="button-default"/>
                             </td>
                         </tr>

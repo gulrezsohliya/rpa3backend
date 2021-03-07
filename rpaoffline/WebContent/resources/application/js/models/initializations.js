@@ -39,6 +39,14 @@ var Office = function() {
 	return Office;
 	
 }
+var Cell = function() {
+	
+	return  {
+		cellcode:0,
+		officecode: '',
+		celldescription:''			 
+	};	
+}
 function Pageurls() {
     var Pageurls = {
         "urlcode": 0,

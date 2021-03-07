@@ -2,10 +2,10 @@ package rpa.models.master;
 
 import java.io.Serializable;
 
-public class Office implements Serializable{
+public class Office implements Serializable {
 	private final static long serialVersionUID = 1L;
-	
-	private String officecode;
+
+	private Integer officecode;
 	private String officename1;
 	private String officename2;
 	private String officename3;
@@ -19,11 +19,31 @@ public class Office implements Serializable{
 	private String smssenderid;
 	private String enabled;
 
-	public String getOfficecode() {
+	public Office() {
+		super();
+	}
+
+	public void setOffice(Office office) {
+		this.officecode = office.getOfficecode();
+		this.officename1 = office.getOfficename1();
+		this.officename2 = office.getOfficename2();
+		this.officename3 = office.getOfficename3();
+		this.officeshortname = office.getOfficeshortname();
+		this.signatoryname = office.getSignatoryname();
+		this.signatorydesignation = office.getSignatorydesignation();
+		this.emailid = office.getEmailid();
+		this.emailidpassword = office.getEmailidpassword();
+		this.smsusername = office.getSmsusername();
+		this.smspassword = office.getSmspassword();
+		this.smssenderid = office.getSmssenderid();
+		this.enabled = office.getEnabled();
+	}
+
+	public Integer getOfficecode() {
 		return officecode;
 	}
 
-	public void setOfficecode(String officecode) {
+	public void setOfficecode(Integer officecode) {
 		this.officecode = officecode;
 	}
 

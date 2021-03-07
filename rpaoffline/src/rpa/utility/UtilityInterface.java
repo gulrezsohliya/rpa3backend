@@ -10,4 +10,6 @@ public interface UtilityInterface {
 	
 	public <T> List<T> listGeneric(Class<T> clazz, String sql, Object[] params);
 	
+	public <T> boolean update(String tablename,String sql, Object[] params);
+	
 }

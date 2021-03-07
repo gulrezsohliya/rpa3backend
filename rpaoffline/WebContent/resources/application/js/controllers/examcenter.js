@@ -1,6 +1,3 @@
-/**
- * @Author Decent Khongstia
- */
 
 $(document).ready(function () {
 });
@@ -8,7 +5,7 @@ $(document).ready(function () {
 app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/*Common Ajax Params*/
-	var successMsg = "Success: User created or updated successfully";
+	var successMsg = "Success: Exam Center created/updated";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";
@@ -17,7 +14,7 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
 	
 	/*------------------------*/
 	
-	$scope.actionButton = 1;
+	$scope.actionButton = SAVE;
 	
     $scope.examCenter = new ExamCenter();
     $scope.examCenters = [];
@@ -26,14 +23,11 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         return $sce.trustAsHtml(post);
     };
     
-    $scope.edit = function (examcentercode) {
-    	$scope.actionButton = 2;
-    	$scope.examCenter = new ExamCenter();
-    	$scope.examCenter.forEach((o, x) => {
-        	if (o.centercode == centercode){
-        		$scope.user = o;
-        	}
-        });
+    $scope.edit = function (centercode) {
+    	$scope.actionButton = EDIT;
+    	$scope.examCenter = $scope.examCenters.filter((o) => {
+        	return o.centercode == centercode;
+        })[0];
         jQuery('html, body').animate({
             scrollTop: 0
         }, 2000);
@@ -41,7 +35,7 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
 
     $scope.reset = function () {
     	$scope.examCenter = new ExamCenter();
-    	$scope.actionButton = 1;
+    	$scope.actionButton = SAVE;
     };
 
     $scope.save = function () {
@@ -49,20 +43,58 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
             return false;
         
         $scope.method = "POST";
-        $scope.urlEndpoint = "./createexamcenter";
-    	
-        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
+    	$scope.urlEndpoint = "./createexamcenter";
+    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.examCenter, () => {
+    				$scope.reset();
+    				$scope.listExamCenters(); 
+    				MsgBox(successMsg)
+				},
+				(res) =>{
+    				if(res.response===ALREADY_REPORTED){
+    					MsgBox("Exam Center already exists");
+    				}else{
+    					MsgBox(errorMsg)
+    				}
+    			});    	
     };
-    
-    $scope.update = () => {
-	    if($scope.examForm.$invalid)
+
+    $scope.update = (checkform=true) => {
+	    if(checkform && $scope.examForm.$invalid)
              return false;
 	    
 	    $scope.method = "PUT";
     	$scope.urlEndpoint = "./updateexamcenter";
-    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(), MsgBox(successMsg)}, () => {MsgBox(errorMsg)});
-    }
-    
+    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.examCenter, (res) => {	
+			if(res===true){
+				$scope.reset();
+				$scope.listExamCenters(); 
+				MsgBox(successMsg);				
+			}else{
+				MsgBox(errorMsg);								
+			}
+		},
+		() =>{
+			MsgBox(errorMsg)
+		});
+    };
+
+    $scope.delete = (centercode) => {
+    	
+    	$scope.method = "DELETE";
+    	$scope.urlEndpoint = "./deleteexamcenter/"+centercode;
+    	ConfirmBox("Are You Sure to Delete this entry? ",(response)=>{
+	    	if(response){
+	    		commonInitService.http($scope.method, $scope.urlEndpoint, centercode, (res) => {
+		    		if(res===true){
+		    			$scope.reset();
+		    			$scope.listExamCenters(); 
+		    		}else{
+		    			MsgBox("Unable to delete.");								
+		    		}
+		    	},()=>{});
+    		}
+    	});
+    };
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
     
     $scope.setDataTable = function (obj) {
@@ -86,9 +118,8 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
                     "sortable": false,
                     "data": "centercode",
                     "render": function (data, type, row, meta) {
-                    	let status = row.enabled == 'Y'?'Disable':'Enable';
                     	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
-                    		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="toggleUserStatus(' + data + ')" class="button-primary">'+status+'</button></div>';
+                    		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="delete(' + data + ')" class="button-primary">Delete</button></div>';
                         return div;
                     }
                 }

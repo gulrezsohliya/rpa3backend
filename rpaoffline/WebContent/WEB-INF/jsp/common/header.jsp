@@ -200,24 +200,27 @@ thead {
 			<p style="margin: 10px auto;">
 				<span style="font-style: 14px;"></span>
 			</p>
-			<button id="msgboxbutton"
-				style="margin: 30px auto 5px auto; width: 70px; border-radius: 5px; border: #34495e solid 2px; text-align: center;"
-				onclick="jQuery.fancybox.close();msgboxbuttonpressed(MsgCallBack);">OK</button>
+			<div id="msgboxbuttons">
+				
+			</div>
 		</div>
 	</div>
 	<script>
 		var focused;
 		var MsgCallBack;
 		function MsgBox(text, modal, callback) {
-			if(callback!==undefined){
+			if(callback !== undefined){
 				MsgCallBack=callback;
 				}
-			modal = (modal == null) ? true : modal;
+			modal=modal==null?true:modal;
 			if (modal) {
 				jQuery("#MsgBox").find("span").css("width", "800px");
 			} else {
 				jQuery("#MsgBox").find("span").css("width", "auto");
 			}
+			jQuery('#msgboxbuttons').html("<button id='msgboxbutton'" +
+					"style='margin: 30px auto 5px auto; width: 70px; border-radius: 5px; border: #34495e solid 2px; text-align: center;'"
+						+"onclick='jQuery.fancybox.close();msgboxbuttonpressed(MsgCallBack);'>OK</button>")
 			jQuery.fancybox.close();
 			jQuery("#MsgBox").find("span").html(text);
 			jQuery.fancybox({
@@ -238,10 +241,35 @@ thead {
 				jQuery("#MsgBox").find("button").css('display', 'none');
 			}
 		}
-		function msgboxbuttonpressed(callback) {
+
+		function ConfirmBox(text,  callback) {
+			if(callback !== undefined){
+				MsgCallBack=callback;
+				}
+			jQuery.fancybox.close();
+			jQuery("#MsgBox").find("span").html(text);
+			jQuery('#msgboxbuttons').html("<button " +
+					"style='margin: 30px auto 5px auto; width: 70px; border-radius: 5px; border: #34495e solid 2px; text-align: center;'"
+						+"onclick='jQuery.fancybox.close();msgboxbuttonpressed(MsgCallBack,true);'>Yes</button>"+
+						"<button "+ 
+						"style='margin: 30px auto 5px auto; width: 70px; border-radius: 5px; border: #34495e solid 2px; text-align: center;'"
+							+"onclick='jQuery.fancybox.close();msgboxbuttonpressed(MsgCallBack,false);'>No</button>")
+			jQuery.fancybox({
+				href : '#MsgBox',
+				'autoSize' : true,
+				'transitionIn' : 'elastic',
+				'transitionOut' : 'elastic',
+				'speedIn' : 600,
+				'speedOut' : 200,
+				'overlayShow' : false,
+				'modal' : true,
+			});
+			focused = jQuery(':focus');
+		}
+		function msgboxbuttonpressed(callback,response) {
 			jQuery('#MsgBox').find('span').html('');
 			if (callback && {}.toString.call(callback) === '[object Function]') {
-				callback();
+				callback(response);
 			}
 		};
 	</script>

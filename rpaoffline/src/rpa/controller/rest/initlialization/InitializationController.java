@@ -2,6 +2,7 @@ package rpa.controller.rest.initlialization;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rpa.models.master.Cell;
 import rpa.models.master.ExamCenter;
 import rpa.models.master.Office;
+import rpa.models.master.Pageurls;
 import rpa.models.master.User;
 import rpa.services.admin.IntializationServiceInterface;
 
@@ -47,12 +49,8 @@ public class InitializationController {
 
 	@GetMapping(value = "/listCells", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cell>> listCells() {
-		LOG.info("listCells");
-		System.out.println("listCells");
 		try {
 			List<Cell> cells = IS.listCells();
-			LOG.info("cells: "+cells);
-			System.out.println("Cells: "+cells);
 			return ResponseEntity.ok().body(cells);
 		}catch(Exception e) {
 			return ResponseEntity.notFound().build();
@@ -61,11 +59,8 @@ public class InitializationController {
 	
 	@GetMapping(value = "/listExamCenters", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ExamCenter>> listExamCenters() {
-		LOG.info("listExamCenters");
 		try {
 			List<ExamCenter> examCenters = IS.listExamCenters();
-			LOG.info("cells: "+examCenters);
-			System.out.println("ExamCenter: "+examCenters);
 			return ResponseEntity.ok().body(examCenters);
 		}catch(Exception e) {
 			return ResponseEntity.notFound().build();
@@ -84,7 +79,6 @@ public class InitializationController {
 
 	@GetMapping(value = "/listOffices", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffices() {
-		LOG.info("listOffices");
 		try {
 			List<Office> offices = IS.listOffices();
 			return ResponseEntity.ok().body(offices);
@@ -93,15 +87,15 @@ public class InitializationController {
 		}
 	}
 
-	@GetMapping(value = "/listUsers/{usercode}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/listUsers/usercode/{usercode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody User listUser(@PathVariable Integer usercode) {
 		return IS.listUser(usercode);
 	}
 
-//	@GetMapping(value = "/listUsers/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-//	public @ResponseBody User listUser(@PathVariable String username) {
-//		return IS.listUser(username);
-//	}
+	@GetMapping(value = "/listUsers/username/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody User listUser(@PathVariable String username) {
+		return IS.listUser(username);
+	}
 
 	@GetMapping(value = "/listUsers", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<User> listUsers() {
@@ -111,21 +105,59 @@ public class InitializationController {
 	/*******************************************************
 	 * CREATE DATA
 	 ***********************************************************/
-
-	@PostMapping(value = "/createcell", consumes = "application/json")
-	public @ResponseBody ResponseEntity<JSONObject> createCell(@RequestBody Cell cell) {
-		return ResponseEntity.notFound().build();
+	@PostMapping(value = "/createexamcenter", consumes = "application/json")
+	public ResponseEntity<HashMap<String,Object>> createExamCenter(@RequestBody ExamCenter center) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		switch(IS.createExamCenter(center)) {
+			case "CREATED":
+				response.put("response", HttpStatus.CREATED);
+				break;
+			case "EXISTS":
+				response.put("response", HttpStatus.ALREADY_REPORTED);
+				break;
+			default:
+				response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
 	}
-
+	
+	@PostMapping(value = "/createcell", consumes = "application/json")
+	public ResponseEntity<HashMap<String,Object>> createCell(@RequestBody Cell cell) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		switch(IS.createcell(cell)) {
+			case "CREATED":
+				response.put("response", HttpStatus.CREATED);
+				break;
+			case "EXISTS":
+				response.put("response", HttpStatus.ALREADY_REPORTED);
+				break;
+			default:
+				response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
+	}
+	
 	@PostMapping(value = "/createoffice", consumes = "application/json")
-	public ResponseEntity<JSONObject> createOffice(@RequestBody Office office) {
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<HashMap<String,Object>> createOffice(@RequestBody Office office) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		switch(IS.createOffice(office)) {
+		case "CREATED":
+			response.put("response", HttpStatus.CREATED);
+			break;
+		case "EXISTS":
+			response.put("response", HttpStatus.ALREADY_REPORTED);
+			break;
+		default:
+			response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
 	}
 
 	@PostMapping(value = "/createuser", consumes = "application/json")
 	public ResponseEntity<HashMap<String, Object>> createUser(@RequestBody User user) {
-		LOG.info("createuser");
-		LOG.info(user.toString());
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		if(IS.saveUser(user)) {
 			response.put("response", HttpStatus.CREATED);
@@ -141,14 +173,22 @@ public class InitializationController {
 	 * UPDATE DATA
 	 ***********************************************************/
 
+	@PutMapping(value = "/updateexamcenter", consumes = "application/json")
+	public ResponseEntity<Boolean> updateExamcenter(@RequestBody ExamCenter center) {
+		
+		return ResponseEntity.ok().body(IS.updateExamCenter(center));
+	}
+	
 	@PutMapping(value = "/updatecell", consumes = "application/json")
-	public ResponseEntity<JSONObject> updateCell(@RequestBody Cell cell) {
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<Boolean> updateCell(@RequestBody Cell cell) {
+		
+		return ResponseEntity.ok().body(IS.updatecell(cell));
 	}
 
 	@PutMapping(value = "/updateoffice", consumes = "application/json")
-	public ResponseEntity<JSONObject> updateOffice(@RequestBody Office office) {
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<Boolean> updateOffice(@RequestBody Office office) {
+		
+		return ResponseEntity.ok().body(IS.updateOffice(office));
 	}
 
 	@PutMapping(value = "/updateuser", consumes = "application/json")
@@ -181,9 +221,14 @@ public class InitializationController {
 	/*******************************************************
 	 * DELETE DATA
 	 ***********************************************************/
+	@DeleteMapping(value = "/deleteexamcenter/{centercode}")
+	public ResponseEntity<Boolean> deleteExamCenter(@PathVariable Integer centercode) {
+		return ResponseEntity.ok().body(IS.deleteExamCenter(centercode));
+	}
+
 	@DeleteMapping(value = "/deletecell/{cellcode}")
-	public ResponseEntity<JSONObject> deleteCell(@PathVariable String cellcode) {
-		return ResponseEntity.notFound().build();
+	public ResponseEntity<Boolean> deleteCell(@PathVariable Integer cellcode) {
+		return ResponseEntity.ok().body(IS.deletecell(cellcode));
 	}
 
 	@DeleteMapping(value = "/deleteuser/{officecode}")

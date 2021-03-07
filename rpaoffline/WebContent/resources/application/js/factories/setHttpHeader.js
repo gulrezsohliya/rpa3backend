@@ -54,11 +54,12 @@ function CsrfTokenInterceptorService($q) {
     var header = $("meta[name='_csrf_header']").attr("content");
 
     jQuery(document).ajaxSend(function(event, xhr, options) {
-        xhr.setRequestHeader(header, token);
+    	xhr.setRequestHeader(header, token);
         xhr.setRequestHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         xhr.setRequestHeader("Pragma", "no-cache");
         xhr.setRequestHeader("Expires", "0");
         jQuery('#loader').css('display', 'block');
+
     });
     $(document).ajaxStop(function() {
         jQuery('#loader').css('display', 'none');        

@@ -26,10 +26,10 @@ public class PageController {
 		return "init/createuser";
 	}
 
-	@RequestMapping(value = "/cell.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/cells.htm", method = RequestMethod.GET)
 	public String initCell() {
 		LOG.info("cell");
-		return "init/cell";
+		return "init/cells";
 	}
 
 	@RequestMapping(value = "/examcenter.htm", method = RequestMethod.GET)

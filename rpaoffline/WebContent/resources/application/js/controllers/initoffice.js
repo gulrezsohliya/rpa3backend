@@ -8,7 +8,7 @@ $(document).ready(function () {
 app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/*Common Ajax Params*/
-	var successMsg = "Success: User created or updated successfully";
+	var successMsg = "Success: Office created/updated";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";
@@ -17,7 +17,7 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
 	
 	/*------------------------*/
 	
-	$scope.actionButton = 1;
+	$scope.actionButton = SAVE;
     $scope.office = new Office();
     $scope.offices = [];
     
@@ -26,13 +26,10 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
     };
     
     $scope.edit = function (officecode) {
-    	$scope.actionButton = 2;
-    	$scope.office = new Office();
-    	$scope.office.forEach((o, x) => {
-        	if (o.officecode == officecode){
-        		$scope.office = o;
-        	}
-        });
+    	$scope.actionButton = EDIT;
+    	$scope.office =$scope.offices.filter(obj=>{
+    		return obj.officecode==officecode;
+    	})[0];
         jQuery('html, body').animate({
             scrollTop: 0
         }, 2000);
@@ -40,7 +37,7 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
 
     $scope.reset = function () {
     	$scope.office = new Office();
-    	$scope.actionButton = 1;
+    	$scope.actionButton = SAVE;
     };
 
     $scope.save = function () {
@@ -53,14 +50,32 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
         commonInitService.save($scope.method, $scope.urlEndpoint, $scope.office, () => {$scope.reset();$scope.listOffices(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
     };
     
-    $scope.update = () => {
-	    if($scope.officeForm.$invalid)
+    $scope.update = (checkform=true) => {
+	    if(checkform && $scope.officeForm.$invalid)
              return false;
 	    
 	    $scope.method = "PUT";
     	$scope.urlEndpoint = "./updateoffice";
-    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listOffices(), MsgBox(successMsg)}, () => {MsgBox(errorMsg)});
+    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.office, (res) => {	
+			if(res===true){
+				$scope.reset();
+				$scope.listOffices(); 
+				MsgBox(successMsg);				
+			}else{
+				MsgBox(errorMsg);								
+			}
+		},
+		() =>{
+			MsgBox(errorMsg)
+		});
     }
+    $scope.toggleStatus=(officecode)=>{
+    	$scope.office =$scope.offices.filter(obj=>{
+    		return obj.officecode==officecode;
+    	})[0];
+    	$scope.office.enabled=$scope.office.enabled==='Y'?'N':'Y';
+    	$scope.update(false);
+    };
     
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
     
@@ -72,7 +87,7 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
             data: obj,
             columns: [
                 {
-                    "title": "Slno",
+                    "title": "Office Code",
                     "data": "officecode",
                     render: function (data, type, row, meta){
                     	return meta.row+1;
@@ -91,21 +106,24 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
                     "data": "officeshortname"
                 },{
                     "title": "Signatory Details",
-                    "data": "signatoryname",
-                    render: (data, type, row, meta) => {
-                    	let res = "<b>Signatory Name: </b>: <i>"+data+"</i>";
-                    	res += "<b>Signatory Designation: </b>: <i>"+row.signatorydesignation+"</i>";
+                    "data": (row, type, set) => {
+                    	let res = "<b>Signatory Name: </b>"+row.signatoryname;
+                    	res += "<br/><b>Signatory Designation: </b>"+row.signatorydesignation;
+                    	return res;
                     }
                 }, {
                     "title": "Email ID",
                     "data": "emailid",
                 },{
                     "title": "SMS Details",
-                    "data": "smsusername",
-                    render: (data, type, row, meta) => {
-                    	let res = "<b>SMS Username: </b>: <i>"+data+"</i>";
-                    	res += "<b>SMS Sender ID: </b>: <i>"+row.smssenderid+"</i>";
+                    "data":  (row, type, set) => {
+                    	let res = "<b>SMS Username: </b>"+row.smsusername;
+                    	res += "<br/><b>SMS Sender ID: </b>"+row.smssenderid;
+                    	return res;
                     }
+                },{
+                    "title": "Enabled",
+                    "data": "enabled"
                 }, 
                 {
                     "title": "Action",
@@ -114,7 +132,7 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
                     "render": function (data, type, row, meta) {
                     	let status = row.enabled == 'Y'?'Disable':'Enable';
                     	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
-                    		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="toggleUserStatus(' + data + ')" class="button-primary">'+status+'</button></div>';
+                    		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="toggleStatus(' + data + ')" class="button-primary">'+status+'</button></div>';
                         return div;
                     }
                 }

@@ -26,16 +26,16 @@
                         <tr class="form-group has-feedback">
                             <td class="title">Examination Center Name:</td>
                             <td class="col-xs-5 selectContainer">
-								<input type="text" class="form-control" id="username" name="username"
-									ng-model="user.username" required/>        
+								<input type="text" class="form-control" id="centername" name="centername"
+									ng-model="examCenter.centername" required/>        
 								<span id="usernameMsg"></span>
-								<span class="alert alert-danger" ng-show="!examForm.username.$pristine && examForm.username.$invalid"> Required</span>
+								<span class="alert alert-danger" ng-show="examForm.centername.$pristine && examForm.centername.$invalid"> Required</span>
                             </td>
                         </tr>
                         <tr class="form-group has-feedback">
                             <td colspan="2" align="center">
-                                <button type="submit" id="add" ng-click="save()" class="button-primary" ng-if="actionButton === 1" ng-disabled="examForm.$invalid">Add</button>
-                                <button name="submit" id="add" ng-click="update()" class="button-primary" ng-if="actionButton === 2" ng-disabled="examForm.$invalid">Update</button>
+                                <button type="submit" id="add" ng-click="save()" class="button-primary" ng-if="actionButton === 'SAVE'" ng-disabled="examForm.$invalid">Add</button>
+                                <button name="submit" id="add" ng-click="update()" class="button-primary" ng-if="actionButton === 'EDIT'" ng-disabled="examForm.$invalid">Update</button>
                                 <input type="reset" value="Reset" ng-click="reset()" class="button-default"/>
                             </td>
                         </tr>
