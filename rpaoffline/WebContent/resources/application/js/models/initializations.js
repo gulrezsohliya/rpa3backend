@@ -18,6 +18,14 @@ var ExamCenter = function() {
 	
 	return ExamCenter;
 }
+var Venue = function() {
+	
+	return {
+			centercode: 0,
+			venuecode: 0,
+			venuename: "",
+	};
+}
 var Office = function() {
 	
 	var Office = {

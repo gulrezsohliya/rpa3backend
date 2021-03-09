@@ -11,6 +11,7 @@ import rpa.models.master.Cell;
 import rpa.models.master.ExamCenter;
 import rpa.models.master.Office;
 import rpa.models.master.User;
+import rpa.models.master.Venue;
 import rpa.utility.UtilityInterface;
 
 @Service("IntializationService")
@@ -54,6 +55,10 @@ public class IntializationService implements IntializationServiceInterface {
 	public List<Cell> listCells(Integer officecode) {
 		String sql = "SELECT * FROM MASTERS.cells WHERE officecode=? ORDER BY celldescription";
 		List<Cell> cells = UI.listGeneric(Cell.class, sql, new Object[] {officecode});
+		for(Cell c:cells) {
+			sql = "SELECT * FROM MASTERS.offices where officecode=? ORDER BY officecode";
+			c.setOffice((UI.listGeneric(Office.class, sql,new Object[]{officecode})).get(0));
+		}
 		return cells;
 	}
 
@@ -62,6 +67,17 @@ public class IntializationService implements IntializationServiceInterface {
 		String sql = "SELECT * FROM backend.examinationcenters order by centername";
 		List<ExamCenter> examCenters = UI.listGeneric(ExamCenter.class, sql);
 		return examCenters;
+	}
+
+	@Override
+	public List<Venue> listVenues() {
+		String sql = "SELECT * FROM backend.venues order by venuename";
+		List<Venue> venues = UI.listGeneric(Venue.class, sql);
+		for(Venue c:venues) {
+			sql = "SELECT * FROM backend.examinationcenters where centercode=? ORDER BY centercode";
+			c.setExamCenter((UI.listGeneric(ExamCenter.class, sql,new Object[]{c.getCentercode()})).get(0));
+		}
+		return venues;
 	}
 
 	@Override
@@ -116,7 +132,9 @@ public class IntializationService implements IntializationServiceInterface {
 		List<User> users = UI.listGeneric(User.class, sql, new Object[] {usercode});
 		return users.get(0);
 	}
-	/* CREATE DATA */
+	/* CREATE/UPDATE DATA */
+	
+	//USER
 	@Override
 	public boolean saveUser(User user) {
 		return ID.saveUser(user);
@@ -134,6 +152,7 @@ public class IntializationService implements IntializationServiceInterface {
 		return ID.updateUserStatus(user);
 	}
 	
+	//CELL
 	@Override
 	public String createcell(Cell cell) {
 		
@@ -163,6 +182,7 @@ public class IntializationService implements IntializationServiceInterface {
 		return UI.update("master.cells", sql, new Object[] {cellcode});
 	}
 	
+	//OFFICE
 	@Override
 	public String createOffice(Office office) {
 		
@@ -197,6 +217,7 @@ public class IntializationService implements IntializationServiceInterface {
 		return UI.update("master.cells", sql, params);
 	}
 	
+	//EXAMCENTER
 	@Override
 	public String createExamCenter(ExamCenter center) {
 		
@@ -223,6 +244,36 @@ public class IntializationService implements IntializationServiceInterface {
 		
 		String sql ="Delete from backend.examinationcenters where centercode=? ";
 		return UI.update("backend.examinationcenters", sql, new Object[] {centercode});
+	}
+
+	//Venue
+	@Override
+	public String createVenue(Venue venue) {
+		
+		String sql ="SELECT * FROM backend.venues WHERE venuename =? ";
+		if((UI.listGeneric(Venue.class, sql, new Object[] {venue.getVenuename()})).size()>0) {
+			return "EXISTS";
+		}
+		sql = "INSERT INTO backend.venues(venuecode,centercode, venuename)VALUES (?, ?, ?)";
+		Object[] params=new Object[] {
+				UI.getMax("backend", "venues", "venuecode")+1,
+				venue.getCentercode(),
+				venue.getVenuename()};
+		return (UI.update("backend.venues", sql, params))?"CREATED":"FAILED";
+	}
+	
+	@Override
+	public boolean updateVenue(Venue venue) {
+		String sql = "UPDATE backend.venues SET centercode=?, venuename=? WHERE  venuecode=? ";
+		Object[] params=new Object[] {venue.getCentercode(),venue.getVenuename(),venue.getVenuecode()};
+		return UI.update("venue.venues", sql, params);
+	}
+	
+	@Override
+	public boolean deleteVenue(Integer venuecode) {
+		
+		String sql ="Delete from backend.venues where venuecode=? ";
+		return UI.update("backend.venues", sql, new Object[] {venuecode});
 	}
 	
 }

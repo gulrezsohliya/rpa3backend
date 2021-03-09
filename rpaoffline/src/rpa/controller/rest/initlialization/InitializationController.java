@@ -24,6 +24,7 @@ import rpa.models.master.ExamCenter;
 import rpa.models.master.Office;
 import rpa.models.master.Pageurls;
 import rpa.models.master.User;
+import rpa.models.master.Venue;
 import rpa.services.admin.IntializationServiceInterface;
 
 @RestController
@@ -67,6 +68,16 @@ public class InitializationController {
 		}
 	}
 
+	@GetMapping(value = "/listVenues", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Venue>> listVenues() {
+		try {
+			List<Venue> venues = IS.listVenues();
+			return ResponseEntity.ok().body(venues);
+		}catch(Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 	@GetMapping(value = "/listOffices/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffice(@PathVariable Integer officecode) {
 		try {
@@ -105,6 +116,22 @@ public class InitializationController {
 	/*******************************************************
 	 * CREATE DATA
 	 ***********************************************************/
+	@PostMapping(value = "/createvenue", consumes = "application/json")
+	public ResponseEntity<HashMap<String,Object>> createvenue(@RequestBody Venue venue) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		switch(IS.createVenue(venue)) {
+		case "CREATED":
+			response.put("response", HttpStatus.CREATED);
+			break;
+		case "EXISTS":
+			response.put("response", HttpStatus.ALREADY_REPORTED);
+			break;
+		default:
+			response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
+	}
 	@PostMapping(value = "/createexamcenter", consumes = "application/json")
 	public ResponseEntity<HashMap<String,Object>> createExamCenter(@RequestBody ExamCenter center) {
 		
@@ -173,6 +200,12 @@ public class InitializationController {
 	 * UPDATE DATA
 	 ***********************************************************/
 
+	@PutMapping(value = "/updatevenue", consumes = "application/json")
+	public ResponseEntity<Boolean> updateVenue(@RequestBody Venue venue) {
+		
+		return ResponseEntity.ok().body(IS.updateVenue(venue));
+	}
+
 	@PutMapping(value = "/updateexamcenter", consumes = "application/json")
 	public ResponseEntity<Boolean> updateExamcenter(@RequestBody ExamCenter center) {
 		
@@ -221,6 +254,11 @@ public class InitializationController {
 	/*******************************************************
 	 * DELETE DATA
 	 ***********************************************************/
+	@DeleteMapping(value = "/deletevenue/{venuecode}")
+	public ResponseEntity<Boolean> deleteVenue(@PathVariable Integer venuecode) {
+		return ResponseEntity.ok().body(IS.deleteVenue(venuecode));
+	}
+
 	@DeleteMapping(value = "/deleteexamcenter/{centercode}")
 	public ResponseEntity<Boolean> deleteExamCenter(@PathVariable Integer centercode) {
 		return ResponseEntity.ok().body(IS.deleteExamCenter(centercode));

@@ -7,6 +7,12 @@ app.factory('commonInitFactory', function($http) {
 				callback(response);
 			});
 		},
+		listVenues:  function(callback) {
+			$http.get("./listVenues").success(
+					function(response, status, headers, config) {
+						callback(response);
+					});
+				},
 		listOffices:  function(callback) {
 			$http.get("./listOffices").success(
 					function(response, status, headers, config) {

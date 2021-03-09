@@ -28,19 +28,21 @@ public class PageController {
 
 	@RequestMapping(value = "/cells.htm", method = RequestMethod.GET)
 	public String initCell() {
-		LOG.info("cell");
 		return "init/cells";
 	}
 
 	@RequestMapping(value = "/examcenter.htm", method = RequestMethod.GET)
 	public String initExamCenter() {
-		LOG.info("ExamCenter");
 		return "init/examcenter";
+	}
+
+	@RequestMapping(value = "/venue.htm", method = RequestMethod.GET)
+	public String initVenue() {
+		return "init/venue";
 	}
 
 	@RequestMapping(value = "/office.htm", method = RequestMethod.GET)
 	public String initOffice() {
-		LOG.info("office");
 		return "init/office";
 	}
 	
@@ -55,5 +57,4 @@ public class PageController {
         return "init/initpageurl";
     }
 
-    
 }
