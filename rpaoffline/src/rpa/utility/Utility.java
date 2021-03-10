@@ -64,6 +64,29 @@ public class Utility implements UtilityInterface{
 		}
 		return list;
 	}
+
+	@Override
+	public List<Map<String,Object>> listGeneric(String sql) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		try {
+			list = jdbcTemplate.queryForList(sql);
+		} catch (Exception ex) {
+			LOG.info("\n\nError in listGeneric " + ex);
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Map<String,Object>> listGeneric(String sql, Object[] params) {
+		List<Map<String,Object>> list = new ArrayList<>();
+		try {
+			list = jdbcTemplate.queryForList(sql, params);
+			LOG.info("Object: " + list.get(0).toString());
+		} catch (Exception ex) {
+			LOG.info("\n\nError in listGeneric " + ex);
+		}
+		return list;
+	}
 	
 	@Override
 	public <T> boolean update(String tablename,String sql, Object[] params) {
