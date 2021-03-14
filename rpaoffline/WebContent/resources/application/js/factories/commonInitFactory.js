@@ -25,8 +25,14 @@ app.factory('commonInitFactory', function($http) {
 						callback(response);
 					});
 				},
+		listOffice:  function(officecode,callback) {
+			$http.get("./listOffices/"+officecode).success(
+					function(response, status, headers, config) {
+						callback(response);
+					});
+		},
 		listOffices:  function(callback) {
-			$http.get("./listOffices").success(
+			$http.get("./listOffices/").success(
 					function(response, status, headers, config) {
 						callback(response);
 					});
@@ -43,12 +49,18 @@ app.factory('commonInitFactory', function($http) {
 						callback(response);
 					});
 		},
-		listUser : function(callback, usercode) {
-			console.info("listUsers: ", usercode);
-			$http.get("./listUsers/usercode/"+usercode).success(
+		listUser : function(user, callback) {
+			if(typeof(user)=="number"){
+				$http.get("./listUsers/usercode/"+user).success(
 					function(response, status, headers, config) {
 						callback(response);
-					});
+				});
+			}else{
+				$http.get("./listUsers/username/"+user).success(
+					function(response, status, headers, config) {
+						callback(response);
+				});
+			}
 		},
 		listUsers : function(callback) {
 			console.info("listUsers");

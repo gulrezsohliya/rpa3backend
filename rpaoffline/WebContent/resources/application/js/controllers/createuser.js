@@ -3,17 +3,17 @@
  */
 
 $(document).ready(function () {
-//    var scope = angular.element($("#createuserCtrl")).scope();
-//    scope.$apply(function () {
-//        scope.listUsers();
-//    });
+// var scope = angular.element($("#createuserCtrl")).scope();
+// scope.$apply(function () {
+// scope.listUsers();
+// });
 });
 
 app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	var scope = angular.element($("#createuserCtrl")).scope();
 	commonInitService.success();
-	/*Common Ajax Params*/
+	/* Common Ajax Params */
 	var successMsg = "Success: User created or updated successfully";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
@@ -35,6 +35,9 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
     
     $scope.trustHTML = function (post) {
         return $sce.trustAsHtml(post);
+    };
+    $scope.officeDesc = function (offc) {
+    	return offc.officename1+((offc.officename2)?(', '+offc.officename2):'')+((offc.officename3)?(', '+offc.officename3):'');
     };
     
     $scope.edit = function (usercode) {
@@ -61,7 +64,8 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
     	
         if($scope.userForm.$invalid)
             return false;
-//        $scope.user.password = ($scope.user.password === '') ? "" : sha256_digest($scope.user.password);
+// $scope.user.password = ($scope.user.password === '') ? "" :
+// sha256_digest($scope.user.password);
         $scope.user.mobileno = "";
         $scope.user.cellcode = $scope.user.cellcode!==""?parseInt($scope.user.cellcode):"";
         
@@ -188,7 +192,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         };
         
 
-        /*READ DATA*/
+        /* READ DATA */
         $scope.listOffices = () => {
             commonInitFactory.listOffices((response)=>{
         		$scope.offices=response;

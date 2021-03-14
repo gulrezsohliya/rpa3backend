@@ -24,11 +24,11 @@
                 <form id="userForm" name="userForm">
                     <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
                         <tr class="form-group has-feedback">
-                            <td class="title" style="width: 30%">Office:</td>
+                            <td class="title" style="width: 30%;">Office:</td>
                             <td style="width:70%">
                                 <select class="form-control" id="officecode" name="officecode"
                                 	 ng-model="user.officecode" 
-                                     ng-options="head.officecode as head.officename1 for head in offices" 
+                                     ng-options="head.officecode as officeDesc(head) for head in offices" 
                                      ng-change="listOfficeCells(user.officecode)"
                                      ng-selected="user.officecode == head.officecode" 
                                      required></select>

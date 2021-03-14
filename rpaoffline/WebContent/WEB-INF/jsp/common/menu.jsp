@@ -19,7 +19,7 @@
     }*/
     .gn-menu-wrapper {
         position: fixed;
-        top: 120px;
+        top: 90px;
         bottom: 0;
         left: 0;
         overflow: hidden;
@@ -86,12 +86,12 @@
                     </li>
                 </ul>
             </li>
-            <li>
-            <!-- <core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
+            <!-- <li>
+            	<core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
+                	<a class="gn-icon icon-exit" href='/rpaoffline/logout'>Log Out</a>
+            		</core:if>
                 <a class="gn-icon icon-exit" href='/rpaoffline/logout'>Log Out</a>
-            </core:if>-->
-                <a class="gn-icon icon-exit" href='/rpaoffline/logout'>Log Out</a>
-            </li>
+            </li> -->
         </ul>
     </div>
 </nav>

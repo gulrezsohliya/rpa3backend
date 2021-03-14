@@ -29,7 +29,7 @@
         <logout invalidate-session="true" logout-url="/logout" logout-success-url="/login.htm?logout=1"/>
         
     </http> 
-    <beans:bean id="MyAuthenticationSuccessHandler" class="rpa.security.MyAuthenticationSuccessHandler" />
+    <beans:bean id="MyAuthenticationSuccessHandler" class="rpa.Security.MyAuthenticationSuccessHandler" />
 	<beans:bean id ="passwordEncoder" class = "org.springframework.security.crypto.password.NoOpPasswordEncoder" factory-method = "getInstance" />
 	
     <authentication-manager alias="authenticationManager">

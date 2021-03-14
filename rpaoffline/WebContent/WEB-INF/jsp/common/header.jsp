@@ -1,3 +1,4 @@
+<%@page import="rpa.Models.master.User"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%-- <%@taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %> --%>
@@ -48,9 +49,8 @@ body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	max-width: 362vh;
 	width:100%;
-	height: 120px;
+	height:90px;
 	font-size: 18px;
 	padding: 13px 0;
 	z-index: 1;
@@ -62,7 +62,7 @@ body {
 .header{
 	flex-grow:1;
 	display:flex;
-	flex-flow:row wrap; 
+	flex-flow:row nowrap; 
 }
 .headerA{
 	flex-grow:12;
@@ -70,23 +70,42 @@ body {
 }
 .headerB{
 	flex-grow:4;
+	display	:inline-flex;
+	flex-direction:column-reverse;
 	min-width:100px;
+	margin-bottom:-13px; 
 }
-.headerB h6{
+.headerB h6 {
+	/*position:absolute;
+	bottom:0;*/
+	margin: 0;
+    line-height: normal;
+    padding:5px;
+}
+.headerB div.user ul {
 	position:absolute;
-	bottom:0;
-	margin:0;
+	display:none;
 }
-@media only screen and (max-width:500px) {
+.headerB div.user:hover > ul {
+	display:block;
+}
+@media only screen and (max-width:750px) {
 	.headerA{
-		font-size:14px;
-		width:350px;
+		width:250px; 
 	}
-	.headerA h2{
-		line-height:15px;
+	.headerB{
+		width:120px; 
 	}
-	.gn-menu-main{
-		padding:0;
+	.headerA :is(h2,h4){
+		visibility:hidden;
+	}
+	.headerA h2:before{
+		visibility:visible;
+		content:'RPA' 
+	}
+	.headerA h4:before{
+		visibility:visible;
+		content:'MPSC Shillong' 
 	}
 }
 
@@ -186,9 +205,12 @@ thead {
 			</div>
 			<div class="headerB">
 				<core:if test="${pageContext.request.userPrincipal.authenticated eq true && sessionScope.user ne null}">
-					<h6>
-						Logged in as <%=session.getAttribute("user")%>
-					</h6>
+						<div class="user"><h6>Logged in as <%=((User)session.getAttribute("user")).getUsername()%></h6>
+							<ul style="margin:0 5px;z-index:10;background:var(--main-head-color	);">
+								<li> <h6><a style="font-family:icomoon" class="icon-pencil" href='/rpaoffline/changepassword.htm'>&nbsp;Change password</a></h6> </li>
+								<li> <h6><a style="font-family:icomoon" class="icon-exit" href='/rpaoffline/logout'>&nbsp;Logout</a></h6> </li>
+							</ul>
+						</div>					
 				</core:if>
 			</div>
 		</div>

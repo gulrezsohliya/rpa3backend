@@ -19,7 +19,7 @@
     <body ng-app="CommonApp">
         <%@include file="../common/header.jsp" %> 
         <div class='containerBody' id="officeCtrl" ng-controller="officeCtrl">
-            <h2 class="title">User Initialization</h2>
+            <h2 class="title">Office Initialization</h2>
             <div  style='width:80%;margin: 15px auto 0'>
                 <form id="officeForm" name="officeForm">
                     <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
