@@ -1,12 +1,9 @@
-
-function District() {
-    var District = {
-        "districtcode": 6,
-        "districtname": "East Khasi Hills",
-        "lgdcode": 274,
-        "state": new State()
-    };
-    return District;
+var OtherCategories= function(){
+	return {
+		othercategorycode:0,
+		othercategorydescription:"",
+		enabled:"Y"
+	};
 }
 
 var ExamCenter = function() {
@@ -25,6 +22,15 @@ var Venue = function() {
 			venuecode: 0,
 			venuename: "",
 	};
+}
+function District() {
+    var District = {
+        "districtcode": 6,
+        "districtname": "East Khasi Hills",
+        "lgdcode": 274,
+        "state": new State()
+    };
+    return District;
 }
 var Office = function() {
 	
@@ -90,8 +96,6 @@ function TownVillage() {
     };
     return TownVillage;
 }
-
-
 function Userlogins() {
     var Userlogins = {
         "cellcode": 0,

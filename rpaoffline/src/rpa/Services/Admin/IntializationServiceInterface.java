@@ -5,6 +5,7 @@ import java.util.List;
 import rpa.Models.master.Cell;
 import rpa.Models.master.ExamCenter;
 import rpa.Models.master.Office;
+import rpa.Models.master.OtherCategories;
 import rpa.Models.master.User;
 import rpa.Models.master.Venue;
 
@@ -16,6 +17,8 @@ public interface IntializationServiceInterface {
 	public User listUser(String username);
 
 	/* List */
+	public List<OtherCategories> listOtherCategories();
+
 	public List<Cell> listCells();
 
 	public List<Cell> listCellsforOffice(Integer officecode);
@@ -60,5 +63,11 @@ public interface IntializationServiceInterface {
 	public boolean updateVenue(Venue venue);
 
 	public boolean deleteVenue(Integer venuecode);
+
+	public String createOtherCategory(OtherCategories categories);
+
+	public boolean updateOtherCategory(OtherCategories categories);
+
+	public boolean deleteOtherCategory(Integer othercategorycode);
 
 }

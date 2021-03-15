@@ -37,7 +37,6 @@ public class Utility implements UtilityInterface{
 			ex.printStackTrace();
 			System.out.println("\n\nError in getMax " + ex);
 		}
-		System.out.println("max::"+i);
 		return (i!=null) ? i : 0;
 	}
 	

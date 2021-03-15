@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import rpa.Models.master.Cell;
 import rpa.Models.master.ExamCenter;
 import rpa.Models.master.Office;
+import rpa.Models.master.OtherCategories;
 import rpa.Models.master.Pageurls;
 import rpa.Models.master.User;
 import rpa.Models.master.Venue;
@@ -41,6 +42,15 @@ public class InitializationController {
 	 * READ DATA
 	 **********************************************************/
 
+	@GetMapping(value = "/listOtherCategories", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<OtherCategories>> listOtherCategories() {
+		try {
+			List<OtherCategories> cells = IS.listOtherCategories();
+			return ResponseEntity.accepted().body(cells);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
 	@GetMapping(value = "/listCells/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cell>> listCell(@PathVariable Integer officecode) {
 		try {
@@ -140,6 +150,23 @@ public class InitializationController {
 	/*******************************************************
 	 * CREATE DATA
 	 ***********************************************************/
+	@PostMapping(value = "/createOtherCategory", consumes = "application/json")
+	public ResponseEntity<HashMap<String, Object>> creatOtherCategory(@RequestBody OtherCategories othercategory) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		switch (IS.createOtherCategory(othercategory)) {
+		case "CREATED":
+			response.put("response", HttpStatus.CREATED);
+			break;
+		case "EXISTS":
+			response.put("response", HttpStatus.ALREADY_REPORTED);
+			break;
+		default:
+			response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
+	}
+	
 	@PostMapping(value = "/createvenue", consumes = "application/json")
 	public ResponseEntity<HashMap<String, Object>> createvenue(@RequestBody Venue venue) {
 
@@ -225,6 +252,12 @@ public class InitializationController {
 	 * UPDATE DATA
 	 ***********************************************************/
 
+	@PutMapping(value = "/updateOtherCategory", consumes = "application/json")
+	public ResponseEntity<Boolean> updateOtherCategory(@RequestBody OtherCategories otherCategory) {
+		
+		return ResponseEntity.ok().body(IS.updateOtherCategory(otherCategory));
+	}
+
 	@PutMapping(value = "/updatevenue", consumes = "application/json")
 	public ResponseEntity<Boolean> updateVenue(@RequestBody Venue venue) {
 
@@ -279,6 +312,11 @@ public class InitializationController {
 	/*******************************************************
 	 * DELETE DATA
 	 ***********************************************************/
+	@DeleteMapping(value = "/deleteOtherCategory/{othercategorycode}")
+	public ResponseEntity<Boolean> deleteOtherCategory(@PathVariable Integer othercategorycode) {
+		return ResponseEntity.ok().body(IS.deleteOtherCategory(othercategorycode));
+	}
+
 	@DeleteMapping(value = "/deletevenue/{venuecode}")
 	public ResponseEntity<Boolean> deleteVenue(@PathVariable Integer venuecode) {
 		return ResponseEntity.ok().body(IS.deleteVenue(venuecode));

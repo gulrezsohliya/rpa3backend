@@ -69,16 +69,16 @@ public class PageurlsDao implements PageurlsDaoInterface {
 						.append("urlcode, pageurl, subsubmenu, subsubmenuicon, ")
 						.append("submenu, submenuicon, parent, parenticon,")
 						.append("subsubmenuorder, submenuorder, parentorder)")
-						.append("VALUES (:urlcode, :pageurl, :subsubmenu, :subsubmenuicon,")
-						.append(":submenu, :submenuicon, :parent, :parenticon,")
-						.append(":subsubmenuorder,:submenuorder, :parentorder").toString();
+						.append("VALUES (:urlcode, :pageurl, :subsubmenu, :subsubmenuicon, ")
+						.append(":submenu, :submenuicon, :parent, :parenticon, ")
+						.append(":subsubmenuorder,:submenuorder, :parentorder)").toString();
 				if (namedParameterJdbcTemplate.update(sql, parameters) < 0) {
 					return false;
 				}
 			}
 			response = true;
 		} catch (Exception ex) {
-			System.out.println("Error in savePageurlsDao" + ex);
+			System.out.println("Error in savePageurlsDao ::" + ex);
 		}
 		return response;
 	}

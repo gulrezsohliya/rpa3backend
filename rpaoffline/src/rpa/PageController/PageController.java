@@ -11,21 +11,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import rpa.Services.Admin.IntializationServiceInterface;
 import rpa.Services.Admin.PageurlsServiceInterface;
 
-
-
 @Controller
 public class PageController {
 
 	private static final Logger LOG = Logger.getLogger(PageController.class);
-	@Autowired private IntializationServiceInterface service;
-	@Autowired PageurlsServiceInterface pageser;
+	@Autowired
+	private IntializationServiceInterface service;
+	@Autowired
+	PageurlsServiceInterface pageser;
+
 	/********************************************************
 	 * PAGEURLs
 	 ***********************************************************/
-	 
-	@RequestMapping(value = "/createuser.htm", method = RequestMethod.GET)
-	public String createUser(Model model) {
-		return "init/createuser";
+
+	@RequestMapping(value = "/othercategories.htm", method = RequestMethod.GET)
+	public String initOtherCategories() {
+		return "init/othercategories";
 	}
 
 	@RequestMapping(value = "/cells.htm", method = RequestMethod.GET)
@@ -47,16 +48,21 @@ public class PageController {
 	public String initOffice() {
 		return "init/office";
 	}
-	
-	@RequestMapping(value = "accesscontrol.htm", method = RequestMethod.GET)
-    public String pageLoad_AccessControl(ModelMap model) {
-        return "init/accesscontrol";
-    }
 
-    @RequestMapping(value = "initpageurl.htm", method = RequestMethod.GET)
-    public String pageLoad_Menu(ModelMap model) {
-        model.addAttribute("headers", pageser.getHeaders());
-        return "init/initpageurl";
-    }
+	@RequestMapping(value = "accesscontrol.htm", method = RequestMethod.GET)
+	public String pageLoad_AccessControl(ModelMap model) {
+		return "init/accesscontrol";
+	}
+
+	@RequestMapping(value = "initpageurl.htm", method = RequestMethod.GET)
+	public String pageLoad_Menu(ModelMap model) {
+		model.addAttribute("headers", pageser.getHeaders());
+		return "init/initpageurl";
+	}
+
+	@RequestMapping(value = "/createuser.htm", method = RequestMethod.GET)
+	public String createUser(Model model) {
+		return "init/createuser";
+	}
 
 }

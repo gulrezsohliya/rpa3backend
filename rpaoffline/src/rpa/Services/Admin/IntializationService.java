@@ -3,6 +3,8 @@ package rpa.Services.Admin;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.print.attribute.standard.MediaSize.Other;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import rpa.Dao.Admin.InitializationDaoInterface;
 import rpa.Models.master.Cell;
 import rpa.Models.master.ExamCenter;
 import rpa.Models.master.Office;
+import rpa.Models.master.OtherCategories;
 import rpa.Models.master.User;
 import rpa.Models.master.Venue;
 import rpa.Utility.UtilityInterface;
@@ -34,7 +37,16 @@ public class IntializationService implements IntializationServiceInterface {
 		return ID.listUsers(username);
 	}
 
-	/* List */
+	/* List */ 
+	@Override
+	public List<OtherCategories> listOtherCategories() {
+		List<OtherCategories> oth = null;
+		
+		String sql = "SELECT * FROM MASTERS.othercategories ORDER BY othercategorydescription";
+		oth = UI.listGeneric(OtherCategories.class, sql);
+		return oth;
+	}
+
 	@Override
 	public List<Cell> listCells() {
 		List<Cell> cells = null;
@@ -268,6 +280,33 @@ public class IntializationService implements IntializationServiceInterface {
 
 		String sql = "Delete from backend.venues where venuecode=? ";
 		return UI.update("backend.venues", sql, new Object[] { venuecode });
+	}
+
+	// OtherCategory
+	@Override
+	public String createOtherCategory(OtherCategories categories) {
+		
+		String sql = "SELECT * FROM masters.othercategories WHERE othercategorydescription =? ";
+		if ((UI.listGeneric(OtherCategories.class, sql, new Object[] { categories.getOthercategorydescription() })).size() > 0) {
+			return "EXISTS";
+		}
+		sql = "INSERT INTO masters.othercategories(othercategorycode,othercategorydescription)VALUES ( ?, ?)";
+		Object[] params = new Object[] { UI.getMax("masters", "othercategories", "othercategorycode") + 1, categories.getOthercategorydescription() };
+		return (UI.update("masters.othercategories", sql, params)) ? "CREATED" : "FAILED";
+	}
+	
+	@Override
+	public boolean updateOtherCategory(OtherCategories categories) {
+		String sql = "UPDATE masters.othercategories SET othercategorydescription=? WHERE  othercategorycode=? ";
+		Object[] params = new Object[] {categories.getOthercategorydescription(),categories.getOthercategorycode() };
+		return UI.update("masters.othercategories", sql, params);
+	}
+	
+	@Override
+	public boolean deleteOtherCategory(Integer othercategorycode) {
+		
+		String sql = "Delete from masters.othercategories where othercategorycode=? ";
+		return UI.update("masters.othercategories", sql, new Object[] { othercategorycode });
 	}
 
 }

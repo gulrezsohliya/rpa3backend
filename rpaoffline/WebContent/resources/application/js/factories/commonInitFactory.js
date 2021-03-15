@@ -1,6 +1,12 @@
 //Common Factories
 app.factory('commonInitFactory', function($http) {
 	return {		
+		listOtherCategories:  function(callback) {
+			$http.get("./listOtherCategories").success(
+					function(response, status, headers, config) {
+						callback(response);
+					});
+		},
 		listQualifications:  function(callback) {
 			$http.get("./listQualifications").success(
 					function(response, status, headers, config) {
