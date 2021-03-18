@@ -17,27 +17,27 @@
     </head>
     <body ng-app="CommonApp">
         <%@include file="../common/header.jsp" %> 
-        <div class='containerBody' id="otherCatCtrl" ng-controller="otherCatCtrl">
-            <h2 class="title">Other Categories Initialization</h2>
+        <div class='containerBody' id="optionalSubjectCtrl" ng-controller="optionalSubjectCtrl">
+            <h2 class="title">Optional Subject Initialization</h2>
             <div  style='width:80%;margin: 15px auto 0'>
-                <form id="otherCatForm" name="otherCatForm">
+                <form id="optionalSubjectForm" name="optionalSubjectForm">
                     <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
                         <tr class="form-group has-feedback">
-                            <td class="title">Other Category :</td>
+                            <td class="title">Subject Name :</td>
                             <td class="col-xs-5 selectContainer">
-								<input type="text" class="form-control" id="othercategorydescription" name="othercategorydescription"
-									ng-model="otherCat.othercategorydescription" required/>        
-								<span id="othercategorydescriptionMsg"></span>
+								<input type="text" class="form-control" id="subjectname" name="subjectname"
+									ng-model="optionalSubject.subjectname" required/>        
+								<span id="subjectnameMsg"></span>
 								<span class="alert alert-danger" 
-									ng-show="otherCatForm.othercategorydescription.$pristine && otherCatForm.othercategorydescription.$invalid"> 
+									ng-show="optionalSubjectForm.subjectname.$pristine && optionalSubjectForm.subjectname.$invalid"> 
 									Required
 								</span>
                             </td>
                         </tr>
                         <tr class="form-group has-feedback">
                             <td colspan="2" align="center">
-                                <button type="button" id="add" ng-click="save()" class="button-primary" ng-if="actionButton === 'SAVE'" ng-disabled="otherCatForm.$invalid">Add</button>
-                                <button name="button" id="edit" ng-click="update()" class="button-primary" ng-if="actionButton === 'EDIT'" ng-disabled="otherCatForm.$invalid">Update</button>
+                                <button type="button" id="add" ng-click="save()" class="button-primary" ng-if="actionButton === 'SAVE'" ng-disabled="optionalSubject.$invalid">Add</button>
+                                <button name="button" id="edit" ng-click="update()" class="button-primary" ng-if="actionButton === 'EDIT'" ng-disabled="optionalSubject.$invalid">Update</button>
                                 <input type="reset" value="Reset" ng-click="reset()" class="button-default"/>
                             </td>
                         </tr>
@@ -46,6 +46,6 @@
             </div> 
             <div id="displayRecords" style='width:80%;margin: 15px auto 50px auto;'></div>
         </div>
-        <script src="resources/application/js/controllers/othercategories.js"></script>
+        <script src="resources/application/js/controllers/optionalsubjects.js"></script>
     </body>
 </html>

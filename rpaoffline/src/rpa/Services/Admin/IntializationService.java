@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import rpa.Dao.Admin.InitializationDaoInterface;
 import rpa.Models.master.Cell;
 import rpa.Models.master.ExamCenter;
+import rpa.Models.master.ExamSubjects;
 import rpa.Models.master.Office;
+import rpa.Models.master.OptionalSubjects;
 import rpa.Models.master.OtherCategories;
 import rpa.Models.master.User;
 import rpa.Models.master.Venue;
@@ -37,11 +39,28 @@ public class IntializationService implements IntializationServiceInterface {
 		return ID.listUsers(username);
 	}
 
-	/* List */ 
+	/* List */
+	@Override
+	public List<OptionalSubjects> listOptionalSubjects() {
+		List<OptionalSubjects> oth = null;
+		
+		String sql = "SELECT * FROM MASTERS.optionalsubjects ORDER BY subjectname";
+		oth = UI.listGeneric(OptionalSubjects.class, sql);
+		return oth;
+	}
+
+	@Override
+	public List<ExamSubjects> listExamSubjects() {
+		List<ExamSubjects> oth = null;
+		
+		String sql = "SELECT * FROM MASTERS.examinationsubjects ORDER BY examinationsubjectname";
+		oth = UI.listGeneric(ExamSubjects.class, sql);
+		return oth;
+	}
 	@Override
 	public List<OtherCategories> listOtherCategories() {
 		List<OtherCategories> oth = null;
-		
+
 		String sql = "SELECT * FROM MASTERS.othercategories ORDER BY othercategorydescription";
 		oth = UI.listGeneric(OtherCategories.class, sql);
 		return oth;
@@ -74,10 +93,10 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public List<Cell> listCellsforCode(Integer cellcode) {
 		String sql = "SELECT * FROM MASTERS.cells WHERE cellcode=? ORDER BY celldescription";
-		List<Cell> cells = UI.listGeneric(Cell.class, sql, new Object[] {cellcode});
-		for(Cell c:cells) {
+		List<Cell> cells = UI.listGeneric(Cell.class, sql, new Object[] { cellcode });
+		for (Cell c : cells) {
 			sql = "SELECT * FROM MASTERS.offices where officecode=? ORDER BY officecode";
-			c.setOffice((UI.listGeneric(Office.class, sql,new Object[]{c.getOfficecode()})).get(0));
+			c.setOffice((UI.listGeneric(Office.class, sql, new Object[] { c.getOfficecode() })).get(0));
 		}
 		return cells;
 	}
@@ -285,28 +304,88 @@ public class IntializationService implements IntializationServiceInterface {
 	// OtherCategory
 	@Override
 	public String createOtherCategory(OtherCategories categories) {
-		
+
 		String sql = "SELECT * FROM masters.othercategories WHERE othercategorydescription =? ";
-		if ((UI.listGeneric(OtherCategories.class, sql, new Object[] { categories.getOthercategorydescription() })).size() > 0) {
+		if ((UI.listGeneric(OtherCategories.class, sql, new Object[] { categories.getOthercategorydescription() }))
+				.size() > 0) {
 			return "EXISTS";
 		}
 		sql = "INSERT INTO masters.othercategories(othercategorycode,othercategorydescription)VALUES ( ?, ?)";
-		Object[] params = new Object[] { UI.getMax("masters", "othercategories", "othercategorycode") + 1, categories.getOthercategorydescription() };
+		Object[] params = new Object[] { UI.getMax("masters", "othercategories", "othercategorycode") + 1,
+				categories.getOthercategorydescription() };
 		return (UI.update("masters.othercategories", sql, params)) ? "CREATED" : "FAILED";
 	}
-	
+
 	@Override
 	public boolean updateOtherCategory(OtherCategories categories) {
 		String sql = "UPDATE masters.othercategories SET othercategorydescription=? WHERE  othercategorycode=? ";
-		Object[] params = new Object[] {categories.getOthercategorydescription(),categories.getOthercategorycode() };
+		Object[] params = new Object[] { categories.getOthercategorydescription(), categories.getOthercategorycode() };
 		return UI.update("masters.othercategories", sql, params);
+	}
+
+	@Override
+	public boolean deleteOtherCategory(Integer othercategorycode) {
+
+		String sql = "Delete from masters.othercategories where othercategorycode=? ";
+		return UI.update("masters.othercategories", sql, new Object[] { othercategorycode });
+	}
+
+	// Exam Subject
+	@Override
+	public String createExamSubject(ExamSubjects subject) {
+
+		String sql = "SELECT * FROM masters.examinationsubjects WHERE examinationsubjectname =? ";
+		if ((UI.listGeneric(ExamSubjects.class, sql, new Object[] { subject.getExaminationsubjectname() }))
+				.size() > 0) {
+			return "EXISTS";
+		}
+		sql = "INSERT INTO masters.examinationsubjects(examinationsubjectcode,examinationsubjectname,description)VALUES (?, ?, ?)";
+		Object[] params = new Object[] { UI.getMax("masters", "examinationsubjects", "examinationsubjectcode") + 1,
+				subject.getExaminationsubjectname(), subject.getDescription() };
+		return (UI.update("masters.examinationsubjects", sql, params)) ? "CREATED" : "FAILED";
+	}
+
+	@Override
+	public boolean updateExamSubject(ExamSubjects subject) {
+		String sql = "UPDATE masters.examinationsubjects SET examinationsubjectname=?, description=? WHERE  examinationsubjectcode=? ";
+		Object[] params = new Object[] { subject.getExaminationsubjectname(), subject.getDescription(),subject.getExaminationsubjectcode() };
+		return UI.update("masters.examinationsubjects", sql, params);
+	}
+
+	@Override
+	public boolean deleteExamSubject(Integer examinationsubjectcode) {
+
+		String sql = "Delete from masters.examinationsubjects where examinationsubjectcode=? ";
+		return UI.update("masters.examinationsubjects", sql, new Object[] { examinationsubjectcode });
+	}
+	
+	// Optional Subject
+	@Override
+	public String createOptionalSubject(OptionalSubjects subject) {
+		
+		String sql = "SELECT * FROM masters.Optionalsubjects WHERE subjectname =? ";
+		if ((UI.listGeneric(OptionalSubjects.class, sql, new Object[] { subject.getSubjectname() }))
+				.size() > 0) {
+			return "EXISTS";
+		}
+		sql = "INSERT INTO masters.Optionalsubjects (subjectcode,subjectname)VALUES (?, ?)";
+		Object[] params = new Object[] { UI.getMax("masters", "Optionalsubjects", "subjectcode") + 1,
+				subject.getSubjectname() };
+		return (UI.update("masters.Optionalsubjects", sql, params)) ? "CREATED" : "FAILED";
 	}
 	
 	@Override
-	public boolean deleteOtherCategory(Integer othercategorycode) {
+	public boolean updateOptionalSubject(OptionalSubjects subject) {
+		String sql = "UPDATE masters.Optionalsubjects SET subjectname=? WHERE  subjectcode=? ";
+		Object[] params = new Object[] { subject.getSubjectname(),subject.getSubjectcode() };
+		return UI.update("masters.Optionalsubjects", sql, params);
+	}
+	
+	@Override
+	public boolean deleteOptionalSubject(Integer subjectcode) {
 		
-		String sql = "Delete from masters.othercategories where othercategorycode=? ";
-		return UI.update("masters.othercategories", sql, new Object[] { othercategorycode });
+		String sql = "Delete from masters.Optionalsubjects where subjectcode=? ";
+		return UI.update("masters.Optionalsubjects", sql, new Object[] { subjectcode });
 	}
 
 }

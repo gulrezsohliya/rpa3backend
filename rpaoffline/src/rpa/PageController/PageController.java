@@ -24,6 +24,16 @@ public class PageController {
 	 * PAGEURLs
 	 ***********************************************************/
 
+	@RequestMapping(value = "/optionalsubject.htm", method = RequestMethod.GET)
+	public String initoptionalsubject() {
+		return "init/optionalsubjects";
+	}
+
+	@RequestMapping(value = "/examsubject.htm", method = RequestMethod.GET)
+	public String initexamsubject() {
+		return "init/examsubjects";
+	}
+
 	@RequestMapping(value = "/othercategories.htm", method = RequestMethod.GET)
 	public String initOtherCategories() {
 		return "init/othercategories";
@@ -32,6 +42,11 @@ public class PageController {
 	@RequestMapping(value = "/cells.htm", method = RequestMethod.GET)
 	public String initCell() {
 		return "init/cells";
+	}
+
+	@RequestMapping(value = "/officeCenterMap.htm", method = RequestMethod.GET)
+	public String initofficeCenterMap() {
+		return "init/officeCenterMap";
 	}
 
 	@RequestMapping(value = "/examcenter.htm", method = RequestMethod.GET)

@@ -90,7 +90,7 @@ public class PageurlsDao implements PageurlsDaoInterface {
 		List<Map<String, Object>> list = null;
 		List<Pageurls> urllist = null;
 		try {
-			String sql = "Select * From backend.Pageurls ORDER BY parentorder,submenuorder,subsubmenu";
+			String sql = "Select * From backend.Pageurls ORDER BY parentorder,submenuorder,subsubmenuorder";
 			list = (List<Map<String, Object>>) jdbcTemplate.queryForList(sql);
 		} catch (Exception ex) {
 			ex.printStackTrace();

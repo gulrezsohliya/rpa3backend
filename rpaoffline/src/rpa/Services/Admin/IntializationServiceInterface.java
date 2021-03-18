@@ -4,7 +4,9 @@ import java.util.List;
 
 import rpa.Models.master.Cell;
 import rpa.Models.master.ExamCenter;
+import rpa.Models.master.ExamSubjects;
 import rpa.Models.master.Office;
+import rpa.Models.master.OptionalSubjects;
 import rpa.Models.master.OtherCategories;
 import rpa.Models.master.User;
 import rpa.Models.master.Venue;
@@ -17,6 +19,10 @@ public interface IntializationServiceInterface {
 	public User listUser(String username);
 
 	/* List */
+	public List<OptionalSubjects> listOptionalSubjects();
+
+	public List<ExamSubjects> listExamSubjects();
+
 	public List<OtherCategories> listOtherCategories();
 
 	public List<Cell> listCells();
@@ -69,5 +75,17 @@ public interface IntializationServiceInterface {
 	public boolean updateOtherCategory(OtherCategories categories);
 
 	public boolean deleteOtherCategory(Integer othercategorycode);
+
+	public String createExamSubject(ExamSubjects subject);
+
+	public boolean updateExamSubject(ExamSubjects subject);
+
+	public boolean deleteExamSubject(Integer code);
+
+	public String createOptionalSubject(OptionalSubjects subject);
+
+	public boolean updateOptionalSubject(OptionalSubjects subject);
+
+	public boolean deleteOptionalSubject(Integer code);
 
 }

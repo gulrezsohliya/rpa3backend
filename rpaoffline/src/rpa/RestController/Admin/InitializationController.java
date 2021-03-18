@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rpa.Models.master.Cell;
 import rpa.Models.master.ExamCenter;
+import rpa.Models.master.ExamSubjects;
 import rpa.Models.master.Office;
+import rpa.Models.master.OptionalSubjects;
 import rpa.Models.master.OtherCategories;
 import rpa.Models.master.Pageurls;
 import rpa.Models.master.User;
@@ -42,6 +44,26 @@ public class InitializationController {
 	 * READ DATA
 	 **********************************************************/
 
+	@GetMapping(value = "/listOptionalSubjects", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<OptionalSubjects>> listOptionalSubjects() {
+		try {
+			List<OptionalSubjects> cells = IS.listOptionalSubjects();
+			return ResponseEntity.accepted().body(cells);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping(value = "/listExamSubjects", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ExamSubjects>> listExamSubjects() {
+		try {
+			List<ExamSubjects> cells = IS.listExamSubjects();
+			return ResponseEntity.accepted().body(cells);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
 	@GetMapping(value = "/listOtherCategories", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<OtherCategories>> listOtherCategories() {
 		try {
@@ -51,6 +73,7 @@ public class InitializationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+
 	@GetMapping(value = "/listCells/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Cell>> listCell(@PathVariable Integer officecode) {
 		try {
@@ -105,6 +128,16 @@ public class InitializationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
+	
+	@GetMapping(value = "/listOfficesAndMappedCenters", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Office>> listOffice() {
+		try {
+			List<Office> offices = IS.listOfficesAndMappedCenters();
+			return ResponseEntity.ok().body(offices);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 	@GetMapping(value = "/listOffices/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffice(@PathVariable Integer officecode) {
@@ -119,12 +152,12 @@ public class InitializationController {
 	@GetMapping(value = "/listOffices", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffices(HttpServletRequest req) {
 		try {
-			List<Office> offices =null;
+			List<Office> offices = null;
 			if (((User) req.getSession().getAttribute("user")).getCellcode() == null) {
 				offices = IS.listOffices();
 			} else {
 				List<Cell> cells = IS.listCellsforCode(((User) req.getSession().getAttribute("user")).getCellcode());
-				offices= IS.listOffices(cells.get(0).getCellcode());
+				offices = IS.listOffices(cells.get(0).getCellcode());
 			}
 			return ResponseEntity.ok().body(offices);
 		} catch (Exception e) {
@@ -150,9 +183,42 @@ public class InitializationController {
 	/*******************************************************
 	 * CREATE DATA
 	 ***********************************************************/
+	@PostMapping(value = "/createOptionalSubject", consumes = "application/json")
+	public ResponseEntity<HashMap<String, Object>> createOptionalSubjects(@RequestBody OptionalSubjects subject) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		switch (IS.createOptionalSubject(subject)) {
+		case "CREATED":
+			response.put("response", HttpStatus.CREATED);
+			break;
+		case "EXISTS":
+			response.put("response", HttpStatus.ALREADY_REPORTED);
+			break;
+		default:
+			response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
+	}
+	@PostMapping(value = "/createExamSubject", consumes = "application/json")
+	public ResponseEntity<HashMap<String, Object>> createexamSubjects(@RequestBody ExamSubjects subject) {
+
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		switch (IS.createExamSubject(subject)) {
+		case "CREATED":
+			response.put("response", HttpStatus.CREATED);
+			break;
+		case "EXISTS":
+			response.put("response", HttpStatus.ALREADY_REPORTED);
+			break;
+		default:
+			response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
+	}
+
 	@PostMapping(value = "/createOtherCategory", consumes = "application/json")
 	public ResponseEntity<HashMap<String, Object>> creatOtherCategory(@RequestBody OtherCategories othercategory) {
-		
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		switch (IS.createOtherCategory(othercategory)) {
 		case "CREATED":
@@ -166,7 +232,7 @@ public class InitializationController {
 		}
 		return ResponseEntity.ok().body(response);
 	}
-	
+
 	@PostMapping(value = "/createvenue", consumes = "application/json")
 	public ResponseEntity<HashMap<String, Object>> createvenue(@RequestBody Venue venue) {
 
@@ -252,9 +318,20 @@ public class InitializationController {
 	 * UPDATE DATA
 	 ***********************************************************/
 
+	@PutMapping(value = "/updateOptionalSubject", consumes = "application/json")
+	public ResponseEntity<Boolean> updateOptionalSubjects(@RequestBody OptionalSubjects subject) {
+		
+		return ResponseEntity.ok().body(IS.updateOptionalSubject(subject));
+	}
+	@PutMapping(value = "/updateExamSubject", consumes = "application/json")
+	public ResponseEntity<Boolean> updateExamSubjects(@RequestBody ExamSubjects subject) {
+
+		return ResponseEntity.ok().body(IS.updateExamSubject(subject));
+	}
+
 	@PutMapping(value = "/updateOtherCategory", consumes = "application/json")
 	public ResponseEntity<Boolean> updateOtherCategory(@RequestBody OtherCategories otherCategory) {
-		
+
 		return ResponseEntity.ok().body(IS.updateOtherCategory(otherCategory));
 	}
 
@@ -312,6 +389,16 @@ public class InitializationController {
 	/*******************************************************
 	 * DELETE DATA
 	 ***********************************************************/
+	@DeleteMapping(value = "/deleteOptionalSubject/{code}")
+	public ResponseEntity<Boolean> deleteOptionalSubjects(@PathVariable Integer code) {
+		return ResponseEntity.ok().body(IS.deleteOptionalSubject(code));
+	}
+	
+	@DeleteMapping(value = "/deleteExamSubject/{examinationsubjectcode}")
+	public ResponseEntity<Boolean> deleteExamSubjects(@PathVariable Integer examinationsubjectcode) {
+		return ResponseEntity.ok().body(IS.deleteExamSubject(examinationsubjectcode));
+	}
+
 	@DeleteMapping(value = "/deleteOtherCategory/{othercategorycode}")
 	public ResponseEntity<Boolean> deleteOtherCategory(@PathVariable Integer othercategorycode) {
 		return ResponseEntity.ok().body(IS.deleteOtherCategory(othercategorycode));
