@@ -92,7 +92,7 @@ public class Utility implements UtilityInterface{
 	 
 		boolean response=false;		
 		try {
-			response=jdbcTemplate.update(sql,params)>0;
+			response=jdbcTemplate.update(sql,params)>=0;
 		}catch(Exception e) {
 			response=false;
 			LOG.info("\n\nError in "+tablename+"::"+e);

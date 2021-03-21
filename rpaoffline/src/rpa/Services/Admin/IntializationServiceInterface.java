@@ -1,15 +1,17 @@
 package rpa.Services.Admin;
 
+import java.util.HashMap;
 import java.util.List;
 
+import rpa.Models.Examination.ExamCenter;
+import rpa.Models.Examination.ExamSubjects;
+import rpa.Models.Examination.OfficeCenter;
+import rpa.Models.Examination.OptionalSubjects;
+import rpa.Models.Examination.Venue;
 import rpa.Models.master.Cell;
-import rpa.Models.master.ExamCenter;
-import rpa.Models.master.ExamSubjects;
 import rpa.Models.master.Office;
-import rpa.Models.master.OptionalSubjects;
 import rpa.Models.master.OtherCategories;
 import rpa.Models.master.User;
-import rpa.Models.master.Venue;
 
 public interface IntializationServiceInterface {
 	/* READ DATA */
@@ -35,6 +37,10 @@ public interface IntializationServiceInterface {
 
 	public List<Venue> listVenues();
 
+	public List<Office> listOfficesAndMappedCenters();
+
+	public List<Office> listOfficesAndMappedCenters(Integer officecode);
+
 	public List<Office> listOffices();
 
 	public List<Office> listOffices(Integer officecode);
@@ -57,6 +63,8 @@ public interface IntializationServiceInterface {
 	public String createOffice(Office office);
 
 	public boolean updateOffice(Office office);
+
+	public boolean saveOfficeCenters(List<OfficeCenter> officeCenter);
 
 	public String createExamCenter(ExamCenter center);
 

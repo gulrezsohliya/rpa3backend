@@ -24,6 +24,11 @@ public class PageController {
 	 * PAGEURLs
 	 ***********************************************************/
 
+	@RequestMapping(value = "/advertisement.htm", method = RequestMethod.GET)
+	public String advertisement() {
+		return "init/advertisement";
+	}
+
 	@RequestMapping(value = "/optionalsubject.htm", method = RequestMethod.GET)
 	public String initoptionalsubject() {
 		return "init/optionalsubjects";

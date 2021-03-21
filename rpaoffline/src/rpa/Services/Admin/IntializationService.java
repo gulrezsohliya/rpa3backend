@@ -1,5 +1,7 @@
 package rpa.Services.Admin;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -9,14 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rpa.Dao.Admin.InitializationDaoInterface;
+import rpa.Models.Examination.ExamCenter;
+import rpa.Models.Examination.ExamSubjects;
+import rpa.Models.Examination.OfficeCenter;
+import rpa.Models.Examination.OptionalSubjects;
+import rpa.Models.Examination.Venue;
 import rpa.Models.master.Cell;
-import rpa.Models.master.ExamCenter;
-import rpa.Models.master.ExamSubjects;
 import rpa.Models.master.Office;
-import rpa.Models.master.OptionalSubjects;
 import rpa.Models.master.OtherCategories;
 import rpa.Models.master.User;
-import rpa.Models.master.Venue;
+import rpa.Models.master.UserPages;
 import rpa.Utility.UtilityInterface;
 
 @Service("IntializationService")
@@ -43,7 +47,7 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public List<OptionalSubjects> listOptionalSubjects() {
 		List<OptionalSubjects> oth = null;
-		
+
 		String sql = "SELECT * FROM MASTERS.optionalsubjects ORDER BY subjectname";
 		oth = UI.listGeneric(OptionalSubjects.class, sql);
 		return oth;
@@ -52,11 +56,12 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public List<ExamSubjects> listExamSubjects() {
 		List<ExamSubjects> oth = null;
-		
+
 		String sql = "SELECT * FROM MASTERS.examinationsubjects ORDER BY examinationsubjectname";
 		oth = UI.listGeneric(ExamSubjects.class, sql);
 		return oth;
 	}
+
 	@Override
 	public List<OtherCategories> listOtherCategories() {
 		List<OtherCategories> oth = null;
@@ -123,7 +128,7 @@ public class IntializationService implements IntializationServiceInterface {
 	public List<Office> listOffices() {
 		String sql = "SELECT  officecode, officename1, officename2, officename3, officeshortname, "
 				+ "       signatoryname, signatorydesignation, emailid, emailidpassword, "
-				+ "       smsusername, smspassword, smssenderid, enabled " + "FROM MASTERS.offices "
+				+ "       smsusername, smspassword, smssenderid, enabled FROM MASTERS.offices "
 				+ "ORDER BY officename1, officename2, officename3";
 		List<Office> offices = UI.listGeneric(Office.class, sql);
 		return offices;
@@ -133,19 +138,48 @@ public class IntializationService implements IntializationServiceInterface {
 	public List<Office> listOffices(Integer officecode) {
 		String sql = "SELECT  officecode, officename1, officename2, officename3, officeshortname, "
 				+ "       signatoryname, signatorydesignation, emailid, emailidpassword, "
-				+ "       smsusername, smspassword, smssenderid, enabled " + "FROM MASTERS.offices "
-				+ "WHERE officecode = ? " + "ORDER BY officename1, officename2, officename3";
+				+ "       smsusername, smspassword, smssenderid, enabled FROM MASTERS.offices "
+				+ "WHERE officecode = ? ORDER BY officename1, officename2, officename3";
 		List<Office> offices = UI.listGeneric(Office.class, sql, new Object[] { officecode });
+		return offices;
+	}
+
+	@Override
+	public List<Office> listOfficesAndMappedCenters() {
+
+		List<Office> response = new ArrayList<Office>();
+		List<Office> offices = listOffices();
+		String sql = "SELECT e.* FROM backend.examinationcenters e "
+				+ "INNER JOIN backend.officecenters oc on oc.centercode=e.centercode " + "WHERE oc.officecode=? "
+				+ "order by centername";
+		List<ExamCenter> centers;
+		for (Office o : offices) {
+			centers = UI.listGeneric(ExamCenter.class, sql, new Object[] { o.getOfficecode() });
+			o.setCenters(centers);
+			response.add(o);
+		}
+		return response;
+	}
+
+	@Override
+	public List<Office> listOfficesAndMappedCenters(Integer officecode) {
+
+		List<Office> offices = listOffices(officecode);
+		String sql = "SELECT e.* FROM backend.examinationcenters e "
+				+ "INNER JOIN backend.officecenters oc on oc.centercode=e.centercode " + "WHERE oc.officecode=? "
+				+ "order by centername";
+		List<ExamCenter> centers = UI.listGeneric(ExamCenter.class, sql, new Object[] { officecode });
+		offices.get(0).setCenters(centers);
 		return offices;
 	}
 
 	@Override
 	public List<User> listUser() {
 		String sql = "SELECT UL.cellcode, UL.usercode, UL.username,    "
-				+ "	UL.fullname, UL.mobileno, UL.designation, UL.enabled,    " + "	MC.celldescription,   "
-				+ "	MO.officecode, MO.officename1, MO.officename2, " + "	MO.officename3, MO.officeshortname    "
-				+ "FROM backend.userlogins UL   " + "INNER JOIN masters.cells MC ON MC.cellcode = UL.cellcode   "
-				+ "INNER JOIN masters.offices MO ON MO.officecode = MC.officecode   " + "ORDER BY UL.username";
+				+ "	UL.fullname, UL.mobileno, UL.designation, UL.enabled,    MC.celldescription,   "
+				+ "	MO.officecode, MO.officename1, MO.officename2, MO.officename3, MO.officeshortname    "
+				+ "FROM backend.userlogins UL   INNER JOIN masters.cells MC ON MC.cellcode = UL.cellcode   "
+				+ "INNER JOIN masters.offices MO ON MO.officecode = MC.officecode   ORDER BY UL.username";
 		List<User> users = UI.listGeneric(User.class, sql);
 		return users;
 	}
@@ -348,7 +382,8 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public boolean updateExamSubject(ExamSubjects subject) {
 		String sql = "UPDATE masters.examinationsubjects SET examinationsubjectname=?, description=? WHERE  examinationsubjectcode=? ";
-		Object[] params = new Object[] { subject.getExaminationsubjectname(), subject.getDescription(),subject.getExaminationsubjectcode() };
+		Object[] params = new Object[] { subject.getExaminationsubjectname(), subject.getDescription(),
+				subject.getExaminationsubjectcode() };
 		return UI.update("masters.examinationsubjects", sql, params);
 	}
 
@@ -358,14 +393,13 @@ public class IntializationService implements IntializationServiceInterface {
 		String sql = "Delete from masters.examinationsubjects where examinationsubjectcode=? ";
 		return UI.update("masters.examinationsubjects", sql, new Object[] { examinationsubjectcode });
 	}
-	
+
 	// Optional Subject
 	@Override
 	public String createOptionalSubject(OptionalSubjects subject) {
-		
+
 		String sql = "SELECT * FROM masters.Optionalsubjects WHERE subjectname =? ";
-		if ((UI.listGeneric(OptionalSubjects.class, sql, new Object[] { subject.getSubjectname() }))
-				.size() > 0) {
+		if ((UI.listGeneric(OptionalSubjects.class, sql, new Object[] { subject.getSubjectname() })).size() > 0) {
 			return "EXISTS";
 		}
 		sql = "INSERT INTO masters.Optionalsubjects (subjectcode,subjectname)VALUES (?, ?)";
@@ -373,19 +407,39 @@ public class IntializationService implements IntializationServiceInterface {
 				subject.getSubjectname() };
 		return (UI.update("masters.Optionalsubjects", sql, params)) ? "CREATED" : "FAILED";
 	}
-	
+
 	@Override
 	public boolean updateOptionalSubject(OptionalSubjects subject) {
 		String sql = "UPDATE masters.Optionalsubjects SET subjectname=? WHERE  subjectcode=? ";
-		Object[] params = new Object[] { subject.getSubjectname(),subject.getSubjectcode() };
+		Object[] params = new Object[] { subject.getSubjectname(), subject.getSubjectcode() };
 		return UI.update("masters.Optionalsubjects", sql, params);
 	}
-	
+
 	@Override
 	public boolean deleteOptionalSubject(Integer subjectcode) {
-		
+
 		String sql = "Delete from masters.Optionalsubjects where subjectcode=? ";
 		return UI.update("masters.Optionalsubjects", sql, new Object[] { subjectcode });
+	}
+
+	@Override
+	public boolean saveOfficeCenters(List<OfficeCenter> officeCenter) {
+		System.out.println(officeCenter);
+			String sql = "DELETE From backend.officecenters WHERE officecode=? ";
+			if (!UI.update("masters.officecenters", sql, new Object[] {officeCenter.get(0).getOfficecode()})) {
+				System.out.println("DELETE = "+officeCenter.get(0).getOfficecode());
+				return false;
+			}
+			/////////////////////////////////////
+			sql = "INSERT INTO backend.officecenters(slno, officecode, centercode) VALUES (?, ?, ?)";
+			int max = UI.getMax("backend", "officecenters", "slno");
+			for (OfficeCenter oc:officeCenter) {
+				if(!UI.update("backend.OfficeCenter",sql,new Object[] {++max,oc.getOfficecode(),oc.getCentercode()})) {
+					System.out.println("INSERT = "+oc.getCentercode());
+					return false;
+				}			
+			}		
+		return true;
 	}
 
 }

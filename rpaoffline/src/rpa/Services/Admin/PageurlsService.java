@@ -116,6 +116,10 @@ public class PageurlsService implements PageurlsServiceInterface {
 	}
 
 	public String savePageurl(Pageurls url) {
+		if(url.getSubsubmenu()!=null)
+			url.setSubsubmenu(url.getSubsubmenu().length() == 0 ? null : url.getSubsubmenu());
+		if(url.getSubmenu()!=null)
+			url.setSubmenu(url.getSubmenu().length() == 0 ? null : url.getSubmenu());
 		return (dao.savePageurlsDao(url)) ? "Saved" : "Failed";
 	}
 

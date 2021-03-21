@@ -1,6 +1,9 @@
 package rpa.Models.master;
 
 import java.io.Serializable;
+import java.util.List;
+
+import rpa.Models.Examination.ExamCenter;
 
 public class Office implements Serializable {
 	private final static long serialVersionUID = 1L;
@@ -18,7 +21,7 @@ public class Office implements Serializable {
 	private String smspassword;
 	private String smssenderid;
 	private String enabled;
-
+	private List<ExamCenter> centers;
 	public Office() {
 		super();
 	}
@@ -141,6 +144,14 @@ public class Office implements Serializable {
 
 	public void setEnabled(String enabled) {
 		this.enabled = enabled;
+	}
+
+	public List<ExamCenter> getCenters() {
+		return centers;
+	}
+
+	public void setCenters(List<ExamCenter> centers) {
+		this.centers = centers;
 	}
 
 	@Override

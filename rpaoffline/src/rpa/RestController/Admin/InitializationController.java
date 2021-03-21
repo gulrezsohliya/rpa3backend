@@ -22,15 +22,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import rpa.Models.Examination.ExamCenter;
+import rpa.Models.Examination.ExamSubjects;
+import rpa.Models.Examination.OfficeCenter;
+import rpa.Models.Examination.OptionalSubjects;
+import rpa.Models.Examination.Venue;
 import rpa.Models.master.Cell;
-import rpa.Models.master.ExamCenter;
-import rpa.Models.master.ExamSubjects;
 import rpa.Models.master.Office;
-import rpa.Models.master.OptionalSubjects;
 import rpa.Models.master.OtherCategories;
 import rpa.Models.master.Pageurls;
 import rpa.Models.master.User;
-import rpa.Models.master.Venue;
 import rpa.Services.Admin.IntializationServiceInterface;
 
 @RestController
@@ -130,9 +131,15 @@ public class InitializationController {
 	}
 	
 	@GetMapping(value = "/listOfficesAndMappedCenters", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Office>> listOffice() {
+	public ResponseEntity<List<Office>> listOffice(HttpServletRequest req) {
 		try {
-			List<Office> offices = IS.listOfficesAndMappedCenters();
+			List<Office> offices = null;
+			if (((User) req.getSession().getAttribute("user")).getCellcode() == null) {
+				offices = IS.listOfficesAndMappedCenters();
+			} else {
+				List<Cell> cells = IS.listCellsforCode(((User) req.getSession().getAttribute("user")).getCellcode());
+				offices = IS.listOfficesAndMappedCenters(cells.get(0).getOfficecode());
+			}
 			return ResponseEntity.ok().body(offices);
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
@@ -157,7 +164,7 @@ public class InitializationController {
 				offices = IS.listOffices();
 			} else {
 				List<Cell> cells = IS.listCellsforCode(((User) req.getSession().getAttribute("user")).getCellcode());
-				offices = IS.listOffices(cells.get(0).getCellcode());
+				offices = IS.listOffices(cells.get(0).getOfficecode());
 			}
 			return ResponseEntity.ok().body(offices);
 		} catch (Exception e) {
@@ -246,6 +253,18 @@ public class InitializationController {
 			break;
 		default:
 			response.put("response", HttpStatus.OK);
+		}
+		return ResponseEntity.ok().body(response);
+	}
+
+	@PostMapping(value = "/saveOfficeCenters", consumes = "application/json")
+	public ResponseEntity<HashMap<String, Object>> saveOfficeCenters(@RequestBody List<OfficeCenter> offcen) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		if (IS.saveOfficeCenters(offcen)) {
+			response.put("response", HttpStatus.CREATED);
+		}else {
+			response.put("response", HttpStatus.METHOD_FAILURE);
 		}
 		return ResponseEntity.ok().body(response);
 	}

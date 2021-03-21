@@ -1,4 +1,4 @@
-package rpa.Models.master;
+package rpa.Models.Examination;
 
 import java.io.Serializable;
 

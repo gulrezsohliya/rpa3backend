@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import rpa.Models.master.ExamCenter;
+import rpa.Models.Examination.ExamCenter;
 import rpa.Models.master.User;
 import rpa.Utility.UtilityInterface;
 

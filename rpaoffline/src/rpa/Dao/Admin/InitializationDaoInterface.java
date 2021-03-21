@@ -2,8 +2,8 @@ package rpa.Dao.Admin;
 
 import java.util.List;
 
+import rpa.Models.Examination.ExamCenter;
 import rpa.Models.master.Cell;
-import rpa.Models.master.ExamCenter;
 import rpa.Models.master.User;
 
 public interface InitializationDaoInterface {

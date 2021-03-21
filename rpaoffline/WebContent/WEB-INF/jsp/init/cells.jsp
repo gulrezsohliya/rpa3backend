@@ -29,7 +29,7 @@
 								<select type="text" class="form-control" id="office" name="officecode" ng-model="cell.officecode" required>
 									<option value="">--Select--</option>
 									<option ng-selected="offc.officecode == cell.officecode"
-										ng-repeat='offc in offices track by $index' ng-value="offc	.officecode">
+										ng-repeat='offc in offices track by $index' ng-value="offc.officecode">
 										{{offc.officeshortname}}</option>
 								</select>       								
 								<span id="officecodeMsg"></span>

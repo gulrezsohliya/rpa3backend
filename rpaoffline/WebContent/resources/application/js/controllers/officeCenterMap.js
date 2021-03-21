@@ -1,14 +1,14 @@
 $(document).ready(function () {
   var scope = angular.element($("#mapCtrl")).scope();
   scope.$apply(function () {
-//    scope.listUsers();
+    scope.listOffices();
     scope.listExamCenters();
   });
 });
 app.controller("mapCtrl", [
   "$scope",
-  "$sce",'commonInitFactory',
-  function ($scope, $sce,commonInitFactory) {
+  "$sce","$timeout",'commonInitFactory',
+  function ($scope, $sce, $timeout, commonInitFactory) {
     $scope.office = new Office();
     $scope.offices = [];
     $scope.centers = [];
@@ -16,31 +16,38 @@ app.controller("mapCtrl", [
       return $sce.trustAsHtml(post);
     };
     
+    $scope.reset=()=>{
+    	$scope.officecode=0;
+    	$scope.office = new Office();
+    	$scope.office.centers=[];
+    	$scope.mappedCenters();
+    };
+    
     $scope.save = function () {
-      var mapuserpagespages = [];
-      jQuery.each($scope.URLs, function (i, v) {
+      var mapCenters = [];
+      jQuery.each($scope.centers, function (i, v) {
         if (v.checked) {
-          mapuserpagespages.push({
-            userpagecode: 0,
-            usercode: $scope.user.usercode,
-            url: v,
+          mapCenters.push({
+            slno: 0,
+            officecode: $scope.officecode,
+            centercode: v.centercode,
           });
         }
       });
-      if (mapuserpagespages.length === 0) {
-        MsgBox("Select atleast one URL");
+      if (mapCenters.length === 0) {
+        MsgBox("Select atleast one Center");
         return;
       }
       jQuery.ajax({
         type: "POST",
-        url: "./saveUserpages",
-        data: angular.toJson(mapuserpagespages),
+        url: "./saveOfficeCenters",
+        data: angular.toJson(mapCenters),
         // dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
-          MsgBox(response);
-          $scope.reset();
-          $scope.listUsers();
+          MsgBox(response.response=="CREATED"?"Mapped":"Failed");
+	      $scope.listOffices();
+	      $scope.reset();
         },
         error: function (xhr) {
           alert(xhr.status + " = " + xhr);
@@ -51,18 +58,31 @@ app.controller("mapCtrl", [
       });
     };
     
-    $scope.mappedPages = function (index) {
-      jQuery.each($scope.URLs, function (i, v) {
+    $scope.mappedCenters = function (index) {
+      
+      jQuery.each($scope.centers, function (i, v) {
         v.checked = false;
       });
-      $scope.user = $scope.users[index];
-      $scope.checks();
-      jQuery("html, body").animate(
-        {
-          scrollTop: 0,
-        },
-        2000
-      );
+      if($scope.office!==undefined){
+    	  $scope.office=$scope.offices.filter((o)=>{
+    		  return o.officecode==$scope.officecode;
+    	  })[0];
+    	  $scope.checks();    	  
+      }
+    };
+
+    $scope.checks = function () {
+      var response;
+      jQuery.each($scope.centers, function (i0, v0) {
+        response = false;
+        jQuery.each($scope.office.centers, function (i, v) {
+          if (v0.centercode === v.centercode) {
+            response = true;
+            return false;
+          }
+        });
+        v0.checked = response;
+      });
     };
     
     $scope.listOffices = function () {
@@ -72,7 +92,13 @@ app.controller("mapCtrl", [
         // dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
-        	scope.offices = response;
+        	$timeout(()=>{
+        		$scope.offices = response
+        		if(response.length===1){
+        			$scope.office=response[0];
+        			$scope.mappedCenters();
+        		}
+        	},0);        	
         },
         error: function (xhr) {
           alert(xhr.status + " = " + xhr);
@@ -87,20 +113,6 @@ app.controller("mapCtrl", [
         commonInitFactory.listExamCenters((response)=>{
     		$scope.centers = response;
     	});
-    };
-    
-    $scope.checks = function () {
-      var response;
-      jQuery.each($scope.centers, function (i0, v0) {
-        response = false;
-        jQuery.each($scope.user.mappedpages, function (i, v) {
-          if (v0.urlcode === v.urlcode) {
-            response = true;
-            return false;
-          }
-        });
-        v0.checked = response;
-      });
     };
     
   },

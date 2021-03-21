@@ -21,7 +21,12 @@
                         <tr class="form-group has-feedback">
                             <td class="title" style="width: 15%">Office :</td>
                             <td>
-                                <span >{{office.officeshortname}}</span>
+                                <select type="text" class="form-control" id="office" name="officecode" ng-model="officecode" ng-change="mappedCenters()" required>
+									<option value="">--Select--</option>
+									<option ng-selected="offc.officecode == office.officecode"
+										ng-repeat='offc in offices track by $index' ng-value="offc.officecode">
+										{{offc.officeshortname}}</option>
+								</select>
                             </td>                                     
                             <td rowspan="15" style="width:65%;border: 1px solid blue;">
                                 <div style="width:100%;max-height:300px;overflow-y: auto ">
