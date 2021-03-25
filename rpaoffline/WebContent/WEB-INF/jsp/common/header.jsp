@@ -57,7 +57,7 @@ body {
 }
 .menucontainer{
 	min-width:5px;
-	width:50px;
+	width:60px;
 }
 .header{
 	flex-grow:1;

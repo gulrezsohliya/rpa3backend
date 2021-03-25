@@ -45,26 +45,6 @@ public class InitializationController {
 	 * READ DATA
 	 **********************************************************/
 
-	@GetMapping(value = "/listOptionalSubjects", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<OptionalSubjects>> listOptionalSubjects() {
-		try {
-			List<OptionalSubjects> cells = IS.listOptionalSubjects();
-			return ResponseEntity.accepted().body(cells);
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
-	@GetMapping(value = "/listExamSubjects", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ExamSubjects>> listExamSubjects() {
-		try {
-			List<ExamSubjects> cells = IS.listExamSubjects();
-			return ResponseEntity.accepted().body(cells);
-		} catch (Exception e) {
-			return ResponseEntity.notFound().build();
-		}
-	}
-
 	@GetMapping(value = "/listOtherCategories", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<OtherCategories>> listOtherCategories() {
 		try {
@@ -190,38 +170,6 @@ public class InitializationController {
 	/*******************************************************
 	 * CREATE DATA
 	 ***********************************************************/
-	@PostMapping(value = "/createOptionalSubject", consumes = "application/json")
-	public ResponseEntity<HashMap<String, Object>> createOptionalSubjects(@RequestBody OptionalSubjects subject) {
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		switch (IS.createOptionalSubject(subject)) {
-		case "CREATED":
-			response.put("response", HttpStatus.CREATED);
-			break;
-		case "EXISTS":
-			response.put("response", HttpStatus.ALREADY_REPORTED);
-			break;
-		default:
-			response.put("response", HttpStatus.OK);
-		}
-		return ResponseEntity.ok().body(response);
-	}
-	@PostMapping(value = "/createExamSubject", consumes = "application/json")
-	public ResponseEntity<HashMap<String, Object>> createexamSubjects(@RequestBody ExamSubjects subject) {
-
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		switch (IS.createExamSubject(subject)) {
-		case "CREATED":
-			response.put("response", HttpStatus.CREATED);
-			break;
-		case "EXISTS":
-			response.put("response", HttpStatus.ALREADY_REPORTED);
-			break;
-		default:
-			response.put("response", HttpStatus.OK);
-		}
-		return ResponseEntity.ok().body(response);
-	}
 
 	@PostMapping(value = "/createOtherCategory", consumes = "application/json")
 	public ResponseEntity<HashMap<String, Object>> creatOtherCategory(@RequestBody OtherCategories othercategory) {
@@ -337,17 +285,6 @@ public class InitializationController {
 	 * UPDATE DATA
 	 ***********************************************************/
 
-	@PutMapping(value = "/updateOptionalSubject", consumes = "application/json")
-	public ResponseEntity<Boolean> updateOptionalSubjects(@RequestBody OptionalSubjects subject) {
-		
-		return ResponseEntity.ok().body(IS.updateOptionalSubject(subject));
-	}
-	@PutMapping(value = "/updateExamSubject", consumes = "application/json")
-	public ResponseEntity<Boolean> updateExamSubjects(@RequestBody ExamSubjects subject) {
-
-		return ResponseEntity.ok().body(IS.updateExamSubject(subject));
-	}
-
 	@PutMapping(value = "/updateOtherCategory", consumes = "application/json")
 	public ResponseEntity<Boolean> updateOtherCategory(@RequestBody OtherCategories otherCategory) {
 
@@ -408,15 +345,6 @@ public class InitializationController {
 	/*******************************************************
 	 * DELETE DATA
 	 ***********************************************************/
-	@DeleteMapping(value = "/deleteOptionalSubject/{code}")
-	public ResponseEntity<Boolean> deleteOptionalSubjects(@PathVariable Integer code) {
-		return ResponseEntity.ok().body(IS.deleteOptionalSubject(code));
-	}
-	
-	@DeleteMapping(value = "/deleteExamSubject/{examinationsubjectcode}")
-	public ResponseEntity<Boolean> deleteExamSubjects(@PathVariable Integer examinationsubjectcode) {
-		return ResponseEntity.ok().body(IS.deleteExamSubject(examinationsubjectcode));
-	}
 
 	@DeleteMapping(value = "/deleteOtherCategory/{othercategorycode}")
 	public ResponseEntity<Boolean> deleteOtherCategory(@PathVariable Integer othercategorycode) {

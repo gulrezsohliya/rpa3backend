@@ -5,7 +5,7 @@ $(document).ready(function () {
 app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/*Common Ajax Params*/
-	var successMsg = "Success: Office created/updated";
+	var successMsg = "Success: Advertisement created/updated";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";
@@ -16,17 +16,13 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 	/*------------------------*/
 	
 	$scope.actionButton = SAVE;
-    $scope.office = new Office();
-    $scope.offices = [];
+    $scope.adv = new Advertisement();
+    $scope.advs = [];
     
-    $scope.print = function (post) {
-        console.log(post);
-    };
-    
-    $scope.edit = function (officecode) {
+    $scope.edit = function (adcode) {
     	$scope.actionButton = EDIT;
-    	$scope.office =$scope.offices.filter(obj=>{
-    		return obj.officecode==officecode;
+    	$scope.adv =$scope.advs.filter(obj=>{
+    		return obj.adcode==adcode;
     	})[0];
         jQuery('html, body').animate({
             scrollTop: 0
@@ -34,30 +30,30 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     };
 
     $scope.reset = function () {
-    	$scope.office = new Office();
+    	$scope.adcode = new Advertisement();
     	$scope.actionButton = SAVE;
     };
 
     $scope.save = function () {
-        if($scope.officeForm.$invalid)
+        if($scope.advForm.$invalid)
             return false;
         
         $scope.method = "POST";
-        $scope.urlEndpoint = "./createoffice";
+        $scope.urlEndpoint = "./createAdvertisement";
     	
-        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.office, () => {$scope.reset();$scope.listOffices(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
+        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, () => {$scope.reset();$scope.listAdvs(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
     };
     
     $scope.update = (checkform=true) => {
-	    if(checkform && $scope.officeForm.$invalid)
+	    if(checkform && $scope.advForm.$invalid)
              return false;
 	    
 	    $scope.method = "PUT";
-    	$scope.urlEndpoint = "./updateoffice";
-    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.office, (res) => {	
+    	$scope.urlEndpoint = "./updateAdvertisement";
+    	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, (res) => {	
 			if(res===true){
 				$scope.reset();
-				$scope.listOffices(); 
+				$scope.listAdvs(); 
 				MsgBox(successMsg);				
 			}else{
 				MsgBox(errorMsg);								
@@ -67,13 +63,13 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 			MsgBox(errorMsg)
 		});
     }
-    $scope.toggleStatus=(officecode)=>{
-    	$scope.office =$scope.offices.filter(obj=>{
-    		return obj.officecode==officecode;
-    	})[0];
-    	$scope.office.enabled=$scope.office.enabled==='Y'?'N':'Y';
-    	$scope.update(false);
-    };
+//    $scope.toggleStatus=(adcode)=>{
+//    	$scope.adv =$scope.advs.filter(obj=>{
+//    		return obj.adcode==adcode;
+//    	})[0];
+//    	$scope.adv.enabled=$scope.adv.enabled==='Y'?'N':'Y';
+//    	$scope.update(false);
+//    };
     
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
     
@@ -85,52 +81,34 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
             data: obj,
             columns: [
                 {
-                    "title": "Office Code",
-                    "data": "officecode",
-                    render: function (data, type, row, meta){
-                    	return meta.row+1;
-                    }
+                    "title": "Advertisement No.",
+                    "data": "advertisementno"
                 }, {
-                    "title": "Office Name1",
-                    "data": "officename1"
+                    "title": "Description",
+                    "data": "description"
                 }, {
-                    "title": "Office Name2",
-                    "data": "officename2"
+                    "title": "Post",
+                    "data": "nameofpost"
                 }, {
-                    "title": "Office Name3",
-                    "data": "officename3"
+                    "title": "Post Short Name",
+                    "data": "postshortname"
                 }, {
-                    "title": "Office Short Name",
-                    "data": "officeshortname"
-                },{
-                    "title": "Signatory Details",
-                    "data": (row, type, set) => {
-                    	let res = "<b>Signatory Name: </b>"+row.signatoryname;
-                    	res += "<br/><b>Signatory Designation: </b>"+row.signatorydesignation;
-                    	return res;
-                    }
-                }, {
-                    "title": "Email ID",
-                    "data": "emailid",
-                },{
-                    "title": "SMS Details",
-                    "data":  (row, type, set) => {
-                    	let res = "<b>SMS Username: </b>"+row.smsusername;
-                    	res += "<br/><b>SMS Sender ID: </b>"+row.smssenderid;
-                    	return res;
+                    "title": "Issue Date",
+                    "data": (row, type, set)=>{
+                    	return "<input style='border:none;background:inherit;' type='date' value="+issuedate+"'/>"
                     }
                 },{
-                    "title": "Enabled",
-                    "data": "enabled"
+                	"title": "Last Date",
+                	"data": (row, type, set)=>{
+                		return "<input style='border:none;background:inherit;' type='date' value="+lastdate+"'/>"
+                	}
                 }, 
                 {
                     "title": "Action",
                     "sortable": false,
-                    "data": "officecode",
+                    "data": "adcode",
                     "render": function (data, type, row, meta) {
-                    	let status = row.enabled == 'Y'?'Disable':'Enable';
                     	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
-                    		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="toggleStatus(' + data + ')" class="button-primary">'+status+'</button></div>';
                         return div;
                     }
                 }
@@ -147,13 +125,13 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     };
 
     /*READ DATA*/
-    $scope.listOffices = () => {
-        commonInitFactory.listOffices((response)=>{
-    		$scope.offices = response;
-    		$scope.setDataTable($scope.offices);
+    $scope.listAdvs = () => {
+        commonInitFactory.listAdvertisements((response)=>{
+    		$scope.advs = response;
+    		$scope.setDataTable($scope.advs);
     	});
     };
-//    $scope.listOffices();
+    $scope.listAdvs();
         
         
 }]);

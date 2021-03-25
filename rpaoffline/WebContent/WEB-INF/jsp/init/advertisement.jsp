@@ -11,16 +11,55 @@
             input[type=search]{
                 margin-bottom: 5px;
             }
+            .title{
+            	width:35%;
+            }
+            .form-group fieldset{
+            	display:inline; 
+            }
+            .form-group fieldset input{
+            	width:100%; 
+            }
+            legend{
+	            padding: 0 5px;
+			    background-color: aliceblue;
+			    border: 1px solid #34495e59;
+			    border-radius: 3px;
+    		}
         </style>
     </head>
     <body ng-app="CommonApp">
         <%@include file="../common/header.jsp" %> 
         <div class='containerBody' id="advCtrl" ng-controller="advCtrl">
             <h2 class="title">Advertisement</h2>
-            <div  style='width:80%;margin: 15px auto 0'>
+            <div  style='margin: 0 auto '>
                 <form id="advForm" name="advForm">
                     <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
                         
+                        <tr class="form-group has-feedback">
+                            <td class="title">Advertisement No.</td>
+                            <td class="col-xs-5 selectContainer">
+								<input class="form-control" type="text" id="advertisementno" name="advertisementno"
+									ng-model="adv.advertisementno" required/>
+								<span id="advMsg"></span>
+								<span class="alert alert-danger" 
+									ng-show="advForm.advertisementno.$pristine && advForm.advertisementno.$invalid"> 
+									Required
+								</span>
+                            </td>
+                        </tr>
+                        <tr class="form-group has-feedback">
+                            <td class="title">Description</td>
+                            <td class="col-xs-5 selectContainer">
+	                            <textarea class="form-control" id="nameofpost" name="description"
+										ng-model="adv.description" required></textarea> 
+								<span id="advMsg"></span>
+								<span class="alert alert-danger" 
+									ng-show="advForm.description.$pristine && advForm.description.$invalid"> 
+									Required
+								</span>
+                            </td>
+                        </tr>
                         <tr class="form-group has-feedback">
                             <td class="title">Name of post</td>
                             <td class="col-xs-5 selectContainer">
@@ -82,29 +121,42 @@
 								</br><input type="checkbox" ng-model="agedate_sameas_issuedate"
 									 ng-change="adv.agedate=((agedate_sameas_issuedate)?adv.issuedate:adv.agedate)"/><span>Same as Issue date?</span>
                             </td>
-                        </tr>
+                        </tr>                        
                         <tr class="form-group has-feedback">
-                            <td class="title">Advertisement No.</td>
+                            <td class="title">Age as on <input type="date" ng-model='adv.agedate' readonly style='border:none;background:inherit;'/></td>
                             <td class="col-xs-5 selectContainer">
-								<input class="form-control" type="text" id="advertisementno" name="advertisementno"
-									ng-model="adv.advertisementno" required/>
-								<span id="advMsg"></span>
-								<span class="alert alert-danger" 
-									ng-show="advForm.advertisementno.$pristine && advForm.advertisementno.$invalid"> 
+								<fieldset><legend>General</legend>
+									Minimum Age::<input style="width:30%;" class="form-control" type="number" name="GENERALagemin"
+										ng-model="adv.ageason['GENERAL'].agemin"  min='0'/>
+									Maximun Age::<input style="width:30%;" class="form-control" type="number" name="GENERALagemax"
+										ng-model="adv.ageason['GENERAL'].agemax"  min='0'/>
+								</fieldset>
+								<!-- <span class="alert alert-danger" 
+									ng-show="(advForm.GENERALagemin.$pristine && advForm.GENERALagemin.$invalid)||( advForm.GENERALagemax.$pristine && advForm.GENERALagemax.$invalid)"> 
 									Required
-								</span>
-                            </td>
-                        </tr>
-                        <tr class="form-group has-feedback">
-                            <td class="title">Description</td>
-                            <td class="col-xs-5 selectContainer">
-								<input class="form-control" type="text" id="description" name="description"
-									ng-model="adv.description" required/>
+								</span> -->
+
+								<fieldset><legend>SC</legend>
+									Minimum Age::<input style="width:30%;" class="form-control" type="number" name="SCagemin"
+										ng-model="adv.ageason['SC'].agemin"  min='0'/>
+									Maximun Age::<input style="width:30%;" class="form-control" type="number" name="SCagemax"
+										ng-model="adv.ageason['SC'].agemax"  min='0'/>
+								</fieldset>
+
+								<fieldset><legend>ST</legend>
+									Minimum Age::<input style="width:30%;" class="form-control" type="number" name="STagemin"
+										ng-model="adv.ageason['ST'].agemin"  min='0'/>
+									Maximun Age::<input style="width:30%;" class="form-control" type="number" name="STagemax"
+										ng-model="adv.ageason['ST'].agemax"  min='0'/>
+								</fieldset>
+
+								<fieldset><legend>OBC</legend>
+									Minimum Age::<input style="width:30%;" class="form-control" type="number" name="OBCagemin"
+										ng-model="adv.ageason['OBC'].agemin" min='0'/>
+									Maximun Age::<input style="width:30%;" class="form-control" type="number" name="OBCagemax"
+										ng-model="adv.ageason['OBC'].agemax" min='0'/>
+								</fieldset>
 								<span id="advMsg"></span>
-								<span class="alert alert-danger" 
-									ng-show="advForm.description.$pristine && advForm.description.$invalid"> 
-									Required
-								</span>
                             </td>
                         </tr>
                         <tr class="form-group has-feedback">
@@ -138,10 +190,10 @@
                             </td>
                         </tr>
                         <tr class="form-group has-feedback">
-                            <td class="title">No. of Optionals</td>
+                            <td class="title">No. of Optional Subjects</td>
                             <td class="col-xs-5 selectContainer">
 								<input class="form-control" type="number" id="noofoptionals" name="noofoptionals"
-									ng-model="adv.noofoptionals" required/>
+									ng-model="adv.noofoptionals" required min='0	'/>
 								<span id="advMsg"></span>
 								<span class="alert alert-danger" 
 									ng-show="advForm.noofoptionals.$pristine && advForm.noofoptionals.$invalid"> 
@@ -153,7 +205,7 @@
                             <td class="title">Open</td>
                             <td class="col-xs-5 selectContainer">
 								<select class="form-control"  id="open" name="open"	ng-model="adv.open" required>
-									<option value="Y">Yes</option> 
+									<option value="Y" ng-selected='true'>Yes</option> 
 									<option value="N">No</option> 
 								</select>
 								<span id="advMsg"></span>
@@ -167,7 +219,7 @@
                             <td class="title">Counter Entry</td>
                             <td class="col-xs-5 selectContainer">
 								<select class="form-control"  id="counterentry" name="counterentry"	ng-model="adv.counterentry" required>
-									<option value="Y">Yes</option> 
+									<option value="Y" ng-selected='true'>Yes</option> 
 									<option value="N">No</option> 
 								</select>
 								<span id="advMsg"></span>
@@ -181,7 +233,7 @@
                             <td class="title">Admit card download</td>
                             <td class="col-xs-5 selectContainer">
 								<select class="form-control"  id="admitcarddownload" name="admitcarddownload"	ng-model="adv.admitcarddownload" required>
-									<option value="Y">Yes</option> 
+									<option value="Y" ng-selected='true'>Yes</option> 
 									<option value="N">No</option> 
 								</select>
 								<span id="advMsg"></span>
@@ -195,7 +247,7 @@
                             <td class="title">Interview intimation download</td>
                             <td class="col-xs-5 selectContainer">
 								<select class="form-control"  id="interviewintimationdownload" name="interviewintimationdownload"	ng-model="adv.interviewintimationdownload" required>
-									<option value="Y">Yes</option> 
+									<option value="Y" ng-selected='true'>Yes</option> 
 									<option value="N">No</option> 
 								</select>
 								<span id="advMsg"></span>
@@ -209,7 +261,7 @@
                             <td class="title">Finalized</td>
                             <td class="col-xs-5 selectContainer">
 								<select class="form-control"  id="finalized" name="finalized"	ng-model="adv.finalized" required>
-									<option value="Y">Yes</option> 
+									<option value="Y" ng-selected='true'>Yes</option> 
 									<option value="N">No</option> 
 								</select>
 								<span id="advMsg"></span>

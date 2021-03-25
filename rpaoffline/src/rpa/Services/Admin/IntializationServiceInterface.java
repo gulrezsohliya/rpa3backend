@@ -21,10 +21,7 @@ public interface IntializationServiceInterface {
 	public User listUser(String username);
 
 	/* List */
-	public List<OptionalSubjects> listOptionalSubjects();
-
-	public List<ExamSubjects> listExamSubjects();
-
+	
 	public List<OtherCategories> listOtherCategories();
 
 	public List<Cell> listCells();
@@ -84,16 +81,5 @@ public interface IntializationServiceInterface {
 
 	public boolean deleteOtherCategory(Integer othercategorycode);
 
-	public String createExamSubject(ExamSubjects subject);
-
-	public boolean updateExamSubject(ExamSubjects subject);
-
-	public boolean deleteExamSubject(Integer code);
-
-	public String createOptionalSubject(OptionalSubjects subject);
-
-	public boolean updateOptionalSubject(OptionalSubjects subject);
-
-	public boolean deleteOptionalSubject(Integer code);
 
 }

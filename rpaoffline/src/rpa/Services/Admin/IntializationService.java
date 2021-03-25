@@ -44,23 +44,6 @@ public class IntializationService implements IntializationServiceInterface {
 	}
 
 	/* List */
-	@Override
-	public List<OptionalSubjects> listOptionalSubjects() {
-		List<OptionalSubjects> oth = null;
-
-		String sql = "SELECT * FROM MASTERS.optionalsubjects ORDER BY subjectname";
-		oth = UI.listGeneric(OptionalSubjects.class, sql);
-		return oth;
-	}
-
-	@Override
-	public List<ExamSubjects> listExamSubjects() {
-		List<ExamSubjects> oth = null;
-
-		String sql = "SELECT * FROM MASTERS.examinationsubjects ORDER BY examinationsubjectname";
-		oth = UI.listGeneric(ExamSubjects.class, sql);
-		return oth;
-	}
 
 	@Override
 	public List<OtherCategories> listOtherCategories() {
@@ -364,81 +347,24 @@ public class IntializationService implements IntializationServiceInterface {
 		return UI.update("masters.othercategories", sql, new Object[] { othercategorycode });
 	}
 
-	// Exam Subject
-	@Override
-	public String createExamSubject(ExamSubjects subject) {
-
-		String sql = "SELECT * FROM masters.examinationsubjects WHERE examinationsubjectname =? ";
-		if ((UI.listGeneric(ExamSubjects.class, sql, new Object[] { subject.getExaminationsubjectname() }))
-				.size() > 0) {
-			return "EXISTS";
-		}
-		sql = "INSERT INTO masters.examinationsubjects(examinationsubjectcode,examinationsubjectname,description)VALUES (?, ?, ?)";
-		Object[] params = new Object[] { UI.getMax("masters", "examinationsubjects", "examinationsubjectcode") + 1,
-				subject.getExaminationsubjectname(), subject.getDescription() };
-		return (UI.update("masters.examinationsubjects", sql, params)) ? "CREATED" : "FAILED";
-	}
-
-	@Override
-	public boolean updateExamSubject(ExamSubjects subject) {
-		String sql = "UPDATE masters.examinationsubjects SET examinationsubjectname=?, description=? WHERE  examinationsubjectcode=? ";
-		Object[] params = new Object[] { subject.getExaminationsubjectname(), subject.getDescription(),
-				subject.getExaminationsubjectcode() };
-		return UI.update("masters.examinationsubjects", sql, params);
-	}
-
-	@Override
-	public boolean deleteExamSubject(Integer examinationsubjectcode) {
-
-		String sql = "Delete from masters.examinationsubjects where examinationsubjectcode=? ";
-		return UI.update("masters.examinationsubjects", sql, new Object[] { examinationsubjectcode });
-	}
-
-	// Optional Subject
-	@Override
-	public String createOptionalSubject(OptionalSubjects subject) {
-
-		String sql = "SELECT * FROM masters.Optionalsubjects WHERE subjectname =? ";
-		if ((UI.listGeneric(OptionalSubjects.class, sql, new Object[] { subject.getSubjectname() })).size() > 0) {
-			return "EXISTS";
-		}
-		sql = "INSERT INTO masters.Optionalsubjects (subjectcode,subjectname)VALUES (?, ?)";
-		Object[] params = new Object[] { UI.getMax("masters", "Optionalsubjects", "subjectcode") + 1,
-				subject.getSubjectname() };
-		return (UI.update("masters.Optionalsubjects", sql, params)) ? "CREATED" : "FAILED";
-	}
-
-	@Override
-	public boolean updateOptionalSubject(OptionalSubjects subject) {
-		String sql = "UPDATE masters.Optionalsubjects SET subjectname=? WHERE  subjectcode=? ";
-		Object[] params = new Object[] { subject.getSubjectname(), subject.getSubjectcode() };
-		return UI.update("masters.Optionalsubjects", sql, params);
-	}
-
-	@Override
-	public boolean deleteOptionalSubject(Integer subjectcode) {
-
-		String sql = "Delete from masters.Optionalsubjects where subjectcode=? ";
-		return UI.update("masters.Optionalsubjects", sql, new Object[] { subjectcode });
-	}
-
 	@Override
 	public boolean saveOfficeCenters(List<OfficeCenter> officeCenter) {
 		System.out.println(officeCenter);
-			String sql = "DELETE From backend.officecenters WHERE officecode=? ";
-			if (!UI.update("masters.officecenters", sql, new Object[] {officeCenter.get(0).getOfficecode()})) {
-				System.out.println("DELETE = "+officeCenter.get(0).getOfficecode());
+		String sql = "DELETE From backend.officecenters WHERE officecode=? ";
+		if (!UI.update("masters.officecenters", sql, new Object[] { officeCenter.get(0).getOfficecode() })) {
+			System.out.println("DELETE = " + officeCenter.get(0).getOfficecode());
+			return false;
+		}
+		/////////////////////////////////////
+		sql = "INSERT INTO backend.officecenters(slno, officecode, centercode) VALUES (?, ?, ?)";
+		int max = UI.getMax("backend", "officecenters", "slno");
+		for (OfficeCenter oc : officeCenter) {
+			if (!UI.update("backend.OfficeCenter", sql,
+					new Object[] { ++max, oc.getOfficecode(), oc.getCentercode() })) {
+				System.out.println("INSERT = " + oc.getCentercode());
 				return false;
 			}
-			/////////////////////////////////////
-			sql = "INSERT INTO backend.officecenters(slno, officecode, centercode) VALUES (?, ?, ?)";
-			int max = UI.getMax("backend", "officecenters", "slno");
-			for (OfficeCenter oc:officeCenter) {
-				if(!UI.update("backend.OfficeCenter",sql,new Object[] {++max,oc.getOfficecode(),oc.getCentercode()})) {
-					System.out.println("INSERT = "+oc.getCentercode());
-					return false;
-				}			
-			}		
+		}
 		return true;
 	}
 
