@@ -1,5 +1,6 @@
 package rpa.Services.Examination;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -29,8 +30,8 @@ public class ExaminationService implements ExaminationServiceInterface {
 		String sql = "SELECT * FROM BACKEND.advertisements "
 //				+ "WHERE CASE WHEN ? is null then 1=1 else officecode=? "
 				+ "ORDER BY issuedate";
-		
-		oth = UI.listGeneric(Advertisement.class, sql);//,new Object[] { officecode,officecode });
+
+		oth = UI.listGeneric(Advertisement.class, sql);// ,new Object[] { officecode,officecode });
 		return oth;
 	}
 
@@ -149,34 +150,27 @@ public class ExaminationService implements ExaminationServiceInterface {
 		}
 		sql = "INSERT INTO backend.Advertisements ("
 				+ "            slno, adcode, officecode, nameofpost, postshortname, issuedate, "
-				+ "            lastdate, agedate, description, counterentry, open, applicationfeesgeneral,  "
-				+ "            applicationfeesscst, admitcarddownload, interviewintimationdownload, "
-				+ "            noofoptionals, usercode, entrydate, finalized, feetype, advertisementno,  "
-				+ "            examinationmode)"
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "            lastdate, agedate, description, counterentry, open, "
+				+ "            noofoptionals, usercode, entrydate, finalized,  advertisementno,  "
+				+ "            examinationmodecode)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Integer adcode = UI.getMax("backend", "Advertisements", "adcode");
-		Object[] params = new Object[] { adcode + 1, adcode + 2, obj.getOfficecode(), obj.getNameofpost(),
+		Object[] params = new Object[] { adcode + 1, adcode + 1, obj.getOfficecode(), obj.getNameofpost(),
 				obj.getPostshortname(), obj.getIssuedate(), obj.getLastdate(), obj.getAgedate(), obj.getDescription(),
-				obj.getCounterentry(), obj.getOpen(), obj.getApplicationfeesgeneral(), obj.getApplicationfeesscst(),
-				obj.getAdmitcarddownload(), obj.getInterviewintimationdownload(), obj.getNoofoptionals(),
-				obj.getUsercode(), obj.getEntrydate(), obj.getFinalized(), obj.getFeetype(), obj.getAdvertisementno(),
-				obj.getExaminationmode() };
+				obj.getCounterentry(), obj.getOpen(), obj.getNoofoptionals(), obj.getUsercode(), new Date(),
+				obj.getFinalized(), obj.getAdvertisementno(), obj.getExaminationmodecode() };
 		return (UI.update("backend.Advertisements", sql, params)) ? "CREATED" : "FAILED";
 	}
 
 	@Override
 	public boolean updateAdvertisement(Advertisement obj) {
 		String sql = "UPDATE backend.Advertisements SET nameofpost=?, postshortname=?, issuedate=?, "
-				+ "		lastdate=?, agedate=?, description=?, counterentry=?, open=?, applicationfeesgeneral=?,  "
-				+ "		applicationfeesscst=?, admitcarddownload=?, interviewintimationdownload=?, "
-				+ "		noofoptionals=?, usercode=?, entrydate=?, finalized=?, feetype=?, advertisementno=?, examinationmode=? "
+				+ "		lastdate=?, agedate=?, description=?, counterentry=?, open=?, "
+				+ "		noofoptionals=?, usercode=?, entrydate=?, finalized=?,  advertisementno=?, examinationmodecode=? "
 				+ "	WHERE  adcode=? ";
-		Object[] params = new Object[] {  obj.getNameofpost(),
-				obj.getPostshortname(), obj.getIssuedate(), obj.getLastdate(), obj.getAgedate(), obj.getDescription(),
-				obj.getCounterentry(), obj.getOpen(), obj.getApplicationfeesgeneral(), obj.getApplicationfeesscst(),
-				obj.getAdmitcarddownload(), obj.getInterviewintimationdownload(), obj.getNoofoptionals(),
-				obj.getUsercode(), obj.getEntrydate(), obj.getFinalized(), obj.getFeetype(), obj.getAdvertisementno(),
-				obj.getExaminationmode(),obj.getAdcode() };
+		Object[] params = new Object[] { obj.getNameofpost(), obj.getPostshortname(), obj.getIssuedate(),
+				obj.getLastdate(), obj.getAgedate(), obj.getDescription(), obj.getCounterentry(), obj.getOpen(),
+				obj.getNoofoptionals(), obj.getUsercode(), obj.getEntrydate(), obj.getFinalized(),
+				obj.getAdvertisementno(), obj.getExaminationmodecode(), obj.getAdcode() };
 		return UI.update("masters.Optionalsubjects", sql, params);
 	}
 

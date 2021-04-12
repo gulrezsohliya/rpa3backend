@@ -12,7 +12,7 @@ public class Advertisement implements Serializable {
 
 	private Integer officecode;
 	private Integer slno;
-	private Integer adcode;
+	private String adcode;
 	private String nameofpost;
 	private String postshortname;
 	private Date issuedate;
@@ -21,18 +21,14 @@ public class Advertisement implements Serializable {
 	private String description;
 	private String counterentry;
 	private String open;
-	private Integer applicationfeesgeneral;
-	private Integer applicationfeesscst;
-	private String admitcarddownload;
-	private String interviewintimationdownload;
 	private Integer noofoptionals;
 	private Integer usercode;
 	private Date entrydate;
 	private String finalized;
 	private String feetype;
 	private String advertisementno;
-	private Integer examinationmode;
-	private List<Advertisement_Categorywise_Age> categorywise_Age;
+	private Integer examinationmodecode;
+//	private List<Advertisement_Categorywise_Age> categorywise_Age;
 
 	public Integer getOfficecode() {
 		return officecode;
@@ -50,11 +46,11 @@ public class Advertisement implements Serializable {
 		this.slno = slno;
 	}
 
-	public Integer getAdcode() {
+	public String getAdcode() {
 		return adcode;
 	}
 
-	public void setAdcode(Integer adcode) {
+	public void setAdcode(String adcode) {
 		this.adcode = adcode;
 	}
 
@@ -122,38 +118,6 @@ public class Advertisement implements Serializable {
 		this.open = open;
 	}
 
-	public Integer getApplicationfeesgeneral() {
-		return applicationfeesgeneral;
-	}
-
-	public void setApplicationfeesgeneral(Integer applicationfeesgeneral) {
-		this.applicationfeesgeneral = applicationfeesgeneral;
-	}
-
-	public Integer getApplicationfeesscst() {
-		return applicationfeesscst;
-	}
-
-	public void setApplicationfeesscst(Integer applicationfeesscst) {
-		this.applicationfeesscst = applicationfeesscst;
-	}
-
-	public String getAdmitcarddownload() {
-		return admitcarddownload;
-	}
-
-	public void setAdmitcarddownload(String admitcarddownload) {
-		this.admitcarddownload = admitcarddownload;
-	}
-
-	public String getInterviewintimationdownload() {
-		return interviewintimationdownload;
-	}
-
-	public void setInterviewintimationdownload(String interviewintimationdownload) {
-		this.interviewintimationdownload = interviewintimationdownload;
-	}
-
 	public Integer getNoofoptionals() {
 		return noofoptionals;
 	}
@@ -202,12 +166,12 @@ public class Advertisement implements Serializable {
 		this.advertisementno = advertisementno;
 	}
 
-	public Integer getExaminationmode() {
-		return examinationmode;
+	public Integer getExaminationmodecode() {
+		return examinationmodecode;
 	}
 
-	public void setExaminationmode(Integer examinationmode) {
-		this.examinationmode = examinationmode;
+	public void setExaminationmodecode(Integer examinationmodecode) {
+		this.examinationmodecode = examinationmodecode;
 	}
 
 	@Override
@@ -215,11 +179,9 @@ public class Advertisement implements Serializable {
 		return "Advertisement [officecode=" + officecode + ", slno=" + slno + ", adcode=" + adcode + ", nameofpost="
 				+ nameofpost + ", postshortname=" + postshortname + ", issuedate=" + issuedate + ", lastdate="
 				+ lastdate + ", agedate=" + agedate + ", description=" + description + ", counterentry=" + counterentry
-				+ ", open=" + open + ", applicationfeesgeneral=" + applicationfeesgeneral + ", applicationfeesscst="
-				+ applicationfeesscst + ", admitcarddownload=" + admitcarddownload + ", interviewintimationdownload="
-				+ interviewintimationdownload + ", noofoptionals=" + noofoptionals + ", usercode=" + usercode
+				+ ", open=" + open +  ", noofoptionals=" + noofoptionals + ", usercode=" + usercode
 				+ ", entrydate=" + entrydate + ", finalized=" + finalized + ", feetype=" + feetype
-				+ ", advertisementno=" + advertisementno + ", examinationmode=" + examinationmode + "]";
+				+ ", advertisementno=" + advertisementno + ", examinationmodecode=" + examinationmodecode + "]";
 	}
 
 }

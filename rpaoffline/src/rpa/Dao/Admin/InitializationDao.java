@@ -70,7 +70,10 @@ public class InitializationDao implements InitializationDaoInterface {
 
 		User list = null;
 		try {
-			String sql = "Select * From backend.userlogins Where username=? Order by username";
+			String sql = "Select * From backend.userlogins "
+					+ "INNER JOIN masters.cells on userlogins.cellcode=cells.cellcode "
+					+ "INNER JOIN masters.offices on offices.officecode=cells.officecode "
+					+ "Where username=? Order by username";
 			list = (User) jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), username);
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listUsers " + ex);

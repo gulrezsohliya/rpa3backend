@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
-	/*Common Ajax Params*/
+	/* Common Ajax Params */
 	var successMsg = "Success: Advertisement created/updated";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
@@ -15,21 +15,29 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 	$scope.agedate_sameas_issuedate=true;
 	/*------------------------*/
 	
+	$scope.step = 1;
 	$scope.actionButton = SAVE;
     $scope.adv = new Advertisement();
     $scope.advs = [];
-    
+    $scope.setStep=function(step){
+    	$scope.step=step;
+    };
     $scope.edit = function (adcode) {
+    	$scope.reset();
     	$scope.actionButton = EDIT;
     	$scope.adv =$scope.advs.filter(obj=>{
     		return obj.adcode==adcode;
     	})[0];
+    	$scope.adv.issuedate=new Date($scope.adv.issuedate);
+    	$scope.adv.lastdate=new Date($scope.adv.lastdate);
+    	$scope.adv.agedate=new Date($scope.adv.agedate);
         jQuery('html, body').animate({
             scrollTop: 0
         }, 2000);
     };
 
     $scope.reset = function () {
+    	$scope.step=1;
     	$scope.adcode = new Advertisement();
     	$scope.actionButton = SAVE;
     };
@@ -41,7 +49,16 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
         $scope.method = "POST";
         $scope.urlEndpoint = "./createAdvertisement";
     	
-        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, () => {$scope.reset();$scope.listAdvs(); MsgBox(successMsg)}, () =>{MsgBox(errorMsg)});
+        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, () => {
+	        	/* $scope.reset(); */
+        		$scope.step=2;
+        		$scope.actionButton =EDIT;
+	        	$scope.listAdvs(); 
+	        	MsgBox(successMsg)}, 
+	    	() =>{
+	    		MsgBox(errorMsg)
+	    		}
+	    	);
     };
     
     $scope.update = (checkform=true) => {
@@ -52,7 +69,11 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     	$scope.urlEndpoint = "./updateAdvertisement";
     	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, (res) => {	
 			if(res===true){
-				$scope.reset();
+				if($scope.step==3){
+					$scope.reset(); 
+				}else{
+					$scope.step++;
+				}
 				$scope.listAdvs(); 
 				MsgBox(successMsg);				
 			}else{
@@ -63,13 +84,6 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 			MsgBox(errorMsg)
 		});
     }
-//    $scope.toggleStatus=(adcode)=>{
-//    	$scope.adv =$scope.advs.filter(obj=>{
-//    		return obj.adcode==adcode;
-//    	})[0];
-//    	$scope.adv.enabled=$scope.adv.enabled==='Y'?'N':'Y';
-//    	$scope.update(false);
-//    };
     
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
     
@@ -95,12 +109,12 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
                 }, {
                     "title": "Issue Date",
                     "data": (row, type, set)=>{
-                    	return "<input style='border:none;background:inherit;' type='date' value="+issuedate+"'/>"
+                    	return "<input style='border:none;background:inherit;' type='date' value="+new Date(row.issuedate)+"'/>"
                     }
                 },{
                 	"title": "Last Date",
                 	"data": (row, type, set)=>{
-                		return "<input style='border:none;background:inherit;' type='date' value="+lastdate+"'/>"
+                		return "<input style='border:none;background:inherit;' type='date' value="+new Date(row.lastdate)+"'/>"
                 	}
                 }, 
                 {
@@ -124,7 +138,7 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
         });
     };
 
-    /*READ DATA*/
+    /* READ DATA */
     $scope.listAdvs = () => {
         commonInitFactory.listAdvertisements((response)=>{
     		$scope.advs = response;

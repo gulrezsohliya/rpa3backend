@@ -149,7 +149,6 @@ table input[type=button]{
     padding: 1.5px 5px;
     border: 2px solid #ccc;
     border-radius: 5px;
-    background: none;
     font-weight: bold;
 }
 input[type=search] {
@@ -211,7 +210,30 @@ button{
     background-color: #fff;
     border-color: #ccc;
 }
-/*.form-group {
-    padding: 0px 0px 5px 0px;
-    margin: 0px 0px 5px 0px;
-}*/
+
+/*Stepper Form*/
+	#stepperForm {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    #stepperHeader {
+        width: 70%;
+        height: 30px;
+        display: flex;
+        margin:0 auto 20px;
+    }
+
+    #stepperHeader div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid green;
+        border-radius: 5px;
+        height: 100%;
+        width: 33%;
+        text-align: center;
+        margin: auto auto;
+    }

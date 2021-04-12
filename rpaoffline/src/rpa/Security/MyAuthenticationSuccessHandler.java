@@ -36,6 +36,7 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 	    	HttpSession session = request.getSession();
 	        User user = admindao.listUsers(SecurityContextHolder.getContext().getAuthentication().getName());
 	        user.setPasswords(null);
+	        System.out.println(user);
 	        session.setAttribute("user", user);
 	        setDefaultTargetUrl("/home.htm");
 	        super.onAuthenticationSuccess(request, response, authentication);

@@ -11,17 +11,13 @@ var Advertisement = function() {
 		description : "",
 		counterentry : "Y",
 		open : "Y",
-		applicationfeesgeneral : 0,
-		applicationfeesscst : 0,
-		admitcarddownload : "Y",
-		interviewintimationdownload : "Y",
 		noofoptionals : 0,
 		usercode : 0,
 		entrydate : 0,
 		finalized : "Y",
 		feetype : 0,
 		advertisementno :"",
-		examinationmode : 0,
+		examinationmodecode : 0,
 		ageason : {
 			'GENERAL' : {
 				agemin : 0,
