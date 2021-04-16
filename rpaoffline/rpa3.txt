@@ -5,7 +5,7 @@
 -- Dumped from database version 9.5.10
 -- Dumped by pg_dump version 9.5.21
 
--- Started on 2021-04-05 17:53:49
+-- Started on 2021-04-16 19:19:41
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -56,7 +56,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2568 (class 0 OID 0)
+-- TOC entry 2574 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -99,7 +99,7 @@ CREATE TABLE backend.advertisements (
 ALTER TABLE backend.advertisements OWNER TO rpa3;
 
 --
--- TOC entry 224 (class 1259 OID 298476)
+-- TOC entry 223 (class 1259 OID 298543)
 -- Name: advertisementsages; Type: TABLE; Schema: backend; Owner: rpa3
 --
 
@@ -109,22 +109,31 @@ CREATE TABLE backend.advertisementsages (
     categorycode character varying(7) NOT NULL,
     minage smallint NOT NULL,
     maxage smallint NOT NULL,
-    isph character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    isbpl character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    isexservicemen character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    iswoman character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    entrydate timestamp with time zone DEFAULT ('now'::text)::timestamp with time zone NOT NULL,
-    CONSTRAINT adagesexservice CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text]))),
-    CONSTRAINT adagesnpl CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text]))),
-    CONSTRAINT adagesph CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text]))),
-    CONSTRAINT adageswomen CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text])))
+    entrydate timestamp with time zone DEFAULT ('now'::text)::timestamp with time zone NOT NULL
 );
 
 
 ALTER TABLE backend.advertisementsages OWNER TO rpa3;
 
 --
--- TOC entry 223 (class 1259 OID 298455)
+-- TOC entry 226 (class 1259 OID 298618)
+-- Name: advertisementsagesrelax; Type: TABLE; Schema: backend; Owner: rpa3
+--
+
+CREATE TABLE backend.advertisementsagesrelax (
+    slno smallint NOT NULL,
+    adcode character varying(6) NOT NULL,
+    pwdadditionalage smallint NOT NULL,
+    womanadditionalage smallint NOT NULL,
+    exservicemenadditionalage smallint NOT NULL,
+    entrydate timestamp with time zone DEFAULT ('now'::text)::timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE backend.advertisementsagesrelax OWNER TO rpa3;
+
+--
+-- TOC entry 224 (class 1259 OID 298592)
 -- Name: advertisementsfees; Type: TABLE; Schema: backend; Owner: rpa3
 --
 
@@ -133,19 +142,28 @@ CREATE TABLE backend.advertisementsfees (
     adcode character varying(6) NOT NULL,
     categorycode character varying(7) NOT NULL,
     feeamount smallint NOT NULL,
-    isph character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    isbpl character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    isexservicemen character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    iswoman character varying(1) DEFAULT 'N'::character varying NOT NULL,
-    entrydate timestamp with time zone DEFAULT ('now'::text)::timestamp with time zone NOT NULL,
-    CONSTRAINT adfeesexservice CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text]))),
-    CONSTRAINT adfeesnpl CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text]))),
-    CONSTRAINT adfeesph CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text]))),
-    CONSTRAINT adfeeswomen CHECK (((isph)::text = ANY (ARRAY[('Y'::character varying)::text, ('N'::character varying)::text])))
+    entrydate timestamp with time zone DEFAULT ('now'::text)::timestamp with time zone NOT NULL
 );
 
 
 ALTER TABLE backend.advertisementsfees OWNER TO rpa3;
+
+--
+-- TOC entry 225 (class 1259 OID 298605)
+-- Name: advertisementsfeesrelax; Type: TABLE; Schema: backend; Owner: rpa3
+--
+
+CREATE TABLE backend.advertisementsfeesrelax (
+    slno smallint NOT NULL,
+    adcode character varying(6) NOT NULL,
+    pwdfees smallint NOT NULL,
+    womanfees smallint NOT NULL,
+    exservicemenfees smallint NOT NULL,
+    entrydate timestamp with time zone DEFAULT ('now'::text)::timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE backend.advertisementsfeesrelax OWNER TO rpa3;
 
 --
 -- TOC entry 210 (class 1259 OID 280869)
@@ -308,7 +326,7 @@ CREATE TABLE masters.cells (
 ALTER TABLE masters.cells OWNER TO postgres;
 
 --
--- TOC entry 2569 (class 0 OID 0)
+-- TOC entry 2575 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: COLUMN cells.officecode; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -317,7 +335,7 @@ COMMENT ON COLUMN masters.cells.officecode IS 'Unique identifier for each office
 
 
 --
--- TOC entry 2570 (class 0 OID 0)
+-- TOC entry 2576 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: COLUMN cells.cellcode; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -326,7 +344,7 @@ COMMENT ON COLUMN masters.cells.cellcode IS 'Unique identifier for each cell';
 
 
 --
--- TOC entry 2571 (class 0 OID 0)
+-- TOC entry 2577 (class 0 OID 0)
 -- Dependencies: 187
 -- Name: COLUMN cells.celldescription; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -355,7 +373,7 @@ CREATE TABLE masters.districts (
 ALTER TABLE masters.districts OWNER TO postgres;
 
 --
--- TOC entry 2572 (class 0 OID 0)
+-- TOC entry 2578 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: TABLE districts; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -364,7 +382,7 @@ COMMENT ON TABLE masters.districts IS 'Master Table for Districts';
 
 
 --
--- TOC entry 2573 (class 0 OID 0)
+-- TOC entry 2579 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.districtcode; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -373,7 +391,7 @@ COMMENT ON COLUMN masters.districts.districtcode IS 'District Land Region code';
 
 
 --
--- TOC entry 2574 (class 0 OID 0)
+-- TOC entry 2580 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.statecode; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -382,7 +400,7 @@ COMMENT ON COLUMN masters.districts.statecode IS 'State Land Region code';
 
 
 --
--- TOC entry 2575 (class 0 OID 0)
+-- TOC entry 2581 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.districtname; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -391,7 +409,7 @@ COMMENT ON COLUMN masters.districts.districtname IS 'District Name in English';
 
 
 --
--- TOC entry 2576 (class 0 OID 0)
+-- TOC entry 2582 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.dnl; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -400,7 +418,7 @@ COMMENT ON COLUMN masters.districts.dnl IS 'District Name in Local Recognized La
 
 
 --
--- TOC entry 2577 (class 0 OID 0)
+-- TOC entry 2583 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.dareaskm; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -409,7 +427,7 @@ COMMENT ON COLUMN masters.districts.dareaskm IS 'Area of district';
 
 
 --
--- TOC entry 2578 (class 0 OID 0)
+-- TOC entry 2584 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.gd; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -418,7 +436,7 @@ COMMENT ON COLUMN masters.districts.gd IS 'Geo Code of the  District';
 
 
 --
--- TOC entry 2579 (class 0 OID 0)
+-- TOC entry 2585 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.vnd; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -427,7 +445,7 @@ COMMENT ON COLUMN masters.districts.vnd IS 'Version No of Record ';
 
 
 --
--- TOC entry 2580 (class 0 OID 0)
+-- TOC entry 2586 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.doud; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -436,7 +454,7 @@ COMMENT ON COLUMN masters.districts.doud IS 'Date/Time of Last Update';
 
 
 --
--- TOC entry 2581 (class 0 OID 0)
+-- TOC entry 2587 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: COLUMN districts.updatedby; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -474,7 +492,7 @@ CREATE TABLE masters.examinationsmodes (
 ALTER TABLE masters.examinationsmodes OWNER TO rpa3;
 
 --
--- TOC entry 2582 (class 0 OID 0)
+-- TOC entry 2588 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN examinationsmodes.examinationmodecode; Type: COMMENT; Schema: masters; Owner: rpa3
 --
@@ -483,7 +501,7 @@ COMMENT ON COLUMN masters.examinationsmodes.examinationmodecode IS 'Unique Code 
 
 
 --
--- TOC entry 2583 (class 0 OID 0)
+-- TOC entry 2589 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: COLUMN examinationsmodes.examinationdescription; Type: COMMENT; Schema: masters; Owner: rpa3
 --
@@ -532,7 +550,7 @@ CREATE TABLE masters.offices (
 ALTER TABLE masters.offices OWNER TO postgres;
 
 --
--- TOC entry 2584 (class 0 OID 0)
+-- TOC entry 2590 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.officecode; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -541,7 +559,7 @@ COMMENT ON COLUMN masters.offices.officecode IS 'Unique identifier for each offi
 
 
 --
--- TOC entry 2585 (class 0 OID 0)
+-- TOC entry 2591 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.officename1; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -550,7 +568,7 @@ COMMENT ON COLUMN masters.offices.officename1 IS 'Name of office';
 
 
 --
--- TOC entry 2586 (class 0 OID 0)
+-- TOC entry 2592 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.officename2; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -559,7 +577,7 @@ COMMENT ON COLUMN masters.offices.officename2 IS 'Name of office';
 
 
 --
--- TOC entry 2587 (class 0 OID 0)
+-- TOC entry 2593 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.officename3; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -568,7 +586,7 @@ COMMENT ON COLUMN masters.offices.officename3 IS 'Name of office';
 
 
 --
--- TOC entry 2588 (class 0 OID 0)
+-- TOC entry 2594 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.signatoryname; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -577,7 +595,7 @@ COMMENT ON COLUMN masters.offices.signatoryname IS 'Name of signatory';
 
 
 --
--- TOC entry 2589 (class 0 OID 0)
+-- TOC entry 2595 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.signatorydesignation; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -586,7 +604,7 @@ COMMENT ON COLUMN masters.offices.signatorydesignation IS 'Designation of signat
 
 
 --
--- TOC entry 2590 (class 0 OID 0)
+-- TOC entry 2596 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.emailid; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -595,7 +613,7 @@ COMMENT ON COLUMN masters.offices.emailid IS 'Email id of the office';
 
 
 --
--- TOC entry 2591 (class 0 OID 0)
+-- TOC entry 2597 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.emailidpassword; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -604,7 +622,7 @@ COMMENT ON COLUMN masters.offices.emailidpassword IS 'Password of the office ema
 
 
 --
--- TOC entry 2592 (class 0 OID 0)
+-- TOC entry 2598 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.smspassword; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -613,7 +631,7 @@ COMMENT ON COLUMN masters.offices.smspassword IS 'Password of sms';
 
 
 --
--- TOC entry 2593 (class 0 OID 0)
+-- TOC entry 2599 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: COLUMN offices.smssenderid; Type: COMMENT; Schema: masters; Owner: postgres
 --
@@ -794,7 +812,7 @@ CREATE SEQUENCE online.roles_id_seq
 ALTER TABLE online.roles_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2594 (class 0 OID 0)
+-- TOC entry 2600 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: online; Owner: postgres
 --
@@ -1042,31 +1060,48 @@ CREATE TABLE online.usersqualifications (
 ALTER TABLE online.usersqualifications OWNER TO postgres;
 
 --
--- TOC entry 2557 (class 0 OID 298404)
+-- TOC entry 2561 (class 0 OID 298404)
 -- Dependencies: 222
 -- Data for Name: advertisements; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
 
+INSERT INTO backend.advertisements VALUES (2, 1, '1', 'TEST', 'TEST', 'NA', '2021-01-10 00:00:00', '2022-01-10 00:00:00', '2021-01-10 00:00:00', 'NA', 'Y', 'Y', 0, 2, '2021-04-16 18:33:27.163+05:30', 'Y', 0);
 
 
 --
--- TOC entry 2559 (class 0 OID 298476)
--- Dependencies: 224
+-- TOC entry 2562 (class 0 OID 298543)
+-- Dependencies: 223
 -- Data for Name: advertisementsages; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
 
 
 
 --
--- TOC entry 2558 (class 0 OID 298455)
--- Dependencies: 223
+-- TOC entry 2565 (class 0 OID 298618)
+-- Dependencies: 226
+-- Data for Name: advertisementsagesrelax; Type: TABLE DATA; Schema: backend; Owner: rpa3
+--
+
+
+
+--
+-- TOC entry 2563 (class 0 OID 298592)
+-- Dependencies: 224
 -- Data for Name: advertisementsfees; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
 
 
 
 --
--- TOC entry 2545 (class 0 OID 280869)
+-- TOC entry 2564 (class 0 OID 298605)
+-- Dependencies: 225
+-- Data for Name: advertisementsfeesrelax; Type: TABLE DATA; Schema: backend; Owner: rpa3
+--
+
+
+
+--
+-- TOC entry 2549 (class 0 OID 280869)
 -- Dependencies: 210
 -- Data for Name: examinationcenters; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
@@ -1087,7 +1122,7 @@ INSERT INTO backend.examinationcenters VALUES (14, 'Mawshynrut');
 
 
 --
--- TOC entry 2547 (class 0 OID 280906)
+-- TOC entry 2551 (class 0 OID 280906)
 -- Dependencies: 212
 -- Data for Name: officecenters; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
@@ -1095,7 +1130,7 @@ INSERT INTO backend.examinationcenters VALUES (14, 'Mawshynrut');
 
 
 --
--- TOC entry 2548 (class 0 OID 280923)
+-- TOC entry 2552 (class 0 OID 280923)
 -- Dependencies: 213
 -- Data for Name: pageurls; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
@@ -1110,7 +1145,7 @@ INSERT INTO backend.pageurls VALUES (7, 'venue.htm', 'Venues', 'icon-radio-unche
 
 
 --
--- TOC entry 2519 (class 0 OID 280519)
+-- TOC entry 2523 (class 0 OID 280519)
 -- Dependencies: 184
 -- Data for Name: userlogins; Type: TABLE DATA; Schema: backend; Owner: postgres
 --
@@ -1120,7 +1155,7 @@ INSERT INTO backend.userlogins VALUES (2, 2, 'mpsc', 'mpsc', '', '', '', 'Y', '2
 
 
 --
--- TOC entry 2549 (class 0 OID 280930)
+-- TOC entry 2553 (class 0 OID 280930)
 -- Dependencies: 214
 -- Data for Name: userpages; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
@@ -1142,7 +1177,7 @@ INSERT INTO backend.userpages VALUES (14, 2, 3);
 
 
 --
--- TOC entry 2546 (class 0 OID 280876)
+-- TOC entry 2550 (class 0 OID 280876)
 -- Dependencies: 211
 -- Data for Name: venues; Type: TABLE DATA; Schema: backend; Owner: rpa3
 --
@@ -1310,7 +1345,7 @@ INSERT INTO backend.venues VALUES (7, 118, 'Don Bosco Higher Secondary, Baghmara
 
 
 --
--- TOC entry 2550 (class 0 OID 280947)
+-- TOC entry 2554 (class 0 OID 280947)
 -- Dependencies: 215
 -- Data for Name: appointmenttypes; Type: TABLE DATA; Schema: masters; Owner: rpa3
 --
@@ -1324,7 +1359,7 @@ INSERT INTO masters.appointmenttypes VALUES (0, 'Not Applicable', 'Y');
 
 
 --
--- TOC entry 2520 (class 0 OID 280528)
+-- TOC entry 2524 (class 0 OID 280528)
 -- Dependencies: 185
 -- Data for Name: castetribes; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1341,7 +1376,7 @@ INSERT INTO masters.castetribes VALUES (2, 'Garo', 'ST', 'Y');
 
 
 --
--- TOC entry 2521 (class 0 OID 280533)
+-- TOC entry 2525 (class 0 OID 280533)
 -- Dependencies: 186
 -- Data for Name: categories; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1354,7 +1389,7 @@ INSERT INTO masters.categories VALUES ('X', 'Did Not Specify', 'N');
 
 
 --
--- TOC entry 2522 (class 0 OID 280538)
+-- TOC entry 2526 (class 0 OID 280538)
 -- Dependencies: 187
 -- Data for Name: cells; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1364,7 +1399,7 @@ INSERT INTO masters.cells VALUES (2, 2, 'MPSC Head Office', 'Y');
 
 
 --
--- TOC entry 2523 (class 0 OID 280543)
+-- TOC entry 2527 (class 0 OID 280543)
 -- Dependencies: 188
 -- Data for Name: districts; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1383,7 +1418,7 @@ INSERT INTO masters.districts VALUES (275, 17, 'West Jaintia Hills', 'West Jaint
 
 
 --
--- TOC entry 2553 (class 0 OID 281290)
+-- TOC entry 2557 (class 0 OID 281290)
 -- Dependencies: 218
 -- Data for Name: enclosures; Type: TABLE DATA; Schema: masters; Owner: rpa3
 --
@@ -1393,22 +1428,22 @@ INSERT INTO masters.enclosures VALUES (2, 'Caste/Tribe Certificate', '-', 'Y');
 
 
 --
--- TOC entry 2556 (class 0 OID 298116)
+-- TOC entry 2560 (class 0 OID 298116)
 -- Dependencies: 221
 -- Data for Name: examinationsmodes; Type: TABLE DATA; Schema: masters; Owner: rpa3
 --
 
-INSERT INTO masters.examinationsmodes VALUES (1, 'Not Defined ');
 INSERT INTO masters.examinationsmodes VALUES (3, 'Written Examination and Interview');
 INSERT INTO masters.examinationsmodes VALUES (2, 'Direct Interview');
 INSERT INTO masters.examinationsmodes VALUES (4, 'Written Examination, Physical Test and Interview');
 INSERT INTO masters.examinationsmodes VALUES (5, 'Written Examination, Speed Test and Interview');
 INSERT INTO masters.examinationsmodes VALUES (6, 'Prelims, Mains and Interview');
 INSERT INTO masters.examinationsmodes VALUES (7, 'Prelims, Mains, Physical Test and Interview');
+INSERT INTO masters.examinationsmodes VALUES (0, 'Not Defined ');
 
 
 --
--- TOC entry 2524 (class 0 OID 280547)
+-- TOC entry 2528 (class 0 OID 280547)
 -- Dependencies: 189
 -- Data for Name: languages; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1420,7 +1455,7 @@ INSERT INTO masters.languages VALUES (4, 'Garo', 'Y');
 
 
 --
--- TOC entry 2525 (class 0 OID 280552)
+-- TOC entry 2529 (class 0 OID 280552)
 -- Dependencies: 190
 -- Data for Name: offices; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1434,7 +1469,7 @@ INSERT INTO masters.offices VALUES (2, 'Meghalaya Public Service Commission', 'M
 
 
 --
--- TOC entry 2526 (class 0 OID 280560)
+-- TOC entry 2530 (class 0 OID 280560)
 -- Dependencies: 191
 -- Data for Name: othercategories; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1446,7 +1481,7 @@ INSERT INTO masters.othercategories VALUES (0, 'Not Applicable', 'N');
 
 
 --
--- TOC entry 2527 (class 0 OID 280565)
+-- TOC entry 2531 (class 0 OID 280565)
 -- Dependencies: 192
 -- Data for Name: phcategories; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1458,7 +1493,7 @@ INSERT INTO masters.phcategories VALUES (3, 'Locomotor/Orthopaedic', 'Y');
 
 
 --
--- TOC entry 2528 (class 0 OID 280570)
+-- TOC entry 2532 (class 0 OID 280570)
 -- Dependencies: 193
 -- Data for Name: qualifications; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1752,7 +1787,7 @@ INSERT INTO masters.qualifications VALUES (4, 296, 'Diploma Ayush Nursing and Ph
 
 
 --
--- TOC entry 2529 (class 0 OID 280575)
+-- TOC entry 2533 (class 0 OID 280575)
 -- Dependencies: 194
 -- Data for Name: qualificationscategories; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1770,7 +1805,7 @@ INSERT INTO masters.qualificationscategories VALUES (3, 'Class XII/HSSLC/Pre Uni
 
 
 --
--- TOC entry 2530 (class 0 OID 280578)
+-- TOC entry 2534 (class 0 OID 280578)
 -- Dependencies: 195
 -- Data for Name: religions; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1786,7 +1821,7 @@ INSERT INTO masters.religions VALUES (8, 'Others', 'Y');
 
 
 --
--- TOC entry 2531 (class 0 OID 280583)
+-- TOC entry 2535 (class 0 OID 280583)
 -- Dependencies: 196
 -- Data for Name: salutations; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1797,7 +1832,7 @@ INSERT INTO masters.salutations VALUES (3, 'Kumari.', 'Y');
 
 
 --
--- TOC entry 2532 (class 0 OID 280588)
+-- TOC entry 2536 (class 0 OID 280588)
 -- Dependencies: 197
 -- Data for Name: states; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1807,7 +1842,7 @@ INSERT INTO masters.states VALUES (18, 'Assam', NULL, NULL, NULL, NULL, NULL, NU
 
 
 --
--- TOC entry 2551 (class 0 OID 281071)
+-- TOC entry 2555 (class 0 OID 281071)
 -- Dependencies: 216
 -- Data for Name: statesemployed; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1819,7 +1854,7 @@ INSERT INTO masters.statesemployed VALUES (0, 'Not Applicable', 'Y');
 
 
 --
--- TOC entry 2533 (class 0 OID 280592)
+-- TOC entry 2537 (class 0 OID 280592)
 -- Dependencies: 198
 -- Data for Name: subdistricts; Type: TABLE DATA; Schema: masters; Owner: postgres
 --
@@ -1873,7 +1908,7 @@ INSERT INTO masters.subdistricts VALUES (1967, 663, 'Zikzak', 'Zikzak', 0, '', '
 
 
 --
--- TOC entry 2534 (class 0 OID 280596)
+-- TOC entry 2538 (class 0 OID 280596)
 -- Dependencies: 199
 -- Data for Name: roles; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1884,7 +1919,7 @@ INSERT INTO online.roles VALUES (3, 'ROLE_OFFICE');
 
 
 --
--- TOC entry 2595 (class 0 OID 0)
+-- TOC entry 2601 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: roles_id_seq; Type: SEQUENCE SET; Schema: online; Owner: postgres
 --
@@ -1893,7 +1928,7 @@ SELECT pg_catalog.setval('online.roles_id_seq', 1, false);
 
 
 --
--- TOC entry 2536 (class 0 OID 280601)
+-- TOC entry 2540 (class 0 OID 280601)
 -- Dependencies: 201
 -- Data for Name: useraddresses; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1902,7 +1937,7 @@ INSERT INTO online.useraddresses VALUES (1, 'LMK1', 'A1', 'A2', 'V1', 1971, '333
 
 
 --
--- TOC entry 2537 (class 0 OID 280610)
+-- TOC entry 2541 (class 0 OID 280610)
 -- Dependencies: 202
 -- Data for Name: usercells; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1910,7 +1945,7 @@ INSERT INTO online.useraddresses VALUES (1, 'LMK1', 'A1', 'A2', 'V1', 1971, '333
 
 
 --
--- TOC entry 2555 (class 0 OID 282102)
+-- TOC entry 2559 (class 0 OID 282102)
 -- Dependencies: 220
 -- Data for Name: useremploymentdetails; Type: TABLE DATA; Schema: online; Owner: rpa3
 --
@@ -1918,7 +1953,7 @@ INSERT INTO online.useraddresses VALUES (1, 'LMK1', 'A1', 'A2', 'V1', 1971, '333
 
 
 --
--- TOC entry 2554 (class 0 OID 281319)
+-- TOC entry 2558 (class 0 OID 281319)
 -- Dependencies: 219
 -- Data for Name: userenclosures; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1926,7 +1961,7 @@ INSERT INTO online.useraddresses VALUES (1, 'LMK1', 'A1', 'A2', 'V1', 1971, '333
 
 
 --
--- TOC entry 2538 (class 0 OID 280613)
+-- TOC entry 2542 (class 0 OID 280613)
 -- Dependencies: 203
 -- Data for Name: userlanguages; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1938,7 +1973,7 @@ INSERT INTO online.userlanguages VALUES ('1L4', 1, 4, false, false, false, false
 
 
 --
--- TOC entry 2552 (class 0 OID 281207)
+-- TOC entry 2556 (class 0 OID 281207)
 -- Dependencies: 217
 -- Data for Name: userothercategories; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1946,7 +1981,7 @@ INSERT INTO online.userlanguages VALUES ('1L4', 1, 4, false, false, false, false
 
 
 --
--- TOC entry 2539 (class 0 OID 280616)
+-- TOC entry 2543 (class 0 OID 280616)
 -- Dependencies: 204
 -- Data for Name: userphdetails; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1956,7 +1991,7 @@ INSERT INTO online.userphdetails VALUES ('1H2', 1, 2, 5, 'Hearing', '2021-03-06'
 
 
 --
--- TOC entry 2540 (class 0 OID 280623)
+-- TOC entry 2544 (class 0 OID 280623)
 -- Dependencies: 205
 -- Data for Name: userprofiles; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1965,7 +2000,7 @@ INSERT INTO online.userprofiles VALUES (1, 1, '2021-03-02', 'M', 'Father', 'FFFC
 
 
 --
--- TOC entry 2541 (class 0 OID 280635)
+-- TOC entry 2545 (class 0 OID 280635)
 -- Dependencies: 206
 -- Data for Name: userroles; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1975,7 +2010,7 @@ INSERT INTO online.userroles VALUES (2, 1);
 
 
 --
--- TOC entry 2542 (class 0 OID 280638)
+-- TOC entry 2546 (class 0 OID 280638)
 -- Dependencies: 207
 -- Data for Name: users; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1985,7 +2020,7 @@ INSERT INTO online.users VALUES (2, 'AV', 'avi@gmail.com', '$2a$10$gwp0qCYwXnYoc
 
 
 --
--- TOC entry 2543 (class 0 OID 280645)
+-- TOC entry 2547 (class 0 OID 280645)
 -- Dependencies: 208
 -- Data for Name: usersportsdetails; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -1995,7 +2030,7 @@ INSERT INTO online.usersportsdetails VALUES ('1S2', 1, 'Represented the District
 
 
 --
--- TOC entry 2544 (class 0 OID 280652)
+-- TOC entry 2548 (class 0 OID 280652)
 -- Dependencies: 209
 -- Data for Name: usersqualifications; Type: TABLE DATA; Schema: online; Owner: postgres
 --
@@ -2005,7 +2040,7 @@ INSERT INTO online.usersqualifications VALUES ('1L5', 1, 'dfgdfg', 'dfg', 5, 'df
 
 
 --
--- TOC entry 2350 (class 2606 OID 298421)
+-- TOC entry 2344 (class 2606 OID 298421)
 -- Name: advertisements_officecode_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2014,7 +2049,7 @@ ALTER TABLE ONLY backend.advertisements
 
 
 --
--- TOC entry 2352 (class 2606 OID 298417)
+-- TOC entry 2346 (class 2606 OID 298417)
 -- Name: advertisements_pk; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2023,7 +2058,7 @@ ALTER TABLE ONLY backend.advertisements
 
 
 --
--- TOC entry 2354 (class 2606 OID 298419)
+-- TOC entry 2348 (class 2606 OID 298419)
 -- Name: advertisements_uk1; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2032,7 +2067,7 @@ ALTER TABLE ONLY backend.advertisements
 
 
 --
--- TOC entry 2356 (class 2606 OID 298423)
+-- TOC entry 2350 (class 2606 OID 298423)
 -- Name: advertisements_uk2; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2041,34 +2076,61 @@ ALTER TABLE ONLY backend.advertisements
 
 
 --
--- TOC entry 2362 (class 2606 OID 298491)
--- Name: advertisementsages_adcode_categorycode_isph_ages_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
+-- TOC entry 2352 (class 2606 OID 298550)
+-- Name: advertisementsages_adcode_ages_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
 ALTER TABLE ONLY backend.advertisementsages
-    ADD CONSTRAINT advertisementsages_adcode_categorycode_isph_ages_key UNIQUE (adcode, categorycode, isph, isbpl, isexservicemen, iswoman, minage, maxage);
+    ADD CONSTRAINT advertisementsages_adcode_ages_key UNIQUE (adcode, categorycode, minage, maxage);
 
 
 --
--- TOC entry 2364 (class 2606 OID 298489)
--- Name: advertisementsages_pkey; Type: CONSTRAINT; Schema: backend; Owner: rpa3
+-- TOC entry 2364 (class 2606 OID 298625)
+-- Name: advertisementsages_adcode_agesrlx_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
+--
+
+ALTER TABLE ONLY backend.advertisementsagesrelax
+    ADD CONSTRAINT advertisementsages_adcode_agesrlx_key UNIQUE (adcode);
+
+
+--
+-- TOC entry 2354 (class 2606 OID 298548)
+-- Name: advertisementsages_pkeys; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
 ALTER TABLE ONLY backend.advertisementsages
-    ADD CONSTRAINT advertisementsages_pkey PRIMARY KEY (slno);
+    ADD CONSTRAINT advertisementsages_pkeys PRIMARY KEY (slno);
 
 
 --
--- TOC entry 2358 (class 2606 OID 298470)
+-- TOC entry 2366 (class 2606 OID 298623)
+-- Name: advertisementsagesrlx_pkeys; Type: CONSTRAINT; Schema: backend; Owner: rpa3
+--
+
+ALTER TABLE ONLY backend.advertisementsagesrelax
+    ADD CONSTRAINT advertisementsagesrlx_pkeys PRIMARY KEY (slno);
+
+
+--
+-- TOC entry 2356 (class 2606 OID 298599)
 -- Name: advertisementsfees_adcode_categorycode_isph_feeamount_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
 ALTER TABLE ONLY backend.advertisementsfees
-    ADD CONSTRAINT advertisementsfees_adcode_categorycode_isph_feeamount_key UNIQUE (adcode, categorycode, isph, isbpl, isexservicemen, iswoman, feeamount);
+    ADD CONSTRAINT advertisementsfees_adcode_categorycode_isph_feeamount_key UNIQUE (adcode, categorycode);
 
 
 --
--- TOC entry 2360 (class 2606 OID 298468)
+-- TOC entry 2360 (class 2606 OID 298612)
+-- Name: advertisementsfees_adcode_feesrlxf_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
+--
+
+ALTER TABLE ONLY backend.advertisementsfeesrelax
+    ADD CONSTRAINT advertisementsfees_adcode_feesrlxf_key UNIQUE (adcode);
+
+
+--
+-- TOC entry 2358 (class 2606 OID 298597)
 -- Name: advertisementsfees_pkey; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2077,7 +2139,16 @@ ALTER TABLE ONLY backend.advertisementsfees
 
 
 --
--- TOC entry 2320 (class 2606 OID 280929)
+-- TOC entry 2362 (class 2606 OID 298610)
+-- Name: advertisementsfeesrlxf_pkeys; Type: CONSTRAINT; Schema: backend; Owner: rpa3
+--
+
+ALTER TABLE ONLY backend.advertisementsfeesrelax
+    ADD CONSTRAINT advertisementsfeesrlxf_pkeys PRIMARY KEY (slno);
+
+
+--
+-- TOC entry 2314 (class 2606 OID 280929)
 -- Name: backend_pageurls_key1; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2086,7 +2157,7 @@ ALTER TABLE ONLY backend.pageurls
 
 
 --
--- TOC entry 2308 (class 2606 OID 280873)
+-- TOC entry 2302 (class 2606 OID 280873)
 -- Name: examinationcenters_pkey; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2095,7 +2166,7 @@ ALTER TABLE ONLY backend.examinationcenters
 
 
 --
--- TOC entry 2310 (class 2606 OID 280875)
+-- TOC entry 2304 (class 2606 OID 280875)
 -- Name: examinationcenters_uk1; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2104,7 +2175,7 @@ ALTER TABLE ONLY backend.examinationcenters
 
 
 --
--- TOC entry 2316 (class 2606 OID 280910)
+-- TOC entry 2310 (class 2606 OID 280910)
 -- Name: officecenters_pkey; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2113,7 +2184,7 @@ ALTER TABLE ONLY backend.officecenters
 
 
 --
--- TOC entry 2322 (class 2606 OID 280927)
+-- TOC entry 2316 (class 2606 OID 280927)
 -- Name: pageurls_pkey; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2122,7 +2193,7 @@ ALTER TABLE ONLY backend.pageurls
 
 
 --
--- TOC entry 2318 (class 2606 OID 280912)
+-- TOC entry 2312 (class 2606 OID 280912)
 -- Name: unqoc; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2131,7 +2202,7 @@ ALTER TABLE ONLY backend.officecenters
 
 
 --
--- TOC entry 2228 (class 2606 OID 280664)
+-- TOC entry 2222 (class 2606 OID 280664)
 -- Name: userlogins_pkey; Type: CONSTRAINT; Schema: backend; Owner: postgres
 --
 
@@ -2140,7 +2211,7 @@ ALTER TABLE ONLY backend.userlogins
 
 
 --
--- TOC entry 2230 (class 2606 OID 280666)
+-- TOC entry 2224 (class 2606 OID 280666)
 -- Name: userlogins_username_key; Type: CONSTRAINT; Schema: backend; Owner: postgres
 --
 
@@ -2149,7 +2220,7 @@ ALTER TABLE ONLY backend.userlogins
 
 
 --
--- TOC entry 2324 (class 2606 OID 280934)
+-- TOC entry 2318 (class 2606 OID 280934)
 -- Name: userpages_pkey; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2158,7 +2229,7 @@ ALTER TABLE ONLY backend.userpages
 
 
 --
--- TOC entry 2326 (class 2606 OID 280936)
+-- TOC entry 2320 (class 2606 OID 280936)
 -- Name: userpages_usercode_urlcode_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2167,7 +2238,7 @@ ALTER TABLE ONLY backend.userpages
 
 
 --
--- TOC entry 2312 (class 2606 OID 280880)
+-- TOC entry 2306 (class 2606 OID 280880)
 -- Name: venues_pkey; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2176,7 +2247,7 @@ ALTER TABLE ONLY backend.venues
 
 
 --
--- TOC entry 2314 (class 2606 OID 280882)
+-- TOC entry 2308 (class 2606 OID 280882)
 -- Name: venuesu_key; Type: CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2185,7 +2256,7 @@ ALTER TABLE ONLY backend.venues
 
 
 --
--- TOC entry 2348 (class 2606 OID 298120)
+-- TOC entry 2342 (class 2606 OID 298120)
 -- Name: advertisementsexaminations_pkey; Type: CONSTRAINT; Schema: masters; Owner: rpa3
 --
 
@@ -2194,7 +2265,7 @@ ALTER TABLE ONLY masters.examinationsmodes
 
 
 --
--- TOC entry 2328 (class 2606 OID 280953)
+-- TOC entry 2322 (class 2606 OID 280953)
 -- Name: appointmenttype_pkey; Type: CONSTRAINT; Schema: masters; Owner: rpa3
 --
 
@@ -2203,7 +2274,7 @@ ALTER TABLE ONLY masters.appointmenttypes
 
 
 --
--- TOC entry 2330 (class 2606 OID 280955)
+-- TOC entry 2324 (class 2606 OID 280955)
 -- Name: appointmenttype_uk1; Type: CONSTRAINT; Schema: masters; Owner: rpa3
 --
 
@@ -2212,7 +2283,7 @@ ALTER TABLE ONLY masters.appointmenttypes
 
 
 --
--- TOC entry 2232 (class 2606 OID 280668)
+-- TOC entry 2226 (class 2606 OID 280668)
 -- Name: castetribes_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2221,7 +2292,7 @@ ALTER TABLE ONLY masters.castetribes
 
 
 --
--- TOC entry 2234 (class 2606 OID 280670)
+-- TOC entry 2228 (class 2606 OID 280670)
 -- Name: castetribes_uk1; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2230,7 +2301,7 @@ ALTER TABLE ONLY masters.castetribes
 
 
 --
--- TOC entry 2236 (class 2606 OID 280672)
+-- TOC entry 2230 (class 2606 OID 280672)
 -- Name: categories_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2239,7 +2310,7 @@ ALTER TABLE ONLY masters.categories
 
 
 --
--- TOC entry 2238 (class 2606 OID 280674)
+-- TOC entry 2232 (class 2606 OID 280674)
 -- Name: categories_uk1; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2248,7 +2319,7 @@ ALTER TABLE ONLY masters.categories
 
 
 --
--- TOC entry 2264 (class 2606 OID 280676)
+-- TOC entry 2258 (class 2606 OID 280676)
 -- Name: catgqual_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2257,7 +2328,7 @@ ALTER TABLE ONLY masters.qualificationscategories
 
 
 --
--- TOC entry 2240 (class 2606 OID 280678)
+-- TOC entry 2234 (class 2606 OID 280678)
 -- Name: cells_description_key; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2266,7 +2337,7 @@ ALTER TABLE ONLY masters.cells
 
 
 --
--- TOC entry 2242 (class 2606 OID 280680)
+-- TOC entry 2236 (class 2606 OID 280680)
 -- Name: cells_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2275,7 +2346,7 @@ ALTER TABLE ONLY masters.cells
 
 
 --
--- TOC entry 2338 (class 2606 OID 281296)
+-- TOC entry 2332 (class 2606 OID 281296)
 -- Name: enclosures_pkey; Type: CONSTRAINT; Schema: masters; Owner: rpa3
 --
 
@@ -2284,7 +2355,7 @@ ALTER TABLE ONLY masters.enclosures
 
 
 --
--- TOC entry 2340 (class 2606 OID 281298)
+-- TOC entry 2334 (class 2606 OID 281298)
 -- Name: enclosures_uk1; Type: CONSTRAINT; Schema: masters; Owner: rpa3
 --
 
@@ -2293,7 +2364,7 @@ ALTER TABLE ONLY masters.enclosures
 
 
 --
--- TOC entry 2246 (class 2606 OID 280682)
+-- TOC entry 2240 (class 2606 OID 280682)
 -- Name: language_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2302,7 +2373,7 @@ ALTER TABLE ONLY masters.languages
 
 
 --
--- TOC entry 2248 (class 2606 OID 280684)
+-- TOC entry 2242 (class 2606 OID 280684)
 -- Name: languages_languagename_key; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2311,7 +2382,7 @@ ALTER TABLE ONLY masters.languages
 
 
 --
--- TOC entry 2250 (class 2606 OID 280686)
+-- TOC entry 2244 (class 2606 OID 280686)
 -- Name: office_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2320,7 +2391,7 @@ ALTER TABLE ONLY masters.offices
 
 
 --
--- TOC entry 2252 (class 2606 OID 280688)
+-- TOC entry 2246 (class 2606 OID 280688)
 -- Name: offices_officename1_key; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2329,7 +2400,7 @@ ALTER TABLE ONLY masters.offices
 
 
 --
--- TOC entry 2254 (class 2606 OID 280690)
+-- TOC entry 2248 (class 2606 OID 280690)
 -- Name: othercategories_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2338,7 +2409,7 @@ ALTER TABLE ONLY masters.othercategories
 
 
 --
--- TOC entry 2256 (class 2606 OID 280692)
+-- TOC entry 2250 (class 2606 OID 280692)
 -- Name: phcategories_phname_key; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2347,7 +2418,7 @@ ALTER TABLE ONLY masters.phcategories
 
 
 --
--- TOC entry 2258 (class 2606 OID 280694)
+-- TOC entry 2252 (class 2606 OID 280694)
 -- Name: phcategories_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2356,7 +2427,7 @@ ALTER TABLE ONLY masters.phcategories
 
 
 --
--- TOC entry 2244 (class 2606 OID 280696)
+-- TOC entry 2238 (class 2606 OID 280696)
 -- Name: pk_districts; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2365,7 +2436,7 @@ ALTER TABLE ONLY masters.districts
 
 
 --
--- TOC entry 2274 (class 2606 OID 280698)
+-- TOC entry 2268 (class 2606 OID 280698)
 -- Name: pk_states; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2374,7 +2445,7 @@ ALTER TABLE ONLY masters.states
 
 
 --
--- TOC entry 2278 (class 2606 OID 280700)
+-- TOC entry 2272 (class 2606 OID 280700)
 -- Name: pk_subdistricts; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2383,7 +2454,7 @@ ALTER TABLE ONLY masters.subdistricts
 
 
 --
--- TOC entry 2266 (class 2606 OID 280702)
+-- TOC entry 2260 (class 2606 OID 280702)
 -- Name: qualcatg_key; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2392,7 +2463,7 @@ ALTER TABLE ONLY masters.qualificationscategories
 
 
 --
--- TOC entry 2260 (class 2606 OID 280704)
+-- TOC entry 2254 (class 2606 OID 280704)
 -- Name: qualcode_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2401,7 +2472,7 @@ ALTER TABLE ONLY masters.qualifications
 
 
 --
--- TOC entry 2262 (class 2606 OID 280706)
+-- TOC entry 2256 (class 2606 OID 280706)
 -- Name: qualname_key; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2410,7 +2481,7 @@ ALTER TABLE ONLY masters.qualifications
 
 
 --
--- TOC entry 2268 (class 2606 OID 280708)
+-- TOC entry 2262 (class 2606 OID 280708)
 -- Name: religion_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2419,7 +2490,7 @@ ALTER TABLE ONLY masters.religions
 
 
 --
--- TOC entry 2270 (class 2606 OID 280710)
+-- TOC entry 2264 (class 2606 OID 280710)
 -- Name: salutations_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2428,7 +2499,7 @@ ALTER TABLE ONLY masters.salutations
 
 
 --
--- TOC entry 2272 (class 2606 OID 280712)
+-- TOC entry 2266 (class 2606 OID 280712)
 -- Name: salutations_ukey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2437,7 +2508,7 @@ ALTER TABLE ONLY masters.salutations
 
 
 --
--- TOC entry 2332 (class 2606 OID 281075)
+-- TOC entry 2326 (class 2606 OID 281075)
 -- Name: statesemployed_pkey; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2446,7 +2517,7 @@ ALTER TABLE ONLY masters.statesemployed
 
 
 --
--- TOC entry 2276 (class 2606 OID 280714)
+-- TOC entry 2270 (class 2606 OID 280714)
 -- Name: uk_states; Type: CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2455,7 +2526,7 @@ ALTER TABLE ONLY masters.states
 
 
 --
--- TOC entry 2280 (class 2606 OID 280716)
+-- TOC entry 2274 (class 2606 OID 280716)
 -- Name: roles_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2464,7 +2535,7 @@ ALTER TABLE ONLY online.roles
 
 
 --
--- TOC entry 2342 (class 2606 OID 281327)
+-- TOC entry 2336 (class 2606 OID 281327)
 -- Name: uec_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2473,7 +2544,7 @@ ALTER TABLE ONLY online.userenclosures
 
 
 --
--- TOC entry 2344 (class 2606 OID 281329)
+-- TOC entry 2338 (class 2606 OID 281329)
 -- Name: uec_ukey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2482,7 +2553,7 @@ ALTER TABLE ONLY online.userenclosures
 
 
 --
--- TOC entry 2294 (class 2606 OID 280718)
+-- TOC entry 2288 (class 2606 OID 280718)
 -- Name: ukevcxfd71v0mw8tnrgrd0f42jf; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2491,7 +2562,7 @@ ALTER TABLE ONLY online.users
 
 
 --
--- TOC entry 2296 (class 2606 OID 280720)
+-- TOC entry 2290 (class 2606 OID 280720)
 -- Name: ukr43af9ap4edm43mmtq01oddj6; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2500,7 +2571,7 @@ ALTER TABLE ONLY online.users
 
 
 --
--- TOC entry 2284 (class 2606 OID 280722)
+-- TOC entry 2278 (class 2606 OID 280722)
 -- Name: user_cells_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2509,7 +2580,7 @@ ALTER TABLE ONLY online.usercells
 
 
 --
--- TOC entry 2334 (class 2606 OID 281211)
+-- TOC entry 2328 (class 2606 OID 281211)
 -- Name: user_others_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2518,7 +2589,7 @@ ALTER TABLE ONLY online.userothercategories
 
 
 --
--- TOC entry 2336 (class 2606 OID 281213)
+-- TOC entry 2330 (class 2606 OID 281213)
 -- Name: user_others_ukey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2527,7 +2598,7 @@ ALTER TABLE ONLY online.userothercategories
 
 
 --
--- TOC entry 2292 (class 2606 OID 280724)
+-- TOC entry 2286 (class 2606 OID 280724)
 -- Name: user_roles_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2536,7 +2607,7 @@ ALTER TABLE ONLY online.userroles
 
 
 --
--- TOC entry 2282 (class 2606 OID 280726)
+-- TOC entry 2276 (class 2606 OID 280726)
 -- Name: useraddresses_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2545,7 +2616,7 @@ ALTER TABLE ONLY online.useraddresses
 
 
 --
--- TOC entry 2346 (class 2606 OID 282112)
+-- TOC entry 2340 (class 2606 OID 282112)
 -- Name: useremploymentdetails_pkey; Type: CONSTRAINT; Schema: online; Owner: rpa3
 --
 
@@ -2554,7 +2625,7 @@ ALTER TABLE ONLY online.useremploymentdetails
 
 
 --
--- TOC entry 2286 (class 2606 OID 280728)
+-- TOC entry 2280 (class 2606 OID 280728)
 -- Name: userlanguages_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2563,7 +2634,7 @@ ALTER TABLE ONLY online.userlanguages
 
 
 --
--- TOC entry 2288 (class 2606 OID 280730)
+-- TOC entry 2282 (class 2606 OID 280730)
 -- Name: userphdetails_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2572,7 +2643,7 @@ ALTER TABLE ONLY online.userphdetails
 
 
 --
--- TOC entry 2290 (class 2606 OID 280732)
+-- TOC entry 2284 (class 2606 OID 280732)
 -- Name: userprofiles_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2581,7 +2652,7 @@ ALTER TABLE ONLY online.userprofiles
 
 
 --
--- TOC entry 2298 (class 2606 OID 280734)
+-- TOC entry 2292 (class 2606 OID 280734)
 -- Name: users_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2590,7 +2661,7 @@ ALTER TABLE ONLY online.users
 
 
 --
--- TOC entry 2300 (class 2606 OID 280736)
+-- TOC entry 2294 (class 2606 OID 280736)
 -- Name: users_ukeymobile; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2599,7 +2670,7 @@ ALTER TABLE ONLY online.users
 
 
 --
--- TOC entry 2302 (class 2606 OID 280738)
+-- TOC entry 2296 (class 2606 OID 280738)
 -- Name: users_ukeyusername; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2608,7 +2679,7 @@ ALTER TABLE ONLY online.users
 
 
 --
--- TOC entry 2304 (class 2606 OID 280740)
+-- TOC entry 2298 (class 2606 OID 280740)
 -- Name: usersportsdetails_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2617,7 +2688,7 @@ ALTER TABLE ONLY online.usersportsdetails
 
 
 --
--- TOC entry 2306 (class 2606 OID 280742)
+-- TOC entry 2300 (class 2606 OID 280742)
 -- Name: usersqualifications_pkey; Type: CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2635,7 +2706,7 @@ ALTER TABLE ONLY backend.advertisements
 
 
 --
--- TOC entry 2401 (class 2606 OID 298429)
+-- TOC entry 2403 (class 2606 OID 298429)
 -- Name: advertisements_officecode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2644,7 +2715,7 @@ ALTER TABLE ONLY backend.advertisements
 
 
 --
--- TOC entry 2400 (class 2606 OID 298434)
+-- TOC entry 2404 (class 2606 OID 298434)
 -- Name: advertisements_usercode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2653,16 +2724,25 @@ ALTER TABLE ONLY backend.advertisements
 
 
 --
--- TOC entry 2404 (class 2606 OID 298492)
--- Name: advertisementsages_adcode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
+-- TOC entry 2405 (class 2606 OID 298551)
+-- Name: advertisementsages_adcode_fkeys; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
 ALTER TABLE ONLY backend.advertisementsages
-    ADD CONSTRAINT advertisementsages_adcode_fkey FOREIGN KEY (adcode) REFERENCES backend.advertisements(adcode) ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT advertisementsages_adcode_fkeys FOREIGN KEY (adcode) REFERENCES backend.advertisements(adcode) ON UPDATE CASCADE ON DELETE RESTRICT;
 
 
 --
--- TOC entry 2403 (class 2606 OID 298471)
+-- TOC entry 2408 (class 2606 OID 298626)
+-- Name: advertisementsages_adcoderlx_fkeys; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
+--
+
+ALTER TABLE ONLY backend.advertisementsagesrelax
+    ADD CONSTRAINT advertisementsages_adcoderlx_fkeys FOREIGN KEY (adcode) REFERENCES backend.advertisements(adcode) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2406 (class 2606 OID 298600)
 -- Name: advertisementsfees_adcode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2671,7 +2751,16 @@ ALTER TABLE ONLY backend.advertisementsfees
 
 
 --
--- TOC entry 2390 (class 2606 OID 280913)
+-- TOC entry 2407 (class 2606 OID 298613)
+-- Name: advertisementsfees_adcoderlxf_fkeys; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
+--
+
+ALTER TABLE ONLY backend.advertisementsfeesrelax
+    ADD CONSTRAINT advertisementsfees_adcoderlxf_fkeys FOREIGN KEY (adcode) REFERENCES backend.advertisements(adcode) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 2392 (class 2606 OID 280913)
 -- Name: officecenters_centercode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2680,7 +2769,7 @@ ALTER TABLE ONLY backend.officecenters
 
 
 --
--- TOC entry 2391 (class 2606 OID 280918)
+-- TOC entry 2393 (class 2606 OID 280918)
 -- Name: officecenters_officecode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2689,7 +2778,7 @@ ALTER TABLE ONLY backend.officecenters
 
 
 --
--- TOC entry 2365 (class 2606 OID 280745)
+-- TOC entry 2367 (class 2606 OID 280745)
 -- Name: userlogins_cellcode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: postgres
 --
 
@@ -2698,7 +2787,7 @@ ALTER TABLE ONLY backend.userlogins
 
 
 --
--- TOC entry 2392 (class 2606 OID 280937)
+-- TOC entry 2394 (class 2606 OID 280937)
 -- Name: userpages_urlcode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2707,7 +2796,7 @@ ALTER TABLE ONLY backend.userpages
 
 
 --
--- TOC entry 2393 (class 2606 OID 280942)
+-- TOC entry 2395 (class 2606 OID 280942)
 -- Name: userpages_usercode_fkey; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2716,7 +2805,7 @@ ALTER TABLE ONLY backend.userpages
 
 
 --
--- TOC entry 2389 (class 2606 OID 280883)
+-- TOC entry 2391 (class 2606 OID 280883)
 -- Name: venuecentersfk; Type: FK CONSTRAINT; Schema: backend; Owner: rpa3
 --
 
@@ -2725,7 +2814,7 @@ ALTER TABLE ONLY backend.venues
 
 
 --
--- TOC entry 2366 (class 2606 OID 280750)
+-- TOC entry 2368 (class 2606 OID 280750)
 -- Name: castetribes_fk1; Type: FK CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2734,7 +2823,7 @@ ALTER TABLE ONLY masters.castetribes
 
 
 --
--- TOC entry 2367 (class 2606 OID 280755)
+-- TOC entry 2369 (class 2606 OID 280755)
 -- Name: cells_officecode_fkey; Type: FK CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2743,7 +2832,7 @@ ALTER TABLE ONLY masters.cells
 
 
 --
--- TOC entry 2368 (class 2606 OID 280760)
+-- TOC entry 2370 (class 2606 OID 280760)
 -- Name: fk228e555327b5e775; Type: FK CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2752,7 +2841,7 @@ ALTER TABLE ONLY masters.districts
 
 
 --
--- TOC entry 2369 (class 2606 OID 280765)
+-- TOC entry 2371 (class 2606 OID 280765)
 -- Name: qualifications_qualificationcategorycode_fkey; Type: FK CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2761,7 +2850,7 @@ ALTER TABLE ONLY masters.qualifications
 
 
 --
--- TOC entry 2370 (class 2606 OID 280770)
+-- TOC entry 2372 (class 2606 OID 280770)
 -- Name: subdistricts_fk1; Type: FK CONSTRAINT; Schema: masters; Owner: postgres
 --
 
@@ -2770,7 +2859,7 @@ ALTER TABLE ONLY masters.subdistricts
 
 
 --
--- TOC entry 2374 (class 2606 OID 280775)
+-- TOC entry 2376 (class 2606 OID 280775)
 -- Name: fk_users_cells1; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2779,7 +2868,7 @@ ALTER TABLE ONLY online.usercells
 
 
 --
--- TOC entry 2375 (class 2606 OID 280780)
+-- TOC entry 2377 (class 2606 OID 280780)
 -- Name: fk_users_cells2; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2788,7 +2877,7 @@ ALTER TABLE ONLY online.usercells
 
 
 --
--- TOC entry 2394 (class 2606 OID 281214)
+-- TOC entry 2396 (class 2606 OID 281214)
 -- Name: fk_users_others1; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2797,7 +2886,7 @@ ALTER TABLE ONLY online.userothercategories
 
 
 --
--- TOC entry 2395 (class 2606 OID 281219)
+-- TOC entry 2397 (class 2606 OID 281219)
 -- Name: fk_users_others2; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2806,7 +2895,7 @@ ALTER TABLE ONLY online.userothercategories
 
 
 --
--- TOC entry 2384 (class 2606 OID 280785)
+-- TOC entry 2386 (class 2606 OID 280785)
 -- Name: fk_users_roles1; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2815,7 +2904,7 @@ ALTER TABLE ONLY online.userroles
 
 
 --
--- TOC entry 2385 (class 2606 OID 280790)
+-- TOC entry 2387 (class 2606 OID 280790)
 -- Name: fk_users_roles2; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2824,7 +2913,7 @@ ALTER TABLE ONLY online.userroles
 
 
 --
--- TOC entry 2397 (class 2606 OID 281330)
+-- TOC entry 2398 (class 2606 OID 281330)
 -- Name: uec_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2833,7 +2922,7 @@ ALTER TABLE ONLY online.userenclosures
 
 
 --
--- TOC entry 2396 (class 2606 OID 281335)
+-- TOC entry 2399 (class 2606 OID 281335)
 -- Name: uec_registrationno_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2842,7 +2931,7 @@ ALTER TABLE ONLY online.userenclosures
 
 
 --
--- TOC entry 2371 (class 2606 OID 280795)
+-- TOC entry 2373 (class 2606 OID 280795)
 -- Name: useraddresses_users_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2851,7 +2940,7 @@ ALTER TABLE ONLY online.useraddresses
 
 
 --
--- TOC entry 2372 (class 2606 OID 280800)
+-- TOC entry 2374 (class 2606 OID 280800)
 -- Name: useraddressesperblockcode_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2860,7 +2949,7 @@ ALTER TABLE ONLY online.useraddresses
 
 
 --
--- TOC entry 2373 (class 2606 OID 280805)
+-- TOC entry 2375 (class 2606 OID 280805)
 -- Name: useraddressespreblockcode_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2869,7 +2958,7 @@ ALTER TABLE ONLY online.useraddresses
 
 
 --
--- TOC entry 2399 (class 2606 OID 282113)
+-- TOC entry 2400 (class 2606 OID 282113)
 -- Name: useremploymentdetails_apptype_fkey; Type: FK CONSTRAINT; Schema: online; Owner: rpa3
 --
 
@@ -2878,7 +2967,7 @@ ALTER TABLE ONLY online.useremploymentdetails
 
 
 --
--- TOC entry 2398 (class 2606 OID 282118)
+-- TOC entry 2401 (class 2606 OID 282118)
 -- Name: useremploymentdetails_users_fkey; Type: FK CONSTRAINT; Schema: online; Owner: rpa3
 --
 
@@ -2887,7 +2976,7 @@ ALTER TABLE ONLY online.useremploymentdetails
 
 
 --
--- TOC entry 2376 (class 2606 OID 280810)
+-- TOC entry 2378 (class 2606 OID 280810)
 -- Name: userlanguages_languagecode_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2896,7 +2985,7 @@ ALTER TABLE ONLY online.userlanguages
 
 
 --
--- TOC entry 2377 (class 2606 OID 280815)
+-- TOC entry 2379 (class 2606 OID 280815)
 -- Name: userlanguages_registrationno_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2905,7 +2994,7 @@ ALTER TABLE ONLY online.userlanguages
 
 
 --
--- TOC entry 2378 (class 2606 OID 280820)
+-- TOC entry 2380 (class 2606 OID 280820)
 -- Name: userphdetails_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2914,7 +3003,7 @@ ALTER TABLE ONLY online.userphdetails
 
 
 --
--- TOC entry 2379 (class 2606 OID 280825)
+-- TOC entry 2381 (class 2606 OID 280825)
 -- Name: userphdetails_phcode_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2923,7 +3012,7 @@ ALTER TABLE ONLY online.userphdetails
 
 
 --
--- TOC entry 2380 (class 2606 OID 280830)
+-- TOC entry 2382 (class 2606 OID 280830)
 -- Name: userprofiles_castetribe_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2932,7 +3021,7 @@ ALTER TABLE ONLY online.userprofiles
 
 
 --
--- TOC entry 2381 (class 2606 OID 280835)
+-- TOC entry 2383 (class 2606 OID 280835)
 -- Name: userprofiles_religion_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2941,7 +3030,7 @@ ALTER TABLE ONLY online.userprofiles
 
 
 --
--- TOC entry 2382 (class 2606 OID 280840)
+-- TOC entry 2384 (class 2606 OID 280840)
 -- Name: userprofiles_salutationcode_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2950,7 +3039,7 @@ ALTER TABLE ONLY online.userprofiles
 
 
 --
--- TOC entry 2383 (class 2606 OID 280845)
+-- TOC entry 2385 (class 2606 OID 280845)
 -- Name: userprofiles_users_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2959,7 +3048,7 @@ ALTER TABLE ONLY online.userprofiles
 
 
 --
--- TOC entry 2386 (class 2606 OID 280850)
+-- TOC entry 2388 (class 2606 OID 280850)
 -- Name: usersportsdetails_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2968,7 +3057,7 @@ ALTER TABLE ONLY online.usersportsdetails
 
 
 --
--- TOC entry 2387 (class 2606 OID 280855)
+-- TOC entry 2389 (class 2606 OID 280855)
 -- Name: usersqualifications_qualificationcode_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2977,7 +3066,7 @@ ALTER TABLE ONLY online.usersqualifications
 
 
 --
--- TOC entry 2388 (class 2606 OID 280860)
+-- TOC entry 2390 (class 2606 OID 280860)
 -- Name: usersqualifications_userid_fkey; Type: FK CONSTRAINT; Schema: online; Owner: postgres
 --
 
@@ -2986,7 +3075,7 @@ ALTER TABLE ONLY online.usersqualifications
 
 
 --
--- TOC entry 2567 (class 0 OID 0)
+-- TOC entry 2573 (class 0 OID 0)
 -- Dependencies: 7
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -2997,7 +3086,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2021-04-05 17:53:52
+-- Completed on 2021-04-16 19:19:43
 
 --
 -- PostgreSQL database dump complete
