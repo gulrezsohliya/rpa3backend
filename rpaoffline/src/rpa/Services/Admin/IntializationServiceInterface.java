@@ -1,13 +1,11 @@
 package rpa.Services.Admin;
 
-import java.util.HashMap;
 import java.util.List;
 
 import rpa.Models.Examination.ExamCenter;
-import rpa.Models.Examination.ExamSubjects;
 import rpa.Models.Examination.OfficeCenter;
-import rpa.Models.Examination.OptionalSubjects;
 import rpa.Models.Examination.Venue;
+import rpa.Models.master.Categories;
 import rpa.Models.master.Cell;
 import rpa.Models.master.Office;
 import rpa.Models.master.OtherCategories;
@@ -21,7 +19,8 @@ public interface IntializationServiceInterface {
 	public User listUser(String username);
 
 	/* List */
-	
+	public List<Categories> listCategories();
+
 	public List<OtherCategories> listOtherCategories();
 
 	public List<Cell> listCells();
@@ -80,6 +79,5 @@ public interface IntializationServiceInterface {
 	public boolean updateOtherCategory(OtherCategories categories);
 
 	public boolean deleteOtherCategory(Integer othercategorycode);
-
 
 }

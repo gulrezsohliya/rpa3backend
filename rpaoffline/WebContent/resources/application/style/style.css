@@ -221,7 +221,7 @@ button{
 
     #stepperHeader {
         width: 70%;
-        height: 30px;
+        min-height: 30px;
         display: flex;
         margin:0 auto 20px;
     }

@@ -26,6 +26,14 @@
 			    border: 1px solid #34495e59;
 			    border-radius: 3px;
     		}
+    		.message{
+    			width:100%;
+    			background-color:#28a745;
+    			color:white;
+    			display:flex;
+    			justify-content: center;
+    			padding:5px;
+    		}
         </style>
     </head>
     <body ng-app="CommonApp">
@@ -205,65 +213,91 @@
 	                    	<tr class="form-group has-feedback">
 	                            <td class="title">Age as on <input type="date" ng-model='adv.agedate' readonly style='border:none;background:inherit;'/></td>
 	                            <td class="col-xs-5 selectContainer">
-									<fieldset><legend>General</legend>
-										Minimum Age::<input style="width:30%;" class="form-control" type="number" name="GENERALagemin"
-											ng-model="adv.ageason['GENERAL'].agemin"  min='0'/>
-										Maximun Age::<input style="width:30%;" class="form-control" type="number" name="GENERALagemax"
-											ng-model="adv.ageason['GENERAL'].agemax"  min='0'/>
-									</fieldset>
-									<fieldset><legend>SC</legend>
-										Minimum Age::<input style="width:30%;" class="form-control" type="number" name="SCagemin"
-											ng-model="adv.ageason['SC'].agemin"  min='0'/>
-										Maximun Age::<input style="width:30%;" class="form-control" type="number" name="SCagemax"
-											ng-model="adv.ageason['SC'].agemax"  min='0'/>
-									</fieldset>
-	
-									<fieldset><legend>ST</legend>
-										Minimum Age::<input style="width:30%;" class="form-control" type="number" name="STagemin"
-											ng-model="adv.ageason['ST'].agemin"  min='0'/>
-										Maximun Age::<input style="width:30%;" class="form-control" type="number" name="STagemax"
-											ng-model="adv.ageason['ST'].agemax"  min='0'/>
-									</fieldset>
-	
-									<fieldset><legend>OBC</legend>
-										Minimum Age::<input style="width:30%;" class="form-control" type="number" name="OBCagemin"
-											ng-model="adv.ageason['OBC'].agemin" min='0'/>
-										Maximun Age::<input style="width:30%;" class="form-control" type="number" name="OBCagemax"
-											ng-model="adv.ageason['OBC'].agemax" min='0'/>
-									</fieldset>
-									<span id="advMsg"></span>
+									<table border='1' cellspacing="0" style='width:80%;'>
+										<tr><th style='width:30%;background: aliceblue'>Category</th>
+											<th style='width:30%;background: aliceblue'>Min Age</th>
+											<th style='width:30%;background: aliceblue'>Max Age</th>
+											<th style='width:10%;background: aliceblue'></th></tr>
+										<tbody>
+											<tr ng-repeat='ageItem in adv.advertisementAge'>
+												<td><select ng-model="ageItem.categorycode" style='width:100%'>
+													<option value="">--Select--</option>
+													<option ng-selected="category.categorycode == ageItem.categorycode"
+														ng-repeat='category in Categories track by $index' ng-value="category.categorycode">
+														{{category.categorycode}}</option>
+												</select> 
+												</td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="ageItem.minage"  min='0'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="ageItem.maxage"  min='0'/></td>
+												<td><input type="button" class="form-control" value="Add" ng-click='addAdvAge()' ng-if='$index==adv.advertisementAge.length-1 && $index < Categories.length-1'/></td>
+											</tr>
+										</tbody>
+									</table>
 	                            </td>
 	                        </tr>
-	                        <tr class="form-group has-feedback">
-	                            <td class="title">Application Fee</td>
+	                    	<tr class="form-group has-feedback">
+	                            <td class="title">Age relaxations</td>
 	                            <td class="col-xs-5 selectContainer">
-									<fieldset><legend>General</legend>
-										<input class="form-control" type="number" id="applicationfeesgeneral" name="applicationfeesgeneral"
-											ng-model="adv.applicationfeesgeneral" required/>
-									</fieldset>
-									<span class="alert alert-danger" 
-										ng-show="advForm1.applicationfeesgeneral.$pristine && advForm1.applicationfeesgeneral.$invalid"> 
-										Required
-									</span>
-									<fieldset><legend>SC/ST</legend>
-										<input class="form-control" type="number" id="applicationfeesscst" name="applicationfeesscst"
-											ng-model="adv.applicationfeesscst" required/>
-									</fieldset>
-									<span class="alert alert-danger" 
-										ng-show="advForm1.applicationfeesscst.$pristine && advForm1.applicationfeesscst.$invalid"> 
-										Required
-									</span>
-									<fieldset><legend>Fee type</legend>
-										<input class="form-control" type="number" id="feetype" name="feetype"
-											ng-model="adv.feetype" required/>
-									</fieldset>
-									<span class="alert alert-danger" 
-										ng-show="advForm2.feetype.$pristine && advForm2.feetype.$invalid"> 
-										Required
-									</span>
-									<span id="advMsg"></span>
+									<table border='1' cellspacing="0" style='width:80%;'>
+										<tr>
+											<th style='width:30%;background: aliceblue'>PWD</th>
+											<th style='width:30%;background: aliceblue'>Woman</th>
+											<th style='width:30%;background: aliceblue'>Ex-service man</th>
+										</tr>
+										<tbody>
+											<tr>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementAgeRelax.pwdadditionalage"  max='10'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementAgeRelax.womanadditionalage"  max='10'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementAgeRelax.exservicemenadditionalage"  max='10'/></td>
+											</tr>
+										</tbody>
+									</table>
 	                            </td>
 	                        </tr>
+	                    	<tr class="form-group has-feedback">
+	                            <td class="title">Fees</td>
+	                            <td class="col-xs-5 selectContainer">
+									<table border='1' cellspacing="0" style='width:80%;'>
+										<tr><th style='width:30%;background: aliceblue'>Category</th>
+											<th style='width:30%;background: aliceblue'>Fee Amount</th>
+											<th style='width:10%;background: aliceblue'></th>
+										</tr>
+										<tbody>
+											<tr ng-repeat='feeItem in adv.advertisementFee'>
+												<td><select ng-model="feeItem.categorycode" style='width:100%'>
+													<option value="">--Select--</option>
+													<option ng-selected="category.categorycode == feeItem.categorycode"
+														ng-repeat='category in Categories track by $index' ng-value="category.categorycode">
+														{{category.categorycode}}</option>
+												</select> 
+												</td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="feeItem.feeamount" min='0'/></td>
+												<td><input type="button" class="form-control" value="Add" ng-click='addAdvFee()' ng-if='$index==adv.advertisementFee.length-1 && $index < Categories.length-1'/></td>
+											</tr>
+										</tbody>
+									</table>
+	                            </td>
+	                        </tr>
+	                    	<tr class="form-group has-feedback">
+	                            <td class="title">Fee relaxations</td>
+	                            <td class="col-xs-5 selectContainer">
+									<table border='1' cellspacing="0" style='width:80%;'>
+										<tr>
+											<th style='width:30%;background: aliceblue'>PWD</th>
+											<th style='width:30%;background: aliceblue'>Woman</th>
+											<th style='width:30%;background: aliceblue'>Ex-service man</th>
+										</tr>
+										<tbody>
+											<tr>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.pwdadditionalfee"  min='0'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.womanadditionalfee"  min='0'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.exservicemenadditionalfee"  min='0'/></td>
+											</tr>
+										</tbody>
+									</table>
+	                            </td>
+	                        </tr>
+	                        
 	                        <tr class="form-group has-feedback">
 	                            <td colspan="2" align="center">
 	                                <input type='button' ng-click="setStep(1)" class="button-default" ng-if="actionButton === 'EDIT'" value="Previous Step"/>
@@ -285,6 +319,7 @@
 	                    </table>
 	                </form>
 	            </div> 
+	            <div class="message" ><span id="message">{{message}}</span></div>
             </div> 
             <div id="displayRecords" style='width:80%;margin: 15px auto 50px auto;'></div>
         </div>

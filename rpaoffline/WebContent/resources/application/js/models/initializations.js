@@ -2,7 +2,7 @@ var Advertisement = function() {
 	return {
 		officecode : 0,
 		slno : 0,
-		adcode : 0,
+		adcode : '',
 		nameofpost : '',
 		postshortname : "",
 		issuedate : 0,
@@ -16,26 +16,47 @@ var Advertisement = function() {
 		entrydate : 0,
 		finalized : "Y",
 		feetype : 0,
-		advertisementno :"",
+		advertisementno : "",
 		examinationmodecode : 0,
-		ageason : {
-			'GENERAL' : {
-				agemin : 0,
-				agemax : 0
-			},
-			'SC' : {
-				agemin : 0,
-				agemax : 0
-			},
-			'ST' : {
-				agemin : 0,
-				agemax : 0
-			},
-			'OBC' : {
-				agemin : 0,
-				agemax : 0
-			}
-		}
+		advertisementAge : [ new AdvertisementAge() ],
+		advertisementAgeRelax :{
+			slno : 0,
+			adcode : '',
+			pwdadditionalage : 0,
+			womanadditionalage : 0,
+			exservicemenadditionalage : 0,
+			entrydate : 0
+		} ,
+		advertisementFee : [ new AdvertisementFee() ],
+		advertisementFeeRelax :{
+			slno : 0,
+			adcode : '',
+			pwdadditionalfee : 0,
+			womanadditionalfee : 0,
+			exservicemenadditionalfee : 0,
+			entrydate : 0
+		} ,
+	};
+}
+
+var AdvertisementAge = function() {
+	return {
+		slno : 0,
+		adcode : '',
+		categorycode : '',
+		minage : 0,
+		maxage : 0,
+		entrydate : 0
+	};
+}
+
+var AdvertisementFee = function() {
+	return {
+		slno : 0,
+		adcode : '',
+		categorycode : '',
+		feeamount : 0,
+		entrydate : 0
 	};
 }
 

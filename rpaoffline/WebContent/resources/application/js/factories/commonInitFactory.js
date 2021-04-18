@@ -19,6 +19,12 @@ app.factory('commonInitFactory', function($http) {
 						callback(response);
 					});
 		},
+		listCategories:  function(callback) {
+			$http.get("./listCategories").success(
+					function(response, status, headers, config) {
+						callback(response);
+					});
+		},
 		listOtherCategories:  function(callback) {
 			$http.get("./listOtherCategories").success(
 					function(response, status, headers, config) {

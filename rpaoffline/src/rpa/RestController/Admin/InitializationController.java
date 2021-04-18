@@ -27,6 +27,7 @@ import rpa.Models.Examination.ExamSubjects;
 import rpa.Models.Examination.OfficeCenter;
 import rpa.Models.Examination.OptionalSubjects;
 import rpa.Models.Examination.Venue;
+import rpa.Models.master.Categories;
 import rpa.Models.master.Cell;
 import rpa.Models.master.Office;
 import rpa.Models.master.OtherCategories;
@@ -44,6 +45,16 @@ public class InitializationController {
 	/*********************************************************
 	 * READ DATA
 	 **********************************************************/
+
+	@GetMapping(value = "/listCategories", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Categories>> listCategories() {
+		try {
+			List<Categories> categories = IS.listCategories();
+			return ResponseEntity.accepted().body(categories);
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}
+	}
 
 	@GetMapping(value = "/listOtherCategories", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<OtherCategories>> listOtherCategories() {
@@ -109,7 +120,7 @@ public class InitializationController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-	
+
 	@GetMapping(value = "/listOfficesAndMappedCenters", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Office>> listOffice(HttpServletRequest req) {
 		try {
@@ -207,11 +218,11 @@ public class InitializationController {
 
 	@PostMapping(value = "/saveOfficeCenters", consumes = "application/json")
 	public ResponseEntity<HashMap<String, Object>> saveOfficeCenters(@RequestBody List<OfficeCenter> offcen) {
-		
+
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		if (IS.saveOfficeCenters(offcen)) {
 			response.put("response", HttpStatus.CREATED);
-		}else {
+		} else {
 			response.put("response", HttpStatus.METHOD_FAILURE);
 		}
 		return ResponseEntity.ok().body(response);

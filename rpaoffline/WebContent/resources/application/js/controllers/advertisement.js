@@ -1,5 +1,6 @@
 
 $(document).ready(function () {
+	jQuery('.message').fadeOut(1000);
 });
 
 app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
@@ -18,10 +19,19 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 	$scope.step = 1;
 	$scope.actionButton = SAVE;
     $scope.adv = new Advertisement();
+    console.log($scope.adv);
     $scope.advs = [];
     $scope.setStep=function(step){
     	$scope.step=step;
     };
+    
+    $scope.addAdvAge=()=>{
+    	$scope.adv.advertisementAge.push(new AdvertisementAge());
+    };
+    $scope.addAdvFee=()=>{
+    	$scope.adv.advertisementFee.push(new AdvertisementFee());
+    };
+    
     $scope.edit = function (adcode) {
     	$scope.reset();
     	$scope.actionButton = EDIT;
@@ -53,8 +63,13 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 	        	/* $scope.reset(); */
         		$scope.step=2;
         		$scope.actionButton =EDIT;
-	        	$scope.listAdvs(); 
-	        	MsgBox(successMsg)}, 
+        		$scope.listAdvs();
+				$scope.message='Saved. Please Conitnue to the next Step.';
+				jQuery('.message').fadeIn(1000);
+				$timeout(function(){
+					jQuery('.message').fadeOut(1000);
+				},5000);
+				}, 
 	    	() =>{
 	    		MsgBox(errorMsg)
 	    		}
@@ -71,11 +86,16 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 			if(res===true){
 				if($scope.step==3){
 					$scope.reset(); 
+					MsgBox(successMsg);				
 				}else{
 					$scope.step++;
 				}
-				$scope.listAdvs(); 
-				MsgBox(successMsg);				
+				$scope.listAdvs();
+				$scope.message='Saved. Please Conitnue to the next Step.';
+				jQuery('.message').fadeIn(1000);
+				$timeout(function(){
+					jQuery('.message').fadeOut(1000);
+				},5000);
 			}else{
 				MsgBox(errorMsg);								
 			}
@@ -139,14 +159,20 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     };
 
     /* READ DATA */
+    $scope.listCategories = () => {
+    	commonInitFactory.listCategories((response)=>{
+    		$scope.Categories = response; 
+    	});
+    };
     $scope.listAdvs = () => {
         commonInitFactory.listAdvertisements((response)=>{
     		$scope.advs = response;
     		$scope.setDataTable($scope.advs);
     	});
     };
+    //---------------------------------------------
     $scope.listAdvs();
-        
+    $scope.listCategories();
         
 }]);
 

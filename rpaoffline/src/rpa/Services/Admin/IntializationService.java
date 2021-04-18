@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rpa.Dao.Admin.InitializationDaoInterface;
+import rpa.Models.Examination.Advertisement;
 import rpa.Models.Examination.ExamCenter;
 import rpa.Models.Examination.ExamSubjects;
 import rpa.Models.Examination.OfficeCenter;
 import rpa.Models.Examination.OptionalSubjects;
 import rpa.Models.Examination.Venue;
+import rpa.Models.master.Categories;
 import rpa.Models.master.Cell;
 import rpa.Models.master.Office;
 import rpa.Models.master.OtherCategories;
@@ -44,7 +46,16 @@ public class IntializationService implements IntializationServiceInterface {
 	}
 
 	/* List */
+	@Override
+	public List<Categories> listCategories() {
+		List<Categories> oth = null;
 
+		String sql = "SELECT * FROM masters.categories where enabled='Y' order by categorycode ";
+
+		oth = UI.listGeneric(Categories.class, sql);
+		return oth;
+	}
+	
 	@Override
 	public List<OtherCategories> listOtherCategories() {
 		List<OtherCategories> oth = null;
