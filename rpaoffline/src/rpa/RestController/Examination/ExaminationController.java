@@ -131,7 +131,7 @@ public class ExaminationController {
 	// UPDATE/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@PutMapping(value = "/updateAdvertisement", consumes = "application/json")
 	public ResponseEntity<Boolean> updateAdvertisement(@RequestBody Advertisement obj) {
-
+System.out.println(obj);
 		return ResponseEntity.ok().body(ES.updateAdvertisement(obj));
 	}
 

@@ -28,7 +28,8 @@ public class Advertisement implements Serializable {
 	private String feetype;
 	private String advertisementno;
 	private Integer examinationmodecode;
-//	private List<Advertisement_Categorywise_Age> categorywise_Age;
+	private List<AdvertisementAges> advertisementAge;
+	private AdvertisementAgeRelax advertisementAgeRelax;
 
 	public Integer getOfficecode() {
 		return officecode;
@@ -174,14 +175,31 @@ public class Advertisement implements Serializable {
 		this.examinationmodecode = examinationmodecode;
 	}
 
+	public List<AdvertisementAges> getAdvertisementAge() {
+		return advertisementAge;
+	}
+
+	public void setAdvertisementAge(List<AdvertisementAges> advertisementAge) {
+		this.advertisementAge = advertisementAge;
+	}
+
+	public AdvertisementAgeRelax getAdvertisementAgeRelax() {
+		return advertisementAgeRelax;
+	}
+
+	public void setAdvertisementAgeRelax(AdvertisementAgeRelax advertisementAgeRelax) {
+		this.advertisementAgeRelax = advertisementAgeRelax;
+	}
+
 	@Override
 	public String toString() {
 		return "Advertisement [officecode=" + officecode + ", slno=" + slno + ", adcode=" + adcode + ", nameofpost="
 				+ nameofpost + ", postshortname=" + postshortname + ", issuedate=" + issuedate + ", lastdate="
 				+ lastdate + ", agedate=" + agedate + ", description=" + description + ", counterentry=" + counterentry
-				+ ", open=" + open +  ", noofoptionals=" + noofoptionals + ", usercode=" + usercode
-				+ ", entrydate=" + entrydate + ", finalized=" + finalized + ", feetype=" + feetype
-				+ ", advertisementno=" + advertisementno + ", examinationmodecode=" + examinationmodecode + "]";
+				+ ", open=" + open + ", noofoptionals=" + noofoptionals + ", usercode=" + usercode + ", entrydate="
+				+ entrydate + ", finalized=" + finalized + ", feetype=" + feetype + ", advertisementno="
+				+ advertisementno + ", examinationmodecode=" + examinationmodecode + ", advertisementAge="
+				+ advertisementAge + ", advertisementAgeRelax=" + advertisementAgeRelax + "]";
 	}
 
 }
