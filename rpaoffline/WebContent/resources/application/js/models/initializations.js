@@ -31,9 +31,9 @@ var Advertisement = function() {
 		advertisementFeeRelax :{
 			slno : 0,
 			adcode : '',
-			pwdadditionalfee : 0,
-			womanadditionalfee : 0,
-			exservicemenadditionalfee : 0,
+			pwdfees : 0,
+			womanfees : 0,
+			exservicemenfees : 0,
 			entrydate : 0
 		} ,
 	};

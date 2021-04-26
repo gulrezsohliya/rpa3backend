@@ -34,6 +34,9 @@
     			justify-content: center;
     			padding:5px;
     		}
+    		#advForm2 table table input[type=number]{
+    			border:none;
+    		}
         </style>
     </head>
     <body ng-app="CommonApp">
@@ -147,8 +150,13 @@
 	                        <tr class="form-group has-feedback">
 	                            <td class="title">No. of Optional Subjects</td>
 	                            <td class="col-xs-5 selectContainer">
-									<input class="form-control" type="number" id="noofoptionals" name="noofoptionals"
-										ng-model="adv.noofoptionals" required min='0	'/>
+									<select class="form-control" id="noofoptionals" name="noofoptionals"
+										ng-model="adv.noofoptionals" >
+										<option value='0' selected>0</option>
+										<option value='1' selected>1</option>
+										<option value='2' selected>2</option>
+										<option value='3' selected>3</option>
+									</select>
 									<span id="advMsg"></span>
 									<span class="alert alert-danger" 
 										ng-show="advForm.noofoptionals.$pristine && advForm.noofoptionals.$invalid"> 
@@ -213,7 +221,7 @@
 	                    	<tr class="form-group has-feedback">
 	                            <td class="title">Age as on <input type="date" ng-model='adv.agedate' readonly style='border:none;background:inherit;'/></td>
 	                            <td class="col-xs-5 selectContainer">
-									<table border='1' cellspacing="0" style='width:80%;'>
+									<table border='1' cellspacing="0" style='width:80%;border-color: ghostwhite;'>
 										<tr><th style='width:30%;background: aliceblue'>Category</th>
 											<th style='width:30%;background: aliceblue'>Min Age</th>
 											<th style='width:30%;background: aliceblue'>Max Age</th>
@@ -238,17 +246,19 @@
 	                    	<tr class="form-group has-feedback">
 	                            <td class="title">Age relaxations</td>
 	                            <td class="col-xs-5 selectContainer">
-									<table border='1' cellspacing="0" style='width:80%;'>
+									<table border='1' cellspacing="0" style='width:80%;border-color: ghostwhite;'>
 										<tr>
 											<th style='width:30%;background: aliceblue'>PWD</th>
 											<th style='width:30%;background: aliceblue'>Woman</th>
 											<th style='width:30%;background: aliceblue'>Ex-service man</th>
+											<th style='width:10%;background: aliceblue'></th>
 										</tr>
 										<tbody>
 											<tr>
 												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementAgeRelax.pwdadditionalage"  max='10'/></td>
 												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementAgeRelax.womanadditionalage"  max='10'/></td>
 												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementAgeRelax.exservicemenadditionalage"  max='10'/></td>
+												<td></td>
 											</tr>
 										</tbody>
 									</table>
@@ -257,9 +267,10 @@
 	                    	<tr class="form-group has-feedback">
 	                            <td class="title">Fees</td>
 	                            <td class="col-xs-5 selectContainer">
-									<table border='1' cellspacing="0" style='width:80%;'>
+									<table border='1' cellspacing="0" style='width:80%;border-color: ghostwhite;'>
 										<tr><th style='width:30%;background: aliceblue'>Category</th>
 											<th style='width:30%;background: aliceblue'>Fee Amount</th>
+											<th style='width:30%;background: aliceblue'></th>
 											<th style='width:10%;background: aliceblue'></th>
 										</tr>
 										<tbody>
@@ -272,6 +283,7 @@
 												</select> 
 												</td>
 												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="feeItem.feeamount" min='0'/></td>
+												<td></td>
 												<td><input type="button" class="form-control" value="Add" ng-click='addAdvFee()' ng-if='$index==adv.advertisementFee.length-1 && $index < Categories.length-1'/></td>
 											</tr>
 										</tbody>
@@ -281,17 +293,19 @@
 	                    	<tr class="form-group has-feedback">
 	                            <td class="title">Fee relaxations</td>
 	                            <td class="col-xs-5 selectContainer">
-									<table border='1' cellspacing="0" style='width:80%;'>
+									<table border='1' cellspacing="0" style='width:80%;border-color: ghostwhite;'>
 										<tr>
 											<th style='width:30%;background: aliceblue'>PWD</th>
 											<th style='width:30%;background: aliceblue'>Woman</th>
 											<th style='width:30%;background: aliceblue'>Ex-service man</th>
+											<th style='width:10%;background: aliceblue'></th>
 										</tr>
 										<tbody>
 											<tr>
-												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.pwdadditionalfee"  min='0'/></td>
-												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.womanadditionalfee"  min='0'/></td>
-												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.exservicemenadditionalfee"  min='0'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.pwdfees"  min='0'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.womanfees"  min='0'/></td>
+												<td><input style="width:100%;text-align: center" class="form-control" type="number" ng-model="adv.advertisementFeeRelax.exservicemenfees"  min='0'/></td>
+												<td></td>
 											</tr>
 										</tbody>
 									</table>

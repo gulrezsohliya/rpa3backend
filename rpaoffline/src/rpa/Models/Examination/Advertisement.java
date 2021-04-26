@@ -1,6 +1,7 @@
 package rpa.Models.Examination;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public class Advertisement implements Serializable {
 	private Integer examinationmodecode;
 	private List<AdvertisementAges> advertisementAge;
 	private AdvertisementAgeRelax advertisementAgeRelax;
+	private List<AdvertisementFees> advertisementFee;
+	private AdvertisementFeesRelax advertisementFeeRelax;
 
 	public Integer getOfficecode() {
 		return officecode;
@@ -191,6 +194,22 @@ public class Advertisement implements Serializable {
 		this.advertisementAgeRelax = advertisementAgeRelax;
 	}
 
+	public List<AdvertisementFees> getAdvertisementFee() {
+		return advertisementFee;
+	}
+
+	public void setAdvertisementFee(List<AdvertisementFees> advertisementFee) {
+		this.advertisementFee = advertisementFee;
+	}
+
+	public AdvertisementFeesRelax getAdvertisementFeeRelax() {
+		return advertisementFeeRelax;
+	}
+
+	public void setAdvertisementFeeRelax(AdvertisementFeesRelax advertisementFeeRelax) {
+		this.advertisementFeeRelax = advertisementFeeRelax;
+	}
+
 	@Override
 	public String toString() {
 		return "Advertisement [officecode=" + officecode + ", slno=" + slno + ", adcode=" + adcode + ", nameofpost="
@@ -198,8 +217,9 @@ public class Advertisement implements Serializable {
 				+ lastdate + ", agedate=" + agedate + ", description=" + description + ", counterentry=" + counterentry
 				+ ", open=" + open + ", noofoptionals=" + noofoptionals + ", usercode=" + usercode + ", entrydate="
 				+ entrydate + ", finalized=" + finalized + ", feetype=" + feetype + ", advertisementno="
-				+ advertisementno + ", examinationmodecode=" + examinationmodecode + ", advertisementAge="
-				+ advertisementAge + ", advertisementAgeRelax=" + advertisementAgeRelax + "]";
+				+ advertisementno + ", examinationmodecode=" + examinationmodecode + ", \nadvertisementAge="
+				+ advertisementAge + ", \nadvertisementAgeRelax=" + advertisementAgeRelax + ", \nadvertisementFee="
+				+ advertisementFee + ", \nadvertisementFeeRelax=" + advertisementFeeRelax + "]";
 	}
 
 }

@@ -65,4 +65,10 @@ public class AdvertisementFeesRelax implements Serializable {
 		this.entrydate = entrydate;
 	}
 
+	@Override
+	public String toString() {
+		return "AdvertisementFeesRelax [slno=" + slno + ", adcode=" + adcode + ", pwdfees=" + pwdfees + ", womanfees="
+				+ womanfees + ", exservicemenfees=" + exservicemenfees + ", entrydate=" + entrydate + "]";
+	}
+
 }

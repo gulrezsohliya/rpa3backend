@@ -8,6 +8,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AdvertisementFees implements Serializable {
+	@Override
+	public String toString() {
+		return "AdvertisementFees [slno=" + slno + ", adcode=" + adcode + ", categorycode=" + categorycode
+				+ ", feeamount=" + feeamount + ", entrydate=" + entrydate + "]";
+	}
+
 	private final static long serialVersionUID = 4L;
 
 	private Integer slno;

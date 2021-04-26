@@ -38,6 +38,24 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     	$scope.adv =$scope.advs.filter(obj=>{
     		return obj.adcode==adcode;
     	})[0];
+//    	$scope.adv.advertisementAge=[ new AdvertisementAge() ];
+//    	$scope.adv.advertisementFee=[ new AdvertisementFee() ];
+//    	$scope.adv.advertisementAgeRelax={
+//    			slno : 0,
+//    			adcode : '',
+//    			pwdadditionalage : 0,
+//    			womanadditionalage : 0,
+//    			exservicemenadditionalage : 0,
+//    			entrydate : 0
+//    		} ;
+//    	$scope.adv.advertisementFeeRelax={
+//    			slno : 0,
+//    			adcode : '',
+//    			pwdfees : 0,
+//    			womanfees : 0,
+//    			exservicemenfees : 0,
+//    			entrydate : 0
+//    		};
     	$scope.adv.issuedate=new Date($scope.adv.issuedate);
     	$scope.adv.lastdate=new Date($scope.adv.lastdate);
     	$scope.adv.agedate=new Date($scope.adv.agedate);
@@ -170,7 +188,7 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     		$scope.setDataTable($scope.advs);
     	});
     };
-    //---------------------------------------------
+    // ---------------------------------------------
     $scope.listAdvs();
     $scope.listCategories();
         
