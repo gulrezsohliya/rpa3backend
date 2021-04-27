@@ -8,32 +8,29 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class OptionalSubjects implements Serializable {
 	private final static long serialVersionUID = 4L;
 
-	private Integer subjectcode;
-	private String subjectname;
+	private Integer optionalsubjectcode;
+	private String optionalsubjectname;
 
-	public Integer getSubjectcode() {
-		return subjectcode;
+	public Integer getOptionalsubjectcode() {
+		return optionalsubjectcode;
 	}
 
-	public void setSubjectcode(Integer subjectcode) {
-		this.subjectcode = subjectcode;
+	public void setOptionalsubjectcode(Integer optionalsubjectcode) {
+		this.optionalsubjectcode = optionalsubjectcode;
 	}
 
-	public String getSubjectname() {
-		return subjectname;
+	public String getOptionalsubjectname() {
+		return optionalsubjectname;
 	}
 
-	public void setSubjectname(String subjectname) {
-		this.subjectname = subjectname;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public void setOptionalsubjectname(String optionalsubjectname) {
+		this.optionalsubjectname = optionalsubjectname;
 	}
 
 	@Override
 	public String toString() {
-		return "OptionalSubjects [subjectcode=" + subjectcode + ", subjectname=" + subjectname + "]";
+		return "OptionalSubjects [optionalsubjectcode=" + optionalsubjectcode + ", optionalsubjectname="
+				+ optionalsubjectname + "]";
 	}
 
 }

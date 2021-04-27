@@ -33,6 +33,7 @@ public class Advertisement implements Serializable {
 	private AdvertisementAgeRelax advertisementAgeRelax;
 	private List<AdvertisementFees> advertisementFee;
 	private AdvertisementFeesRelax advertisementFeeRelax;
+	private List<AdvertisementOptionals> advertisementOptionals;
 
 	public Integer getOfficecode() {
 		return officecode;
@@ -210,6 +211,14 @@ public class Advertisement implements Serializable {
 		this.advertisementFeeRelax = advertisementFeeRelax;
 	}
 
+	public List<AdvertisementOptionals> getAdvertisementOptionals() {
+		return advertisementOptionals;
+	}
+
+	public void setAdvertisementOptionals(List<AdvertisementOptionals> advertisementOptionals) {
+		this.advertisementOptionals = advertisementOptionals;
+	}
+
 	@Override
 	public String toString() {
 		return "Advertisement [officecode=" + officecode + ", slno=" + slno + ", adcode=" + adcode + ", nameofpost="
@@ -218,8 +227,10 @@ public class Advertisement implements Serializable {
 				+ ", open=" + open + ", noofoptionals=" + noofoptionals + ", usercode=" + usercode + ", entrydate="
 				+ entrydate + ", finalized=" + finalized + ", feetype=" + feetype + ", advertisementno="
 				+ advertisementno + ", examinationmodecode=" + examinationmodecode + ", \nadvertisementAge="
-				+ advertisementAge + ", \nadvertisementAgeRelax=" + advertisementAgeRelax + ", \nadvertisementFee="
-				+ advertisementFee + ", \nadvertisementFeeRelax=" + advertisementFeeRelax + "]";
+				+ advertisementAge + ", \nadvertisementAgeRelax=" + advertisementAgeRelax + ",\n advertisementFee="
+				+ advertisementFee + ", \nadvertisementFeeRelax=" + advertisementFeeRelax + ",\n advertisementOptionals="
+				+ advertisementOptionals + "]";
 	}
+
 
 }

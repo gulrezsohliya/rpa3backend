@@ -15,6 +15,7 @@ import rpa.Models.Examination.AdvertisementAgeRelax;
 import rpa.Models.Examination.AdvertisementAges;
 import rpa.Models.Examination.AdvertisementFees;
 import rpa.Models.Examination.AdvertisementFeesRelax;
+import rpa.Models.Examination.AdvertisementOptionals;
 import rpa.Models.Examination.ExamSubjects;
 import rpa.Models.Examination.OfficeCenter;
 import rpa.Models.Examination.OptionalSubjects;
@@ -37,10 +38,12 @@ public class ExaminationService implements ExaminationServiceInterface {
 		List<AdvertisementAgeRelax> ageRelax = null;
 		List<AdvertisementFees> fees = null;
 		List<AdvertisementFeesRelax> feeRelax = null;
+		List<AdvertisementOptionals> optionals = null;
 		String agesSQL = "SELECT * FROM backend.advertisementsages where adcode=? ";
 		String ageRelaxSQL = "SELECT * FROM backend.advertisementsagesrelax where adcode=? ";
 		String feesSQL = "SELECT * FROM backend.advertisementsfees where adcode=? ";
 		String feeRelaxSQL = "SELECT * FROM backend.advertisementsfeesrelax where adcode=? ";
+		String optionalsSQL = "SELECT * FROM backend.advertisementsoptionals where adcode=? order by optionalcode ";
 		String sql = "SELECT * FROM BACKEND.advertisements "
 //				+ "WHERE CASE WHEN ? is null then 1=1 else officecode=? "
 				+ "ORDER BY issuedate";
@@ -48,28 +51,47 @@ public class ExaminationService implements ExaminationServiceInterface {
 		if (oth.size() > 0) {
 			try {
 				for (Advertisement adv : oth) {
+					//Ages
 					ages = UI.listGeneric(AdvertisementAges.class, agesSQL, new Object[] { adv.getAdcode() });
 					if (ages.size() == 0) {
 						ages.add(new AdvertisementAges());
 					}
 					adv.setAdvertisementAge(ages);
+					
+					//Fees
 					fees = UI.listGeneric(AdvertisementFees.class, feesSQL, new Object[] { adv.getAdcode() });
 					if (fees.size() == 0) {
 						fees.add(new AdvertisementFees());
 					}
 					adv.setAdvertisementFee(fees);
+					
+					//AgeRelax
 					ageRelax = UI.listGeneric(AdvertisementAgeRelax.class, ageRelaxSQL,
 							new Object[] { adv.getAdcode() });
 					if (ageRelax.size() == 0) {
 						ageRelax.add(new AdvertisementAgeRelax());
 					}
 					adv.setAdvertisementAgeRelax(ageRelax.get(0));
+					
+					//FeeRelax
 					feeRelax = UI.listGeneric(AdvertisementFeesRelax.class, feeRelaxSQL,
 							new Object[] { adv.getAdcode() });
 					if (feeRelax.size() == 0) {
 						feeRelax.add(new AdvertisementFeesRelax());
 					}
 					adv.setAdvertisementFeeRelax(feeRelax.get(0));
+					
+					//OptionalSubjects
+					optionals = UI.listGeneric(AdvertisementOptionals.class, optionalsSQL,
+							new Object[] { adv.getAdcode() });
+					if (optionals.size() == 0) {
+						optionals.add(new AdvertisementOptionals(1));
+						optionals.add(new AdvertisementOptionals(2));
+						optionals.add(new AdvertisementOptionals(3));
+						System.out.println(optionals.size());
+					}
+					adv.setAdvertisementOptionals(optionals);;
+					
 					advs.add(adv);
 				}
 			} catch (Exception e) {
@@ -83,7 +105,7 @@ public class ExaminationService implements ExaminationServiceInterface {
 	public List<OptionalSubjects> listOptionalSubjects() {
 		List<OptionalSubjects> oth = null;
 
-		String sql = "SELECT * FROM MASTERS.optionalsubjects ORDER BY subjectname";
+		String sql = "SELECT * FROM MASTERS.optionalsubjects ORDER BY optionalsubjectname";
 		oth = UI.listGeneric(OptionalSubjects.class, sql);
 		return oth;
 	}
@@ -161,26 +183,26 @@ public class ExaminationService implements ExaminationServiceInterface {
 	public String createOptionalSubject(OptionalSubjects subject) {
 
 		String sql = "SELECT * FROM masters.Optionalsubjects WHERE subjectname =? ";
-		if ((UI.listGeneric(OptionalSubjects.class, sql, new Object[] { subject.getSubjectname() })).size() > 0) {
+		if ((UI.listGeneric(OptionalSubjects.class, sql, new Object[] { subject.getOptionalsubjectname() })).size() > 0) {
 			return "EXISTS";
 		}
-		sql = "INSERT INTO masters.Optionalsubjects (subjectcode,subjectname)VALUES (?, ?)";
-		Object[] params = new Object[] { UI.getMax("masters", "Optionalsubjects", "subjectcode") + 1,
-				subject.getSubjectname() };
+		sql = "INSERT INTO masters.Optionalsubjects (optionalsubjectcode,optionalsubjectname)VALUES (?, ?)";
+		Object[] params = new Object[] { UI.getMax("masters", "Optionalsubjects", "optionalsubjectcode") + 1,
+				subject.getOptionalsubjectname() };
 		return (UI.update("masters.Optionalsubjects", sql, params)) ? "CREATED" : "FAILED";
 	}
 
 	@Override
 	public boolean updateOptionalSubject(OptionalSubjects subject) {
-		String sql = "UPDATE masters.Optionalsubjects SET subjectname=? WHERE  subjectcode=? ";
-		Object[] params = new Object[] { subject.getSubjectname(), subject.getSubjectcode() };
+		String sql = "UPDATE masters.Optionalsubjects SET optionalsubjectname=? WHERE  optionalsubjectcode=? ";
+		Object[] params = new Object[] { subject.getOptionalsubjectname(), subject.getOptionalsubjectcode() };
 		return UI.update("masters.Optionalsubjects", sql, params);
 	}
 
 	@Override
 	public boolean deleteOptionalSubject(Integer subjectcode) {
 
-		String sql = "Delete from masters.Optionalsubjects where subjectcode=? ";
+		String sql = "Delete from masters.Optionalsubjects where optionalsubjectcode=? ";
 		return UI.update("masters.Optionalsubjects", sql, new Object[] { subjectcode });
 	}
 
@@ -202,11 +224,12 @@ public class ExaminationService implements ExaminationServiceInterface {
 				obj.getPostshortname(), obj.getIssuedate(), obj.getLastdate(), obj.getAgedate(), obj.getDescription(),
 				obj.getCounterentry(), obj.getOpen(), obj.getNoofoptionals(), obj.getUsercode(), new Date(),
 				obj.getFinalized(), obj.getAdvertisementno(), obj.getExaminationmodecode() };
-		return (UI.update("backend.Advertisements", sql, params)) ? "CREATED" : "FAILED";
+		return (UI.update("backend.Advertisements", sql, params)) ? (adcode+1)+"" : "FAILED";
 	}
 
 	@Override
 	public boolean updateAdvertisement(Advertisement obj) {
+		String sqlDelete="";
 		String sql = "UPDATE backend.Advertisements SET nameofpost=?, postshortname=?, issuedate=?, "
 				+ "		lastdate=?, agedate=?, description=?, counterentry=?, open=?, "
 				+ "		noofoptionals=?, usercode=?, entrydate=?, finalized=?,  advertisementno=?, examinationmodecode=? "
@@ -218,7 +241,8 @@ public class ExaminationService implements ExaminationServiceInterface {
 		if (UI.update("backend.Advertisements", sql, params)) {
 
 ////////////// Save AdvertisementsAgesRelax
-			String sqlDelete = "DELETE FROM backend.advertisementsagesrelax WHERE adcode=?";
+//			if()
+			sqlDelete = "DELETE FROM backend.advertisementsagesrelax WHERE adcode=?";
 			sql = "INSERT INTO backend.advertisementsagesrelax(slno, adcode, pwdadditionalage,  "
 					+ "		womanadditionalage, exservicemenadditionalage,entrydate) "
 					+ "    VALUES (?, ?, ?, ?, ?, ?)";
@@ -237,7 +261,7 @@ public class ExaminationService implements ExaminationServiceInterface {
 					+ "            slno, adcode, pwdfees, womanfees, exservicemenfees, entrydate)"
 					+ "    VALUES (?, ?, ?, ?, ?, ?)";
 			UI.update("backend.advertisementsfeesrelax", sqlDelete, new Object[] { obj.getAdcode() });
-			if (UI.update("backend.advertisementsfeesrelax", sql,
+			if (!UI.update("backend.advertisementsfeesrelax", sql,
 					new Object[] { UI.getMax("backend", "advertisementsfeesrelax", "slno") + 1, obj.getAdcode(),
 							obj.getAdvertisementFeeRelax().getPwdfees(), obj.getAdvertisementFeeRelax().getWomanfees(),
 							obj.getAdvertisementFeeRelax().getExservicemenfees(), new Date() })) {
@@ -252,7 +276,7 @@ public class ExaminationService implements ExaminationServiceInterface {
 			UI.update("backend.advertisementsages", sqlDelete, new Object[] { obj.getAdcode() });
 			Integer max = UI.getMax("backend", "advertisementsages", "slno");
 			for (AdvertisementAges age : obj.getAdvertisementAge()) {
-				if (UI.update("backend.advertisementsages", sql, new Object[] { ++max, obj.getAdcode(),
+				if (!UI.update("backend.advertisementsages", sql, new Object[] { ++max, obj.getAdcode(),
 						age.getCategorycode(), age.getMinage(), age.getMaxage(), new Date() })) {
 					return false;
 				}
@@ -265,8 +289,20 @@ public class ExaminationService implements ExaminationServiceInterface {
 			UI.update("backend.advertisementsfees", sqlDelete, new Object[] { obj.getAdcode() });
 			max = UI.getMax("backend", "advertisementsfees", "slno");
 			for (AdvertisementFees fees : obj.getAdvertisementFee()) {
-				if (UI.update("backend.advertisementsfees", sql, new Object[] { ++max, obj.getAdcode(),
+				if (!UI.update("backend.advertisementsfees", sql, new Object[] { ++max, obj.getAdcode(),
 						fees.getCategorycode(), fees.getFeeamount(), new Date() })) {
+					return false;
+				}
+			}
+
+//////////////Save AdvertisementsOptionals
+			sqlDelete = "DELETE FROM backend.advertisementsoptionals WHERE adcode=?";
+			sql = "INSERT INTO backend.advertisementsoptionals( adcode, optionalcode,optionalsubjectcode ) "
+					+ "VALUES (?, ?, ?);";
+			UI.update("backend.advertisementsoptionals", sqlDelete, new Object[] { obj.getAdcode() });
+			for (AdvertisementOptionals opt : obj.getAdvertisementOptionals()) {
+				if (!UI.update("backend.advertisementsoptionals", sql, new Object[] { obj.getAdcode(),
+						opt.getOptionalcode(),opt.getOptionalsubjectcode() })) {
 					return false;
 				}
 			}

@@ -25,11 +25,11 @@
                         <tr class="form-group has-feedback">
                             <td class="title">Subject Name :</td>
                             <td class="col-xs-5 selectContainer">
-								<input type="text" class="form-control" id="subjectname" name="subjectname"
-									ng-model="optionalSubject.subjectname" required/>        
+								<input type="text" class="form-control" id="subjectname" name="optionalsubjectname"
+									ng-model="optionalSubject.optionalsubjectname" required/>        
 								<span id="subjectnameMsg"></span>
 								<span class="alert alert-danger" 
-									ng-show="optionalSubjectForm.subjectname.$pristine && optionalSubjectForm.subjectname.$invalid"> 
+									ng-show="optionalSubjectForm.optionalsubjectname.$pristine && optionalSubjectForm.optionalsubjectname.$invalid"> 
 									Required
 								</span>
                             </td>

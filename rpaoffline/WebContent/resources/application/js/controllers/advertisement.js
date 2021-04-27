@@ -19,7 +19,6 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 	$scope.step = 1;
 	$scope.actionButton = SAVE;
     $scope.adv = new Advertisement();
-    console.log($scope.adv);
     $scope.advs = [];
     $scope.setStep=function(step){
     	$scope.step=step;
@@ -28,34 +27,24 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     $scope.addAdvAge=()=>{
     	$scope.adv.advertisementAge.push(new AdvertisementAge());
     };
+    
     $scope.addAdvFee=()=>{
     	$scope.adv.advertisementFee.push(new AdvertisementFee());
     };
     
+    $scope.reset = function () {
+    	$scope.step=1;
+    	$scope.adv = new Advertisement();
+    	$scope.agedate_sameas_issuedate=true;
+    	$scope.actionButton = SAVE;
+    };
+
     $scope.edit = function (adcode) {
     	$scope.reset();
     	$scope.actionButton = EDIT;
     	$scope.adv =$scope.advs.filter(obj=>{
     		return obj.adcode==adcode;
     	})[0];
-//    	$scope.adv.advertisementAge=[ new AdvertisementAge() ];
-//    	$scope.adv.advertisementFee=[ new AdvertisementFee() ];
-//    	$scope.adv.advertisementAgeRelax={
-//    			slno : 0,
-//    			adcode : '',
-//    			pwdadditionalage : 0,
-//    			womanadditionalage : 0,
-//    			exservicemenadditionalage : 0,
-//    			entrydate : 0
-//    		} ;
-//    	$scope.adv.advertisementFeeRelax={
-//    			slno : 0,
-//    			adcode : '',
-//    			pwdfees : 0,
-//    			womanfees : 0,
-//    			exservicemenfees : 0,
-//    			entrydate : 0
-//    		};
     	$scope.adv.issuedate=new Date($scope.adv.issuedate);
     	$scope.adv.lastdate=new Date($scope.adv.lastdate);
     	$scope.adv.agedate=new Date($scope.adv.agedate);
@@ -64,11 +53,6 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
         }, 2000);
     };
 
-    $scope.reset = function () {
-    	$scope.step=1;
-    	$scope.adcode = new Advertisement();
-    	$scope.actionButton = SAVE;
-    };
 
     $scope.save = function () {
         if($scope.advForm.$invalid)
@@ -77,8 +61,8 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
         $scope.method = "POST";
         $scope.urlEndpoint = "./createAdvertisement";
     	
-        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, () => {
-	        	/* $scope.reset(); */
+        commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, (res) => {
+        		$scope.adv.adcode=res.adcode;
         		$scope.step=2;
         		$scope.actionButton =EDIT;
         		$scope.listAdvs();
@@ -107,13 +91,13 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 					MsgBox(successMsg);				
 				}else{
 					$scope.step++;
+					$scope.message='Saved. Please Conitnue to the next Step.';
+					jQuery('.message').fadeIn(1000);
+					$timeout(function(){
+						jQuery('.message').fadeOut(1000);
+					},5000);
 				}
 				$scope.listAdvs();
-				$scope.message='Saved. Please Conitnue to the next Step.';
-				jQuery('.message').fadeIn(1000);
-				$timeout(function(){
-					jQuery('.message').fadeOut(1000);
-				},5000);
 			}else{
 				MsgBox(errorMsg);								
 			}
@@ -188,9 +172,14 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     		$scope.setDataTable($scope.advs);
     	});
     };
+    $scope.listOptionalSubjects = () => {
+    	commonInitFactory.listOptionalSubjects((response)=>{
+    		$scope.OptionalSubjects = response;
+    	});
+    };
     // ---------------------------------------------
     $scope.listAdvs();
     $scope.listCategories();
-        
+    $scope.listOptionalSubjects();    
 }]);
 

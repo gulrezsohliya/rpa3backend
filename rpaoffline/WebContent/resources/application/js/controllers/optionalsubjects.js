@@ -21,7 +21,7 @@ app.controller('optionalSubjectCtrl', ['$scope', '$sce', '$compile','$timeout','
     $scope.edit = function (subjectcode) {
     	$scope.actionButton = EDIT;
     	$scope.optionalSubject = $scope.optionalSubjects.filter(obj=>{
-    		return obj.subjectcode==subjectcode;
+    		return obj.optionalsubjectcode==subjectcode;
     	})[0];
         jQuery('html, body').animate({
             scrollTop: 0
@@ -102,15 +102,15 @@ app.controller('optionalSubjectCtrl', ['$scope', '$sce', '$compile','$timeout','
             columns: [
                 {
                     "title": "Optional Subject Code",
-                    "data": "subjectcode"
+                    "data": "optionalsubjectcode"
                 }, {
                     "title": "Optional Subject Name",
-                    "data": "subjectname"
+                    "data": "optionalsubjectname"
                 }, 
                 {
                     "title": "Action",
                     "sortable": false,
-                    "data": "subjectcode",
+                    "data": "optionalsubjectcode",
                     "render": function (data, type, row, meta) {
                     	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
                 		div += '<button style="padding:.1em; margin-right: .5em" value="Delete" ng-click="delete(' + data + ')" class="button-primary">Delete</button></div>';

@@ -45,9 +45,9 @@ public class Utility implements UtilityInterface{
 		List<T> list = new ArrayList<>();
 		try {
 			list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(clazz));
-			LOG.info("Object: " + list.get(0).toString());
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
+			System.out.println("\n\nError in listGeneric::"+ex);
 		}
 		return list;
 	}
@@ -57,9 +57,9 @@ public class Utility implements UtilityInterface{
 		List<T> list = new ArrayList<>();
 		try {
 			list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(clazz), params);
-			LOG.info("Object: " + list.get(0).toString());
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
+			System.out.println("\n\nError in listGeneric::"+ex);
 		}
 		return list;
 	}
@@ -71,6 +71,7 @@ public class Utility implements UtilityInterface{
 			list = jdbcTemplate.queryForList(sql);
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
+			System.out.println("\n\nError in listGeneric::"+ex);
 		}
 		return list;
 	}
@@ -80,9 +81,9 @@ public class Utility implements UtilityInterface{
 		List<Map<String,Object>> list = new ArrayList<>();
 		try {
 			list = jdbcTemplate.queryForList(sql, params);
-			LOG.info("Object: " + list.get(0).toString());
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
+			System.out.println("\n\nError in listGeneric::"+ex);
 		}
 		return list;
 	}

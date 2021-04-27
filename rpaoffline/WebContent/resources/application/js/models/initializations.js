@@ -19,26 +19,35 @@ var Advertisement = function() {
 		advertisementno : "",
 		examinationmodecode : 0,
 		advertisementAge : [ new AdvertisementAge() ],
-		advertisementAgeRelax :{
+		advertisementAgeRelax : {
 			slno : 0,
 			adcode : '',
 			pwdadditionalage : 0,
 			womanadditionalage : 0,
 			exservicemenadditionalage : 0,
 			entrydate : 0
-		} ,
+		},
 		advertisementFee : [ new AdvertisementFee() ],
-		advertisementFeeRelax :{
+		advertisementFeeRelax : {
 			slno : 0,
 			adcode : '',
 			pwdfees : 0,
 			womanfees : 0,
 			exservicemenfees : 0,
 			entrydate : 0
-		} ,
+		},
+		advertisementOptionals : [ new AdvertisementOptionals(1),
+				new AdvertisementOptionals(2), new AdvertisementOptionals(3), ]
 	};
 }
 
+var AdvertisementOptionals = function(optional_code) {
+	return {
+		adcode : '',
+		optionalcode : optional_code,
+		optionalsubjectcode : 0
+	};
+}
 var AdvertisementAge = function() {
 	return {
 		slno : 0,
@@ -62,8 +71,8 @@ var AdvertisementFee = function() {
 
 var OptionalSubjects = function() {
 	return {
-		subjectcode : 0,
-		subjectname : ""
+		optionalsubjectcode : 0,
+		optionalsubjectname : ""
 	};
 }
 

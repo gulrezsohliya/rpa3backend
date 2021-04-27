@@ -153,9 +153,9 @@
 									<select class="form-control" id="noofoptionals" name="noofoptionals"
 										ng-model="adv.noofoptionals" >
 										<option value='0' selected>0</option>
-										<option value='1' selected>1</option>
-										<option value='2' selected>2</option>
-										<option value='3' selected>3</option>
+										<option value='1'>1</option>
+										<option value='2'>2</option>
+										<option value='3'>3</option>
 									</select>
 									<span id="advMsg"></span>
 									<span class="alert alert-danger" 
@@ -211,7 +211,7 @@
 	                            <td colspan="2" align="center">
 	                                <button type="submit" ng-click="save()" class="button-primary" ng-if="actionButton === 'SAVE'" ng-disabled="advForm.$invalid">Save & Continue</button>
 	                                <button name="submit" ng-click="update()" class="button-primary" ng-if="actionButton === 'EDIT'" ng-disabled="advForm.$invalid">Save & Continue</button>
-	                                <input type="reset" value="Reset" ng-click="reset()" class="button-default"/>
+	                                <input type="button" value="Reset" ng-click="reset()" class="button-default"/>
 	                            </td>
 	                        </tr>
 	                    </table>
@@ -316,18 +316,65 @@
 	                            <td colspan="2" align="center">
 	                                <input type='button' ng-click="setStep(1)" class="button-default" ng-if="actionButton === 'EDIT'" value="Previous Step"/>
 	                                <button name="submit" ng-click="update()" class="button-primary" ng-if="actionButton === 'EDIT'" ng-disabled="advForm2.$invalid">Save & Continue</button>
-	                                <input type="reset" value="Reset" ng-click="reset()" class="button-default"/>
+	                                <input type="button" value="Reset" ng-click="reset()" class="button-default"/>
 	                            </td>
 	                        </tr>
 	                    </table>
 	                </form>	                
 	                <form id="advForm3" name="advForm3"  ng-show='step==3'>  
-	                    <table>
+	                    <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
+	                       
+	                       <tr class="form-group has-feedback">
+	                            <td class="title">Fee relaxations</td>
+	                            <td class="col-xs-5 selectContainer">
+									<table border='1' cellspacing="0" style='width:80%;border-color: ghostwhite;'>
+										<tr>
+											<th style='width:30%;background: aliceblue'>Optional Subject 1</th>
+											<th style='width:30%;background: aliceblue'>Optional Subject 2</th>
+											<th style='width:30%;background: aliceblue'>Optional Subject 3</th>
+										</tr>
+										<tbody>
+											<tr>
+												<td>
+													<select ng-disabled="(adv.noofoptionals<1)"
+														ng-model="adv.advertisementOptionals[0].optionalsubjectcode" style='width:100%'>
+														<option value="">--Select--</option>
+														<option ng-selected="opt.optionalsubjectcode == adv.advertisementOptionals[0].optionalsubjectcode"
+															ng-repeat='opt in OptionalSubjects track by $index' ng-value="opt.optionalsubjectcode">
+															{{opt.optionalsubjectname}}
+														</option>
+													</select>
+												</td>
+												<td>
+													<select ng-disabled="(adv.noofoptionals<2)"
+														ng-model="adv.advertisementOptionals[1].optionalsubjectcode" style='width:100%'>
+														<option value="">--Select--</option>
+														<option ng-selected="opt.optionalsubjectcode == adv.advertisementOptionals[1].optionalsubjectcode"
+															ng-repeat='opt in OptionalSubjects track by $index' ng-value="opt.optionalsubjectcode">
+															{{opt.optionalsubjectname}}
+														</option>
+													</select>
+												</td>
+												<td>
+													<select ng-disabled="(adv.noofoptionals<3)"
+														ng-model="adv.advertisementOptionals[2].optionalsubjectcode" style='width:100%'>
+														<option value="">--Select--</option>
+														<option ng-selected="opt.optionalsubjectcode == adv.advertisementOptionals[2].optionalsubjectcode"
+															ng-repeat='opt in OptionalSubjects track by $index' ng-value="opt.optionalsubjectcode">
+															{{opt.optionalsubjectname}}
+														</option>
+													</select>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+	                            </td>
+	                        </tr>
 	                       <tr class="form-group has-feedback">
 	                           <td colspan="2" align="center">
 	                               <input type='button' ng-click="setStep(2)" class="button-default" ng-if="actionButton === 'EDIT'" value="Previous Step"/>
 	                                <button name="submit" ng-click="update()" class="button-primary" ng-if="actionButton === 'EDIT'" ng-disabled="advForm.$invalid">Save & Continue</button>
-	                               <input type="reset" value="Reset" ng-click="reset()" class="button-default"/>
+	                               <input type="button" value="Reset" ng-click="reset()" class="button-default"/>
 	                           </td>
 	                       </tr>
 	                    </table>

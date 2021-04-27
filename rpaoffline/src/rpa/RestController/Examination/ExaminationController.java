@@ -81,15 +81,14 @@ public class ExaminationController {
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		adv.setOfficecode(((User) req.getSession().getAttribute("user")).getOfficecode());
 		adv.setUsercode(((User) req.getSession().getAttribute("user")).getUsercode());
-		switch (ES.createAdvertisement(adv)) {
-		case "CREATED":
-			response.put("response", HttpStatus.CREATED);
-			break;
+		String res=ES.createAdvertisement(adv);
+		switch (res) {
 		case "EXISTS":
 			response.put("response", HttpStatus.ALREADY_REPORTED);
 			break;
 		default:
-			response.put("response", HttpStatus.OK);
+			response.put("response", HttpStatus.CREATED);
+			response.put("adcode", res);
 		}
 		return ResponseEntity.ok().body(response);
 	}
@@ -130,9 +129,11 @@ public class ExaminationController {
 
 	// UPDATE/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@PutMapping(value = "/updateAdvertisement", consumes = "application/json")
-	public ResponseEntity<Boolean> updateAdvertisement(@RequestBody Advertisement obj) {
-System.out.println(obj);
-		return ResponseEntity.ok().body(ES.updateAdvertisement(obj));
+	public ResponseEntity<Boolean> updateAdvertisement(HttpServletRequest req,@RequestBody Advertisement adv) {
+System.out.println(adv);
+		adv.setOfficecode(((User) req.getSession().getAttribute("user")).getOfficecode());
+		adv.setUsercode(((User) req.getSession().getAttribute("user")).getUsercode());
+		return ResponseEntity.ok().body(ES.updateAdvertisement(adv));
 	}
 
 	@PutMapping(value = "/updateOptionalSubject", consumes = "application/json")
@@ -162,17 +163,17 @@ System.out.println(obj);
 	public ResponseEntity<Boolean> deleteExamSubjects(@PathVariable Integer examinationsubjectcode) {
 		return ResponseEntity.ok().body(ES.deleteExamSubject(examinationsubjectcode));
 	}
-
-	@GetMapping(value = "/test")
-	public ResponseEntity<Boolean> gettest(@RequestBody Map<String,Object> test) {
-		
-		System.out.println(test);
-		return ResponseEntity.ok().body(true);
-	}
-	@PostMapping(value = "/test")
-	public ResponseEntity<Boolean> posttest(@RequestBody Map<String,Object> test) {
-		
-		System.out.println(test);
-		return ResponseEntity.ok().body(true);
-	}
+//
+//	@GetMapping(value = "/test")
+//	public ResponseEntity<Boolean> gettest(@RequestBody Map<String,Object> test) {
+//		
+//		System.out.println(test);
+//		return ResponseEntity.ok().body(true);
+//	}
+//	@PostMapping(value = "/test")
+//	public ResponseEntity<Boolean> posttest(@RequestBody Map<String,Object> test) {
+//		
+//		System.out.println(test);
+//		return ResponseEntity.ok().body(true);
+//	}
 }
