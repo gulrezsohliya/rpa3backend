@@ -12,9 +12,9 @@
 
         <!--<global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>-->
         <intercept-url pattern="/login.htm" access="permitAll" />
-        <intercept-url pattern="/*" access="isAuthenticated()" />
-        <intercept-url pattern="/*.htm" access="isAuthenticated()" />
-        <intercept-url pattern="/*/*.htm" access="isAuthenticated()" />
+        <intercept-url pattern="/*" access="permitAll" />
+        <intercept-url pattern="/*.htm" access="permitAll" />
+        
 		
         <!--<access-denied-handler error-page="/403.jsp"/>-->
         <session-management session-fixation-protection="migrateSession"/>

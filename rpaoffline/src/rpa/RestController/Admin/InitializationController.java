@@ -151,7 +151,7 @@ public class InitializationController {
 	public ResponseEntity<List<Office>> listOffices(HttpServletRequest req) {
 		try {
 			List<Office> offices = null;
-			if (((User) req.getSession().getAttribute("user")).getCellcode() == null) {
+			if (((User) req.getSession().getAttribute("user")).getCellcode() == 1) {
 				offices = IS.listOffices();
 			} else {
 				List<Cell> cells = IS.listCellsforCode(((User) req.getSession().getAttribute("user")).getCellcode());

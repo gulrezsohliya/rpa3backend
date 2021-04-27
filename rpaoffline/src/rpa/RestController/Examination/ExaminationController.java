@@ -162,4 +162,17 @@ System.out.println(obj);
 	public ResponseEntity<Boolean> deleteExamSubjects(@PathVariable Integer examinationsubjectcode) {
 		return ResponseEntity.ok().body(ES.deleteExamSubject(examinationsubjectcode));
 	}
+
+	@GetMapping(value = "/test")
+	public ResponseEntity<Boolean> gettest(@RequestBody Map<String,Object> test) {
+		
+		System.out.println(test);
+		return ResponseEntity.ok().body(true);
+	}
+	@PostMapping(value = "/test")
+	public ResponseEntity<Boolean> posttest(@RequestBody Map<String,Object> test) {
+		
+		System.out.println(test);
+		return ResponseEntity.ok().body(true);
+	}
 }
