@@ -6,12 +6,13 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 
 import rpa.Models.master.Pageurls;
+import rpa.Models.master.Urls;
 import rpa.Models.master.User;
 import rpa.Models.master.UserPages;
 
 public interface PageurlsServiceInterface {
 
-	public JSONArray getPageurls(String username);
+	public List<Urls> getPageurls(Integer usercode);
 
 	public List<Pageurls> listUrls();
 

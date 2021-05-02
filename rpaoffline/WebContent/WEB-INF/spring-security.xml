@@ -19,6 +19,7 @@
         <!--<access-denied-handler error-page="/403.jsp"/>-->
         <session-management session-fixation-protection="migrateSession"/>
         <!--<remember-me/>-->
+        <!-- <form-login/>-->
         <form-login 
         	login-page="/login.htm" 
         	default-target-url="/home.htm"

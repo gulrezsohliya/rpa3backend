@@ -10,6 +10,7 @@ public class ExamCenter implements Serializable {
 
 	private Integer centercode;
 	private String centername;
+	private Integer officecode;
 
 	public ExamCenter() {
 		super();
@@ -34,6 +35,14 @@ public class ExamCenter implements Serializable {
 
 	public void setCentername(String centername) {
 		this.centername = centername;
+	}
+
+	public Integer getOfficecode() {
+		return officecode;
+	}
+
+	public void setOfficecode(Integer officecode) {
+		this.officecode = officecode;
 	}
 
 	@Override

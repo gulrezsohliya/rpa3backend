@@ -31,7 +31,11 @@ public interface IntializationServiceInterface {
 
 	public List<ExamCenter> listExamCenters();
 
+	public List<ExamCenter> listExamCenters(Integer officecode);
+
 	public List<Venue> listVenues();
+
+	public List<Venue> listVenues(Integer officecode);
 
 	public List<Office> listOfficesAndMappedCenters();
 

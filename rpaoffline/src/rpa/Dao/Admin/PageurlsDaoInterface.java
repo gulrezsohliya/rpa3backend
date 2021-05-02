@@ -16,10 +16,10 @@ public interface PageurlsDaoInterface {
 
 	public List<Map<String, Object>> getSubmenu(String parent);
 
-	public List<Pageurls> getMappedPageurls(String name);
+	public List<Pageurls> getMappedPageurls(Integer usercode);
 
 	public List<Pageurls> getPageurls();
-	
+
 	public boolean savePageurlsDao(Pageurls url);
 
 }

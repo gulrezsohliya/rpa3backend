@@ -93,11 +93,7 @@ app.controller("mapCtrl", [
         contentType: "application/json; charset=utf-8",
         success: function (response) {
         	$timeout(()=>{
-        		$scope.offices = response
-        		if(response.length===1){
-        			$scope.office=response[0];
-        			$scope.mappedCenters();
-        		}
+        		$scope.offices = response        		
         	},0);        	
         },
         error: function (xhr) {
@@ -106,6 +102,11 @@ app.controller("mapCtrl", [
             "Sorry, there was an error while trying to process the request."
           );
         },
+      }).then(()=>{
+    	  if(response.length===1){
+  			$scope.office=response[0];
+		  }
+    	  $scope.mappedCenters();
       });
     };
     

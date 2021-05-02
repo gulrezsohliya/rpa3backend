@@ -119,7 +119,6 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
                     "data": "centercode",
                     "render": function (data, type, row, meta) {
                     	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
-                    		div += '<button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="delete(' + data + ')" class="button-primary">Delete</button></div>';
                         return div;
                     }
                 }
@@ -142,8 +141,12 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
     		$scope.setDataTable($scope.examCenters);
     	});
     };
-    $scope.listExamCenters();
-        
+    
+    commonInitFactory.listOffices((response)=>{
+    	$scope.offices = response;
+    });
+    
+    $scope.listExamCenters();    
         
 }]);
 

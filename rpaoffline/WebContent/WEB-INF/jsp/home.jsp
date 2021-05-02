@@ -1,26 +1,26 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!--<title>RBI File Parser</title>-->
-    </head>
-    <body>
-	    <div ng-app="CommonApp">
-       	<%@include file="common/header.jsp" %> 
-	        <div class='containerBody' id="homeCtrl" ng-controller="homeCtrl" >
-	                    <!--<legend class="title">Quarter Location</legend>-->
-	            <div style='width:80%;margin:20% auto 0'>
-	                <table class="" style="width:90%;margin: 0px auto; border-collapse: separate; border-spacing: 20px 10px; font-size:18px; font-weight: bold ">
-	                    <tr>
-	                        <td></td>
-	                    </tr>
-	                </table>
-	            </div>
-	            
-	        </div>
-	    </div>
-    </body>
-<!--     <script src="resources/application/js/factories/commonInitFactory.js"></script> -->
+	<head>
+		<%@include file="common/headerfiles.jsp" %>     		
+	</head>
+	<body  ng-app="CommonApp">
+	<div class="d-flex" id="wrapper" id="homeCtrl" ng-controller="homeCtrl">
+		<%@include file="common/menuside.jsp" %>  		   
+	    <div id="page-content-wrapper">	
+		  <%@include file="common/menutop.jsp" %>     
+	      <div class="container-fluid">
+	        <h3 class="mt-4" style="font-size:32px;">Home</h3>	        
+	        <div class="row">	        
+	        	<!-- ====================Dynamic Page Content Will Come Starts====================== -->     	
+	        	<div class="col-md-12 py-12 px-12">
+	        		<!-- <h3>My Content-1</h3>
+	        		<div>
+	        			<p><strong>Keep your page content here</strong></p>						
+	        		</div> -->
+	        	</div>		        	
+	        </div>   
+	      </div>	      
+	    </div> 	    
+	  </div>
+	</body> 
     <script src="resources/application/js/controllers/home.js"></script>
 </html>

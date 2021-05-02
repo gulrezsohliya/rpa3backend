@@ -48,12 +48,56 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     	$scope.adv.issuedate=new Date($scope.adv.issuedate);
     	$scope.adv.lastdate=new Date($scope.adv.lastdate);
     	$scope.adv.agedate=new Date($scope.adv.agedate);
-        jQuery('html, body').animate({
-            scrollTop: 0
-        }, 2000);
+    	$scope.checkOptionals();
+//        jQuery('html, body').animate({
+//            scrollTop: 0
+//        }, 2000);
     };
 
-
+    $scope.checkOptionals=()=>{
+    	$scope.OptionalSubjects1.forEach((x)=>{
+			x.checked=false;
+			if($scope.adv.noofoptionals>=1){
+				$scope.adv.advertisementOptionals[0].optionalsubject.forEach(a=>{
+					if(a.optionalsubjectcode==x.optionalsubjectcode){
+						x.checked=true;
+					}
+				});
+			}else{
+				if(x.optionalsubjectcode==0){
+					x.checked=true;
+				}
+			}
+		});
+		$scope.OptionalSubjects2.forEach((x)=>{
+			x.checked=false;
+			if($scope.adv.noofoptionals>=2){
+				$scope.adv.advertisementOptionals[1].optionalsubject.forEach(a=>{
+					if(a.optionalsubjectcode==x.optionalsubjectcode){
+						x.checked=true;
+					}
+				});
+			}else{
+				if(x.optionalsubjectcode==0){
+					x.checked=true;
+				}
+			}
+		});
+		$scope.OptionalSubjects3.forEach((x)=>{
+			x.checked=false;
+			if($scope.adv.noofoptionals>=3){
+				$scope.adv.advertisementOptionals[2].optionalsubject.forEach(a=>{
+					if(a.optionalsubjectcode==x.optionalsubjectcode){
+						x.checked=true;
+					}
+				});
+			}else{
+				if(x.optionalsubjectcode==0){
+					x.checked=true;
+				}
+			}
+		});
+    };
     $scope.save = function () {
         if($scope.advForm.$invalid)
             return false;
@@ -81,7 +125,7 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     $scope.update = (checkform=true) => {
 	    if(checkform && $scope.advForm.$invalid)
              return false;
-	    
+	    $scope.setOptionalChecked();
 	    $scope.method = "PUT";
     	$scope.urlEndpoint = "./updateAdvertisement";
     	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.adv, (res) => {	
@@ -106,7 +150,17 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 			MsgBox(errorMsg)
 		});
     }
-    
+    $scope.setOptionalChecked= async ()=>{
+    	$scope.adv.advertisementOptionals[0].optionalsubject = JSON.parse(JSON.stringify($scope.OptionalSubjects1)).filter(x=>{
+    		return x.checked == true;
+    	});
+    	$scope.adv.advertisementOptionals[1].optionalsubject = JSON.parse(JSON.stringify($scope.OptionalSubjects2)).filter(x=>{
+    		return x.checked == true;
+    	});
+    	$scope.adv.advertisementOptionals[2].optionalsubject = JSON.parse(JSON.stringify($scope.OptionalSubjects3)).filter(x=>{
+    		return x.checked == true;
+    	});    	
+    }
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
     
     $scope.setDataTable = function (obj) {
@@ -119,16 +173,16 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
                 {
                     "title": "Advertisement No.",
                     "data": "advertisementno"
-                }, {
+                },{
                     "title": "Description",
                     "data": "description"
-                }, {
+                },{
                     "title": "Post",
                     "data": "nameofpost"
-                }, {
+                },{
                     "title": "Post Short Name",
                     "data": "postshortname"
-                }, {
+                },{
                     "title": "Issue Date",
                     "data": (row, type, set)=>{
                     	return "<input style='border:none;background:inherit;' type='date' value="+new Date(row.issuedate)+"'/>"
@@ -138,8 +192,7 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
                 	"data": (row, type, set)=>{
                 		return "<input style='border:none;background:inherit;' type='date' value="+new Date(row.lastdate)+"'/>"
                 	}
-                }, 
-                {
+                },{
                     "title": "Action",
                     "sortable": false,
                     "data": "adcode",
@@ -172,14 +225,16 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
     		$scope.setDataTable($scope.advs);
     	});
     };
-    $scope.listOptionalSubjects = () => {
+    $scope.listOptionalSubjects = async () => {
     	commonInitFactory.listOptionalSubjects((response)=>{
-    		$scope.OptionalSubjects = response;
+    		$scope.OptionalSubjects1 = JSON.parse(JSON.stringify(response));
+    		$scope.OptionalSubjects2 = JSON.parse(JSON.stringify(response));
+    		$scope.OptionalSubjects3 = JSON.parse(JSON.stringify(response));
     	});
     };
     // ---------------------------------------------
-    $scope.listAdvs();
     $scope.listCategories();
     $scope.listOptionalSubjects();    
+    $scope.listAdvs();
 }]);
 

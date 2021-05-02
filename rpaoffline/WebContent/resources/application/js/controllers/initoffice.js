@@ -1,7 +1,3 @@
-/**
- * @Author Decent Khongstia
- */
-
 $(document).ready(function () {
 });
 
@@ -36,7 +32,8 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
     };
 
     $scope.reset = function () {
-    	$scope.office = new Office();
+    	$scope.office = {};
+    	$scope.office =new Office();
     	$scope.actionButton = SAVE;
     };
 

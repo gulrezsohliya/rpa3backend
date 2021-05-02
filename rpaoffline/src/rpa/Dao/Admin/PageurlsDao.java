@@ -104,22 +104,22 @@ public class PageurlsDao implements PageurlsDaoInterface {
 		}
 		return (urllist != null) ? urllist : new LinkedList();
 	}
-
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-	public List<Pageurls> getMappedPageurls(String username) {
-
+	public List<Pageurls> getMappedPageurls(Integer usercode) {
+		
 		List<Pageurls> urllist = null;
 		List<Map<String, Object>> rowList = null;
 		try {
-			String sql = "Select url.* From backend.userlogins u ,backend.UserPages up,backend.pageurls url "
-					+ "WHERE u.usercode=up.usercode " + "and up.urlcode=url.urlcode " + "and username=:username "
+			String sql = "Select url.* From backend.UserPages up,backend.pageurls url "
+					+ "WHERE up.urlcode=url.urlcode and usercode=:usercode "
 					+ "ORDER BY parentorder,submenuorder,subsubmenuorder";
-			SqlParameterSource parameters = new MapSqlParameterSource().addValue("username", username);
+			SqlParameterSource parameters = new MapSqlParameterSource().addValue("usercode", usercode);
 			rowList = (List<Map<String, Object>>) namedParameterJdbcTemplate.queryForList(sql, parameters);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			System.out.println("\n\nError in getPageurls " + ex);
+			System.out.println("\n\nError in getMappedPageurls(Integer usercode) " + ex);
 		}
 		if (rowList != null) {
 			urllist = new LinkedList<Pageurls>();

@@ -45,7 +45,7 @@ var AdvertisementOptionals = function(optional_code) {
 	return {
 		adcode : '',
 		optionalcode : optional_code,
-		optionalsubjectcode : 0
+		optionalsubject : [{"optionalsubjectcode":0,"optionalsubjectname":"Not Applicable"}]
 	};
 }
 var AdvertisementAge = function() {
@@ -104,7 +104,7 @@ var ExamCenter = function() {
 var Venue = function() {
 
 	return {
-		centercode : 0,
+		centercode : '',
 		venuecode : 0,
 		venuename : "",
 	};

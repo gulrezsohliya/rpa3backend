@@ -1,6 +1,7 @@
 package rpa.Services.Admin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
@@ -55,7 +56,7 @@ public class IntializationService implements IntializationServiceInterface {
 		oth = UI.listGeneric(Categories.class, sql);
 		return oth;
 	}
-	
+
 	@Override
 	public List<OtherCategories> listOtherCategories() {
 		List<OtherCategories> oth = null;
@@ -102,17 +103,41 @@ public class IntializationService implements IntializationServiceInterface {
 
 	@Override
 	public List<ExamCenter> listExamCenters() {
-		String sql = "SELECT * FROM backend.examinationcenters order by centername";
+		String sql = "SELECT * FROM masters.examinationcenterse INNER JOIN masters.officecenters o on o.centercode=e.centercode order by centername";
 		List<ExamCenter> examCenters = UI.listGeneric(ExamCenter.class, sql);
 		return examCenters;
 	}
 
 	@Override
+	public List<ExamCenter> listExamCenters(Integer officecode) {
+		String sql = "SELECT * FROM masters.examinationcenters e INNER JOIN masters.officecenters o on o.centercode=e.centercode WHERE o.officecode=? "
+				+ " Order by centername";
+		List<ExamCenter> examCenters = UI.listGeneric(ExamCenter.class, sql, new Object[] { officecode });
+		return examCenters;
+	}
+
+	@Override
 	public List<Venue> listVenues() {
-		String sql = "SELECT * FROM backend.venues order by venuename";
+		String sql = "SELECT * FROM masters.venues v "
+				+ "INNER JOIN masters.examinationcenters e on e.centercode=v.centercode "
+				+ "INNER JOIN masters.officecenters o on o.centercode=e.centercode ORDER by venuename";
 		List<Venue> venues = UI.listGeneric(Venue.class, sql);
 		for (Venue c : venues) {
-			sql = "SELECT * FROM backend.examinationcenters where centercode=? ORDER BY centercode";
+			sql = "SELECT * FROM masters.examinationcenters where centercode=? ORDER BY centercode";
+			c.setExamCenter((UI.listGeneric(ExamCenter.class, sql, new Object[] { c.getCentercode() })).get(0));
+		}
+		return venues;
+	}
+
+	@Override
+	public List<Venue> listVenues(Integer officecode) {
+		String sql = "SELECT * FROM masters.venues v "
+				+ "INNER JOIN masters.examinationcenters e on e.centercode=v.centercode "
+				+ "INNER JOIN masters.officecenters o on o.centercode=e.centercode  "
+				+ "WHERE officecode=? Order by venuename";
+		List<Venue> venues = UI.listGeneric(Venue.class, sql, new Object[] { officecode });
+		for (Venue c : venues) {
+			sql = "SELECT * FROM masters.examinationcenters where centercode=? ORDER BY centercode";
 			c.setExamCenter((UI.listGeneric(ExamCenter.class, sql, new Object[] { c.getCentercode() })).get(0));
 		}
 		return venues;
@@ -143,8 +168,8 @@ public class IntializationService implements IntializationServiceInterface {
 
 		List<Office> response = new ArrayList<Office>();
 		List<Office> offices = listOffices();
-		String sql = "SELECT e.* FROM backend.examinationcenters e "
-				+ "INNER JOIN backend.officecenters oc on oc.centercode=e.centercode " + "WHERE oc.officecode=? "
+		String sql = "SELECT e.* FROM masters.examinationcenters e "
+				+ "INNER JOIN masters.officecenters oc on oc.centercode=e.centercode " + "WHERE oc.officecode=? "
 				+ "order by centername";
 		List<ExamCenter> centers;
 		for (Office o : offices) {
@@ -159,8 +184,8 @@ public class IntializationService implements IntializationServiceInterface {
 	public List<Office> listOfficesAndMappedCenters(Integer officecode) {
 
 		List<Office> offices = listOffices(officecode);
-		String sql = "SELECT e.* FROM backend.examinationcenters e "
-				+ "INNER JOIN backend.officecenters oc on oc.centercode=e.centercode " + "WHERE oc.officecode=? "
+		String sql = "SELECT e.* FROM masters.examinationcenters e "
+				+ "INNER JOIN masters.officecenters oc on oc.centercode=e.centercode " + "WHERE oc.officecode=? "
 				+ "order by centername";
 		List<ExamCenter> centers = UI.listGeneric(ExamCenter.class, sql, new Object[] { officecode });
 		offices.get(0).setCenters(centers);
@@ -277,19 +302,26 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public String createExamCenter(ExamCenter center) {
 
-		String sql = "SELECT * FROM backend.examinationcenters WHERE centername =? ";
+		String sql = "SELECT * FROM masters.examinationcenters WHERE centername =? ";
 		if ((UI.listGeneric(Office.class, sql, new Object[] { center.getCentername() })).size() > 0) {
 			return "EXISTS";
 		}
-		sql = "INSERT INTO backend.examinationcenters(centercode, centername)VALUES (?, ?)";
-		Object[] params = new Object[] { UI.getMax("backend", "examinationcenters", "centercode") + 1,
-				center.getCentername() };
-		return (UI.update("backend.examinationcenters", sql, params)) ? "CREATED" : "FAILED";
+		sql = "INSERT INTO masters.examinationcenters(centercode, centername)VALUES (?, ?)";
+		int max = UI.getMax("masters", "examinationcenters", "centercode");
+		Object[] params = new Object[] { max + 1, center.getCentername() };
+		if (UI.update("masters.examinationcenters", sql, params)) {
+			sql = "INSERT INTO masters.officecenters(officecode, centercode) VALUES (?, ?)";
+			return (UI.update("masters.officecenters", sql, new Object[] { center.getOfficecode(), max + 1 }))
+					? "CREATED"
+					: "FAILED";
+		} else {
+			return "FAILED";
+		}
 	}
 
 	@Override
 	public boolean updateExamCenter(ExamCenter center) {
-		String sql = "UPDATE backend.examinationcenters SET centername=? WHERE  centercode=? ";
+		String sql = "UPDATE masters.examinationcenters SET centername=? WHERE  centercode=? ";
 		Object[] params = new Object[] { center.getCentername(), center.getCentercode() };
 		return UI.update("master.cells", sql, params);
 	}
@@ -297,27 +329,27 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public boolean deleteExamCenter(Integer centercode) {
 
-		String sql = "Delete from backend.examinationcenters where centercode=? ";
-		return UI.update("backend.examinationcenters", sql, new Object[] { centercode });
+		String sql = "Delete from masters.examinationcenters where centercode=? ";
+		return UI.update("masters.examinationcenters", sql, new Object[] { centercode });
 	}
 
 	// Venue
 	@Override
 	public String createVenue(Venue venue) {
 
-		String sql = "SELECT * FROM backend.venues WHERE venuename =? ";
+		String sql = "SELECT * FROM masters.venues WHERE venuename =? ";
 		if ((UI.listGeneric(Venue.class, sql, new Object[] { venue.getVenuename() })).size() > 0) {
 			return "EXISTS";
 		}
-		sql = "INSERT INTO backend.venues(venuecode,centercode, venuename)VALUES (?, ?, ?)";
-		Object[] params = new Object[] { UI.getMax("backend", "venues", "venuecode") + 1, venue.getCentercode(),
+		sql = "INSERT INTO masters.venues(venuecode,centercode, venuename)VALUES (?, ?, ?)";
+		Object[] params = new Object[] { UI.getMax("masters", "venues", "venuecode") + 1, venue.getCentercode(),
 				venue.getVenuename() };
-		return (UI.update("backend.venues", sql, params)) ? "CREATED" : "FAILED";
+		return (UI.update("masters.venues", sql, params)) ? "CREATED" : "FAILED";
 	}
 
 	@Override
 	public boolean updateVenue(Venue venue) {
-		String sql = "UPDATE backend.venues SET centercode=?, venuename=? WHERE  venuecode=? ";
+		String sql = "UPDATE masters.venues SET centercode=?, venuename=? WHERE  venuecode=? ";
 		Object[] params = new Object[] { venue.getCentercode(), venue.getVenuename(), venue.getVenuecode() };
 		return UI.update("venue.venues", sql, params);
 	}
@@ -325,8 +357,8 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public boolean deleteVenue(Integer venuecode) {
 
-		String sql = "Delete from backend.venues where venuecode=? ";
-		return UI.update("backend.venues", sql, new Object[] { venuecode });
+		String sql = "Delete from masters.venues where venuecode=? ";
+		return UI.update("masters.venues", sql, new Object[] { venuecode });
 	}
 
 	// OtherCategory
@@ -361,18 +393,16 @@ public class IntializationService implements IntializationServiceInterface {
 	@Override
 	public boolean saveOfficeCenters(List<OfficeCenter> officeCenter) {
 		System.out.println(officeCenter);
-		String sql = "DELETE From backend.officecenters WHERE officecode=? ";
+		String sql = "DELETE From masters.officecenters WHERE officecode=? ";
 		if (!UI.update("masters.officecenters", sql, new Object[] { officeCenter.get(0).getOfficecode() })) {
 			System.out.println("DELETE = " + officeCenter.get(0).getOfficecode());
 			return false;
 		}
 		/////////////////////////////////////
-		sql = "INSERT INTO backend.officecenters(slno, officecode, centercode) VALUES (?, ?, ?)";
-		int max = UI.getMax("backend", "officecenters", "slno");
+		sql = "INSERT INTO masters.officecenters(officecode, centercode) VALUES (?, ?)";
+//		int max = UI.getMax("masters", "officecenters", "slno");
 		for (OfficeCenter oc : officeCenter) {
-			if (!UI.update("backend.OfficeCenter", sql,
-					new Object[] { ++max, oc.getOfficecode(), oc.getCentercode() })) {
-				System.out.println("INSERT = " + oc.getCentercode());
+			if (!UI.update("masters.OfficeCenter", sql, new Object[] { oc.getOfficecode(), oc.getCentercode() })) {
 				return false;
 			}
 		}

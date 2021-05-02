@@ -9,7 +9,7 @@ import rpa.Models.Examination.OptionalSubjects;
 
 public interface ExaminationServiceInterface {
 
-	public List<Advertisement> listAdvertisements(Integer officecode);
+	public List<Advertisement> listAdvertisements(Integer officecode, Integer usercode);
 
 	public List<OptionalSubjects> listOptionalSubjects();
 

@@ -1,14 +1,14 @@
-$(document).ready(function () {
-  var scope = angular.element($("#accesscontrolCtrl")).scope();
-  scope.$apply(function () {
-    scope.listUsers();
-    scope.listURLs();
-  });
-});
+//$(document).ready(function () {
+//  var scope = angular.element($("#accesscontrolCtrl")).scope();
+//  scope.$apply(function () {
+//    scope.listUsers();
+//    scope.listURLs();
+//  });
+//});
 app.controller("accesscontrolCtrl", [
   "$scope",
-  "$sce",
-  function ($scope, $sce) {
+  "$sce","$compile",
+  function ($scope, $sce,$compile) {
     $scope.user = new Userlogins();
     $scope.users = [];
     $scope.URLs = [];
@@ -52,18 +52,18 @@ app.controller("accesscontrolCtrl", [
         },
       });
     };
-    $scope.mappedPages = function (index) {
-      jQuery.each($scope.URLs, function (i, v) {
-        v.checked = false;
-      });
-      $scope.user = $scope.users[index];
-      $scope.checks();
-      jQuery("html, body").animate(
-        {
-          scrollTop: 0,
-        },
-        2000
-      );
+    $scope.mappedPages = function (usercode) {
+    	jQuery.each($scope.URLs, function (i, v) {
+    		v.checked = false;
+    	});
+    	$scope.user =$scope.users.filter(obj=>{
+    		return obj.usercode==usercode;
+    	})[0];
+    	
+    	$scope.checks();
+    	jQuery("html, body").animate({
+	    	scrollTop: 0,
+	    },1000);
     };
     $scope.listUsers = function () {
       jQuery.ajax({
@@ -75,6 +75,7 @@ app.controller("accesscontrolCtrl", [
           var scope = angular.element($("#accesscontrolCtrl")).scope();
           scope.$apply(function () {
             scope.users = response;
+            scope.setDataTable(response);
           });
         },
         error: function (xhr) {
@@ -118,20 +119,47 @@ app.controller("accesscontrolCtrl", [
         v0.checked = response;
       });
     };
+    $scope.setDataTable = function (obj) {
+        jQuery("#displayRecords").html("");
+        jQuery("#displayRecords").html("<table id='displayRecordsTable' style='width:100%' border='1'></table>");
+        jQuery('#displayRecordsTable').DataTable({
+            data: obj,
+            columns: [
+                {
+                    "title": "Full Name",
+                    "data": "fullname"
+                }, {
+                    "title": "User Name",
+                    "data": "username"
+                },{
+                    "title": "Designation",
+                    "data": "designation"
+                }, {
+                    "title": "Office Short Name",
+                    "data": "officeshortname",
+                }, 
+                {
+                    "title": "Action",
+                    "sortable": false,
+                    "render": function (data, type, row, meta) {
+                    	let div = '<button style="padding:5px" ng-click="mappedPages('+row.usercode+')">Map Pages</button>';
+                        return div;
+                    }
+                }
+            ],
+            "sortable": false,
+            "columnDefs": [
+                {"width": "2%", "targets": 0}
+            ],
+            "bLengthChange": false,
+            createdRow: function (row, data, dataIndex) {
+                $compile(angular.element(row).contents())($scope);
+            }
+        });
+    };
+    
+
+    $scope.listUsers();
+    $scope.listURLs();
   },
 ]);
-angular.element(document).ready(function () {
-  dTable = $("#displayRecordsTable");
-  dTable.DataTable({
-    searching: false,
-    bPaginate: false,
-    bLengthChange: false,
-    bFilter: true,
-    bInfo: false,
-    bAutoWidth: false,
-    oLanguage: {
-      sZeroRecords: "",
-      sEmptyTable: "",
-    },
-  });
-});

@@ -116,6 +116,7 @@ app.controller('venueCtrl', ['$scope', '$sce', '$compile','$timeout','commonInit
                     "data": "venuename",
                 }, 
                 {
+                	"width":"100px",
                     "title": "Action",
                     "sortable": false,
                     "data": "venuecode",
@@ -147,6 +148,10 @@ app.controller('venueCtrl', ['$scope', '$sce', '$compile','$timeout','commonInit
     		$scope.setDataTable($scope.venues);
     	});
     };
+    commonInitFactory.listOffices((response)=>{
+    	$scope.offices = response;
+    });
+
     $scope.listVenues();
         
 }]);

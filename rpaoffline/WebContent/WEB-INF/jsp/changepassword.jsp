@@ -1,22 +1,19 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <style>
-            input[type=radio]{
-                margin: 5px 0 5px 30px;
-            }
-            td,th{
-                font-size: 12px;
-            }
-            input[type=search]{
-                margin-bottom: 5px;
-            }
-        </style>
-    </head>
-    <body ng-app="CommonApp">
-        <%@include file="./common/header.jsp" %> 
+	<head>
+		<title>Sample</title>
+		<%@include file="./common/headerfiles.jsp" %>     		
+	</head>
+	<body ng-app="CommonApp">
+	<div class="d-flex" id="wrapper">
+		<%@include file="./common/menuside.jsp" %>  		   
+	    <div id="page-content-wrapper">	
+		  <%@include file="./common/menutop.jsp" %>     
+	      <div class="container-fluid">
+	        <h3 class="mt-4" style="font-size:32px;">Home</h3>
+	        
+	        <div class="row">	        
+	        	<!-- ====================Dynamic Page Content Will Come Starts====================== -->     	
+	        	<div class="col-md-12 py-12 px-12">
         <div class='containerBody' id="createuserCtrl" ng-controller="changepasswordCtrl">
             <h2 class="title">Change Password</h2>
             <div  style='width:80%;margin: 15px auto 0'>
@@ -61,9 +58,15 @@
             </div> 
             <div id="displayRecords" style='width:80%;margin: 15px auto 50px auto;'></div>
         </div>
+	        	</div>		   	
+	        </div>   	        
+	             
+	      </div>	      
+	    </div> 	    
+	  </div>
         <script type="text/javascript">
                 	var usersession='<%=((rpa.Models.master.User)session.getAttribute("user")).getUsercode()%>';
         </script>
-        <script src="resources/application/js/controllers/changepassword.js"></script>
-    </body>
+        <script src="resources/application/js/controllers/changepassword.js"></script>	  
+	</body>
 </html>

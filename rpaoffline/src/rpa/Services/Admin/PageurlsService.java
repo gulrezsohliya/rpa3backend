@@ -4,6 +4,7 @@
  */
 package rpa.Services.Admin;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import rpa.Dao.Admin.InitializationDaoInterface;
 import rpa.Dao.Admin.PageurlsDaoInterface;
 import rpa.Models.master.Pageurls;
+import rpa.Models.master.Urls;
 import rpa.Models.master.User;
 import rpa.Models.master.UserPages;
 
@@ -28,47 +30,50 @@ public class PageurlsService implements PageurlsServiceInterface {
 	@Autowired
 	InitializationDaoInterface admindao;
 
-	public JSONArray getPageurls(String username) {
+	@Override
+	public List<Urls> getPageurls(Integer usercode) {
 
-		JSONArray arrParent = new JSONArray();
-		JSONObject objParent = null;
-		JSONObject objSubmenu = null;
-		JSONObject objSubsubmenu = null;
-		JSONArray arrSubmenu = null;
-		JSONArray arrSubSubmenu = null;
+		List<Pageurls> urls = dao.getMappedPageurls(usercode);
+		List<Urls> arrParent = new ArrayList<Urls>();
+		Urls objParent = null;
+		Urls objSubmenu = null;
+		Urls objSubsubmenu = null;
+		List<Urls> arrSubmenu = null;
+		List<Urls> arrSubSubmenu = null;
 		List<String> parent = new LinkedList<String>();
 		List<String> submenu = new LinkedList<String>();
-		for (Pageurls url : dao.getMappedPageurls(username)) {
+		for (Pageurls url : urls) {
+
 			if (!parent.contains(url.getParent())) {
 				parent.add(url.getParent());
 				submenu = new LinkedList<String>();
 				if (objSubmenu != null) {
-					objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
+					objSubmenu.setSuburls(((arrSubSubmenu != null) ? arrSubSubmenu : null));
 					arrSubmenu.add(objSubmenu);
 				}
 				if (objParent != null) {
-					objParent.put("value", arrSubmenu);
+					objParent.setSuburls(arrSubmenu);
 					arrParent.add(objParent);
 				}
-				objParent = new JSONObject();
-				objParent.put("parent", url.getParent());
-				objParent.put("parenticon", (url.getParenticon() != null) ? url.getParenticon() : "");
-				objParent.put("pageurl", (url.getSubmenu() == null) ? url.getPageurl() : "");
+				objParent = new Urls();
+				objParent.setName(url.getParent());
+				objParent.setIcon((url.getParenticon() != null) ? url.getParenticon() : "");
+				objParent.setPageurl((url.getSubmenu() == null) ? url.getPageurl() : "");
 
-				arrSubmenu = new JSONArray();
-				objSubmenu = new JSONObject();
+				arrSubmenu = new ArrayList<Urls>();
+				objSubmenu = new Urls();
 				submenu.add(url.getSubmenu());
-				objSubmenu.put("submenu", url.getSubmenu());
-				objSubmenu.put("submenuicon", (url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
-				objSubmenu.put("pageurl", (url.getSubsubmenu() == null) ? url.getPageurl() : "");
+				objSubmenu.setName(url.getSubmenu());
+				objSubmenu.setIcon((url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
+				objSubmenu.setPageurl((url.getSubsubmenu() == null) ? url.getPageurl() : "");
 				//
-				arrSubSubmenu = new JSONArray();
-				objSubsubmenu = new JSONObject();
-				objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
-				objSubsubmenu.put("subsubmenuicon", (url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
-				objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
+				arrSubSubmenu = new ArrayList<Urls>();
+				objSubsubmenu = new Urls();
+				objSubsubmenu.setName((url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
+				objSubsubmenu.setIcon((url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
+				objSubsubmenu.setPageurl((url.getSubsubmenu() != null) ? url.getPageurl() : "");
 				arrSubSubmenu.add(objSubsubmenu);
-				objSubmenu.put("value", arrSubSubmenu);
+				objSubmenu.setSuburls(arrSubSubmenu);
 				//
 				arrSubmenu.add(objSubmenu);
 				objSubmenu = null;
@@ -76,42 +81,39 @@ public class PageurlsService implements PageurlsServiceInterface {
 				if (!submenu.contains(url.getSubmenu())) {
 					submenu.add(url.getSubmenu());
 					if (objSubmenu != null) {
-						objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
+						objSubmenu.setSuburls((arrSubSubmenu != null) ? arrSubSubmenu : null);
 						arrSubmenu.add(objSubmenu);
 					}
-					objSubmenu = new JSONObject();
-					objSubmenu.put("submenu", url.getSubmenu());
-					objSubmenu.put("submenuicon", (url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
-					objSubmenu.put("pageurl", (url.getSubsubmenu() == null) ? url.getPageurl() : "");
+					objSubmenu = new Urls();
+					objSubmenu.setName(url.getSubmenu());
+					objSubmenu.setIcon((url.getSubmenuicon() != null) ? url.getSubmenuicon() : "");
+					objSubmenu.setPageurl((url.getSubsubmenu() == null) ? url.getPageurl() : "");
 					//
-					arrSubSubmenu = new JSONArray();
-					objSubsubmenu = new JSONObject();
-					objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
-					objSubsubmenu.put("subsubmenuicon",
-							(url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
-					objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
+					arrSubSubmenu = new ArrayList<Urls>();
+					objSubsubmenu = new Urls();
+					objSubsubmenu.setName((url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
+					objSubsubmenu.setIcon((url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
+					objSubsubmenu.setPageurl((url.getSubsubmenu() != null) ? url.getPageurl() : "");
 					arrSubSubmenu.add(objSubsubmenu);
 					objSubsubmenu = null;
 					//
 				} else {
-					objSubsubmenu = new JSONObject();
-					objSubsubmenu.put("subsubmenu", (url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
-					objSubsubmenu.put("subsubmenuicon",
-							(url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
-					objSubsubmenu.put("pageurl", (url.getSubsubmenu() != null) ? url.getPageurl() : "");
+					objSubsubmenu = new Urls();
+					objSubsubmenu.setName((url.getSubsubmenu() != null) ? url.getSubsubmenu() : "");
+					objSubsubmenu.setIcon((url.getSubsubmenuicon() != null) ? url.getSubsubmenuicon() : "");
+					objSubsubmenu.setPageurl((url.getSubsubmenu() != null) ? url.getPageurl() : "");
 					arrSubSubmenu.add(objSubsubmenu);
 				}
 			}
 		}
 		if (objSubmenu != null) {
-			objSubmenu.put("value", (arrSubSubmenu != null) ? arrSubSubmenu : "");
+			objSubmenu.setSuburls((arrSubSubmenu != null) ? arrSubSubmenu : null);
 			arrSubmenu.add(objSubmenu);
 		}
 		if (objParent != null) {
-			objParent.put("value", arrSubmenu);
+			objParent.setSuburls(arrSubmenu);
 			arrParent.add(objParent);
 		}
-
 		return arrParent;
 	}
 
@@ -150,7 +152,7 @@ public class PageurlsService implements PageurlsServiceInterface {
 
 		List<User> list = admindao.listUsers();
 		for (User user : list) {
-			user.setMappedpages(dao.getMappedPageurls(user.getUsername()));
+			user.setMappedpages(dao.getMappedPageurls(user.getUsercode()));
 		}
 		return list;
 	}

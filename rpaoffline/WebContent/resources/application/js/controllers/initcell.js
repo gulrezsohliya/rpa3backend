@@ -127,7 +127,6 @@ app.controller('cellCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitF
                     "data": "cellcode",
                     "render": function (data, type, row, meta) {
                     	let div = '<div style="text-align:center"><button style="padding:.1em; margin-right: .5em" value="Edit" ng-click="edit(' + data + ')" class="button-primary">Edit</button>';
-                    		div += '<button style="padding:.1em; margin-right: .5em" value="Delete" ng-click="delete(' + data + ')" class="button-primary">Delete</button></div>';
                         return div;
                     }
                 }

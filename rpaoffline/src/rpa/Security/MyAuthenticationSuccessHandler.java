@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import rpa.Dao.Admin.InitializationDaoInterface;
 import rpa.Models.master.User;
+import rpa.Services.Admin.PageurlsServiceInterface;
 
 @Component
 //@SessionAttributes({"user"})
@@ -29,6 +30,8 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 	private static final Logger LOG = Logger.getLogger(MyAuthenticationSuccessHandler.class); 
 		@Autowired
 	    private InitializationDaoInterface admindao = null;
+		@Autowired
+		PageurlsServiceInterface pageser;
 	    
 	    @Override
 	    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -36,7 +39,8 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
 	    	HttpSession session = request.getSession();
 	        User user = admindao.listUsers(SecurityContextHolder.getContext().getAuthentication().getName());
 	        user.setPasswords(null);
-	        System.out.println(user);
+//	        session.setAttribute("menu", pageser.getPageurls(SecurityContextHolder.getContext().getAuthentication().getName()).toJSONString());
+	        session.setAttribute("menu", pageser.getPageurls(user.getUsercode()));
 	        session.setAttribute("user", user);
 	        setDefaultTargetUrl("/home.htm");
 	        super.onAuthenticationSuccess(request, response, authentication);
