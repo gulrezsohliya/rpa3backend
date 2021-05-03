@@ -127,6 +127,11 @@ public class InitializationController {
 		}
 	}
 
+	@GetMapping(value = "/listExamCenters/{officecode}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<ExamCenter> listExamCentersforOffice(@PathVariable Integer officecode) {
+		return IS.listExamCenters(officecode);
+	}
+
 	@GetMapping(value = "/listVenues", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Venue>> listVenues(HttpServletRequest req) {
 		try {

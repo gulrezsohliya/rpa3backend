@@ -49,6 +49,12 @@ app.factory('commonInitFactory', function($http) {
 				callback(response);
 			});
 		},
+		listExamCentersforOffice:  function(officecode,callback) {
+			$http.get("./listExamCenters/"+officecode).success(
+			function(response, status, headers, config) {
+				callback(response);
+			});
+		},
 		listVenues:  function(callback) {
 			$http.get("./listVenues").success(
 					function(response, status, headers, config) {

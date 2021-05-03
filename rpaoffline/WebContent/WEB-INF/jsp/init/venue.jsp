@@ -20,7 +20,7 @@
 			                        <tr class="form-group has-feedback">
 			                            <td class="title">Office:*</td>
 			                            <td class="col-xs-5 selectContainer">
-											<select class="form-control" id="office" name="officecode" ng-model="venue.officecode" required>
+											<select class="form-control" id="office" name="officecode" ng-model="venue.officecode" ng-change="getExamcenters()" required>
 												<option value="">--Select--</option>
 												<option ng-selected="offc.officecode == venue.officecode"
 													ng-repeat='offc in offices track by $index' ng-value="offc.officecode">
