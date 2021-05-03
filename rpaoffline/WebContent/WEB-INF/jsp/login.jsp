@@ -17,7 +17,7 @@
 			<div class="row">
 				<div class="col-lg-8 d-flex">
 					<div class="align-self-center pr-5">
-						<h1 class="text-right mt-5 b-left-head">Recruitment Processing Application</h1>
+						<h1 class="text-right mt-5 b-left-head">Recruitment Processing Application 3.0</h1>
 					</div>
 				</div>
 				
