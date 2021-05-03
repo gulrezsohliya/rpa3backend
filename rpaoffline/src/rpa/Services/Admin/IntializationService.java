@@ -103,7 +103,7 @@ public class IntializationService implements IntializationServiceInterface {
 
 	@Override
 	public List<ExamCenter> listExamCenters() {
-		String sql = "SELECT * FROM masters.examinationcenterse INNER JOIN masters.officecenters o on o.centercode=e.centercode order by centername";
+		String sql = "SELECT * FROM masters.examinationcenters e INNER JOIN masters.officecenters o on o.centercode=e.centercode order by centername";
 		List<ExamCenter> examCenters = UI.listGeneric(ExamCenter.class, sql);
 		return examCenters;
 	}

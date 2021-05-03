@@ -75,7 +75,7 @@ body {
 -->
 
 <!-- Sidebar -->
-<div class="dashboard-bgcolor border-right" id="sidebar-wrapper" id="menuCtrl" ng-controller="menuCtrl">
+<div class="dashboard-bgcolor border-right" id="sidebar-wrapper" id="menuCtrl">
 	<div class="sidebar-heading text-left text-white" style="font-size: 24px">
 		<!-- <span class="fas fa-tachometer-alt"></span> &nbsp; -->
 		<span class="text-uppercase">RPA</span>

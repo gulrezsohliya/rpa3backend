@@ -37,21 +37,21 @@ public class PageurlsController {
 		return attr.getRequest().getSession(true); // true == allow create
 	}
 
-	@GetMapping(value = "/getMenu.htm")
-	public @ResponseBody String getMenu() {
-		return pageser.getPageurls(SecurityContextHolder.getContext().getAuthentication().getName()).toJSONString();
-	}
-
-	// @RequestMapping(value = "/getHeaders.htm", method = RequestMethod.POST)
-	public String getHeaders() {
-		return pageser.getHeaders();
-	}
-
-	@GetMapping(value = "/getSubmenu")
-	public @ResponseBody List<Map<String, Object>> getSubmenu(@RequestParam String val) {
-
-		return pageser.getSubmenu(val);
-	}
+//	@GetMapping(value = "/getMenu.htm")
+//	public @ResponseBody String getMenu() {
+//		return pageser.getPageurls(SecurityContextHolder.getContext().getAuthentication().getName()).toJSONString();
+//	}
+//
+//	// @RequestMapping(value = "/getHeaders.htm", method = RequestMethod.POST)
+//	public String getHeaders() {
+//		return pageser.getHeaders();
+//	}
+//
+//	@GetMapping(value = "/getSubmenu")
+//	public @ResponseBody List<Map<String, Object>> getSubmenu(@RequestParam String val) {
+//
+//		return pageser.getSubmenu(val);
+//	}
 
 	@GetMapping(value = "/listUrls")
 	public @ResponseBody List<Pageurls> listUrls() {
