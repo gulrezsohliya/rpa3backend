@@ -35,7 +35,7 @@ app.controller("mapCtrl", [
         }
       });
       if (mapCenters.length === 0) {
-        MsgBox("Select atleast one Center");
+        MsgBox("Select at least one Center");
         return;
       }
       jQuery.ajax({

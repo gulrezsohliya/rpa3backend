@@ -6,7 +6,7 @@ $(document).ready(function () {
 app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/* Common Ajax Params */
-	var successMsg = "Success: Advertisement created/updated";
+	var successMsg = "Success: The Advertisement has been created/updated successfully";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";
@@ -110,7 +110,7 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
         		$scope.step=2;
         		$scope.actionButton =EDIT;
         		$scope.listAdvs();
-				$scope.message='Saved. Please Conitnue to the next Step.';
+				$scope.message='Advertisement saved successfully. Please add the additional posts details. ';
 				jQuery('.message').fadeIn(1000);
 				$timeout(function(){
 					jQuery('.message').fadeOut(1000);
@@ -135,7 +135,7 @@ app.controller('advCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFa
 					MsgBox(successMsg);				
 				}else{
 					$scope.step++;
-					$scope.message='Saved. Please Conitnue to the next Step.';
+					$scope.message='Advertisement saved successfully. Please add the additional posts details. ';
 					jQuery('.message').fadeIn(1000);
 					$timeout(function(){
 						jQuery('.message').fadeOut(1000);

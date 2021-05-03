@@ -10,7 +10,7 @@ app.controller('changepasswordCtrl', ['$scope', '$sce', '$compile','$timeout','c
 	var scope = angular.element($("#createuserCtrl")).scope();
 	commonInitService.success();
 	/* Common Ajax Params */
-	var successMsg = "Success: Password updated";
+	var successMsg = "Success: Password has been changed successfully ";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";
@@ -49,17 +49,17 @@ app.controller('changepasswordCtrl', ['$scope', '$sce', '$compile','$timeout','c
         
 	        if($scope.user.password === "" || $scope.user.password === null){
 	            jQuery("#passwords").focus();
-	            alert("password cannot be empty");
+	            alert("Password cannot be empty");
 	            return false;
 	        }
 	        if($scope.repassword === "" || $scope.repassword === null){
 	            jQuery("#repassword").focus();
-	            alert("password cannot be empty");
+	            alert("Password cannot be empty");
 	            return false;
 	        }
 	        if($scope.repassword !== $scope.user.password){
 	            jQuery("#repassword").focus();
-	            alert("passwords do not matches");
+	            alert("Passwords do not match.");
 	            return false;
 	        }
 	            return true;

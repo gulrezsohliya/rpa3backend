@@ -46,7 +46,7 @@ app.controller('examSubjectCtrl', ['$scope', '$sce', '$compile','$timeout','comm
 				},
 				(res) =>{
     				if(res.response===ALREADY_REPORTED){
-    					MsgBox("Examination Subject already exists");
+    					MsgBox("Examination Subject already exist");
     				}else{
     					MsgBox(errorMsg)
     				}
@@ -78,7 +78,7 @@ app.controller('examSubjectCtrl', ['$scope', '$sce', '$compile','$timeout','comm
     	
     	$scope.method = "DELETE";
     	$scope.urlEndpoint = "./deleteExamSubject/"+othercategorycode;
-    	ConfirmBox("Are You Sure to Delete this entry? ",(response)=>{
+    	ConfirmBox("Are You Sure you want to delete the examination subject? ",(response)=>{
 	    	if(response){
 	    		commonInitService.http($scope.method, $scope.urlEndpoint, othercategorycode, (res) => {
 		    		if(res===true){

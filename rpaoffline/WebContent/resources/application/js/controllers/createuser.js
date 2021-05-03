@@ -155,37 +155,37 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
         }
         if($scope.department.key === "" || $scope.department.key === null){
             jQuery("#department").focus();
-            alert("Please select department");
+            alert("Please select the department");
             return false;
         }
         if($scope.designationgrp.key === "" || $scope.designationgrp.key === null){
             jQuery("#designationgrp").focus();
-            alert("Please select cadre group");
+            alert("Please select the designation ");
             return false;
         }
         if($scope.user.designation.designationid <= 0 || $scope.user.designation.designationid === null){
             jQuery("#designationid").focus();
-            alert("Please select designation");
+            alert("Please select the designation");
             return false;
         }
         if($scope.user.username === "" || $scope.user.username === null){
             jQuery("#username").focus();
-            alert("username cannot be empty");
+            alert("The username cannot be empty");
             return false;
         }
         if($scope.user.password === "" || $scope.user.password === null){
             jQuery("#passwords").focus();
-            alert("password cannot be empty");
+            alert("The Password cannot be empty");
             return false;
         }
         if($scope.repassword === "" || $scope.repassword === null){
             jQuery("#repassword").focus();
-            alert("password cannot be empty");
+            alert("The Password cannot be empty");
             return false;
         }
         if($scope.repassword !== $scope.user.password){
             jQuery("#repassword").focus();
-            alert("passwords do not matches");
+            alert("Passwords do not matches");
                 return false;
             }
             return true;

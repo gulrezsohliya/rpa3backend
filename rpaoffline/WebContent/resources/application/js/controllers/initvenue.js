@@ -1,7 +1,7 @@
 app.controller('venueCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/*Common Ajax Params*/
-	var successMsg = "Success: Venue created/updated";
+	var successMsg = "Success: Venue created/updated successfully";
 	var errorMsg = "Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "";
@@ -47,7 +47,7 @@ app.controller('venueCtrl', ['$scope', '$sce', '$compile','$timeout','commonInit
 				},
 				(res) =>{
     				if(res.response===ALREADY_REPORTED){
-    					MsgBox("Venue already exists");
+    					MsgBox("The venue already exists");
     				}else{
     					MsgBox(errorMsg)
     				}

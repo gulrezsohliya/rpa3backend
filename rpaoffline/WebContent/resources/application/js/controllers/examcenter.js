@@ -5,7 +5,7 @@ $(document).ready(function () {
 app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/*Common Ajax Params*/
-	var successMsg = "Success: Exam Center created/updated";
+	var successMsg = "Success: Exam Center created/updated successfully.";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";
@@ -51,7 +51,7 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
 				},
 				(res) =>{
     				if(res.response===ALREADY_REPORTED){
-    					MsgBox("Exam Center already exists");
+    					MsgBox("The exam center already exist.");
     				}else{
     					MsgBox(errorMsg)
     				}
@@ -89,7 +89,7 @@ app.controller('examCenterCtrl', ['$scope', '$sce', '$compile','$timeout','commo
 		    			$scope.reset();
 		    			$scope.listExamCenters(); 
 		    		}else{
-		    			MsgBox("Unable to delete.");								
+		    			MsgBox("Unable to delete the Exam Center.");								
 		    		}
 		    	},()=>{});
     		}

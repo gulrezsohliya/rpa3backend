@@ -1,7 +1,7 @@
 app.controller('optionalSubjectCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/* Common Ajax Params */
-	var successMsg = "Success: Optional Subject created/updated";
+	var successMsg = "Success: Optional Subject created/updated successfully";
 	var errorMsg = "Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "";
@@ -78,7 +78,7 @@ app.controller('optionalSubjectCtrl', ['$scope', '$sce', '$compile','$timeout','
     	
     	$scope.method = "DELETE";
     	$scope.urlEndpoint = "./deleteOptionalSubject/"+code;
-    	ConfirmBox("Are You Sure to Delete this entry? ",(response)=>{
+    	ConfirmBox("Are You Sure to delete the optional subject? ",(response)=>{
 	    	if(response){
 	    		commonInitService.http($scope.method, $scope.urlEndpoint, code, (res) => {
 		    		if(res===true){

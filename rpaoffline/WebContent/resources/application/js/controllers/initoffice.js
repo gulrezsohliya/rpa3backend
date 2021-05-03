@@ -4,7 +4,7 @@ $(document).ready(function () {
 app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitFactory', 'commonInitService', 
 	function ($scope, $sce, $compile,$timeout,commonInitFactory, commonInitService) {
 	/*Common Ajax Params*/
-	var successMsg = "Success: Office created/updated";
+	var successMsg = "Success: The office has been added/updated successfully";
 	var errorMsg = "Error: Unable to perform action";
 	$scope.errorCallback = "";
 	$scope.method = "POST";

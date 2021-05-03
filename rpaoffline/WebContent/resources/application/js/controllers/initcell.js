@@ -50,7 +50,7 @@ app.controller('cellCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitF
 				},
 				(res) =>{
     				if(res.response===ALREADY_REPORTED){
-    					MsgBox("Cell already exists");
+    					MsgBox("The Cell already exist");
     				}else{
     					MsgBox(errorMsg)
     				}
@@ -82,7 +82,7 @@ app.controller('cellCtrl', ['$scope', '$sce', '$compile','$timeout','commonInitF
     	
     	$scope.method = "DELETE";
     	$scope.urlEndpoint = "./deletecell/"+cellcode;
-    	ConfirmBox("Are You Sure to Delete this entry? ",(response)=>{
+    	ConfirmBox("Are You Sure to delete the cell? ",(response)=>{
 	    	if(response){
 	    		commonInitService.http($scope.method, $scope.urlEndpoint, cellcode, (res) => {
 		    		if(res===true){
