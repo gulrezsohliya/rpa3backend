@@ -239,11 +239,15 @@ public class ExaminationService implements ExaminationServiceInterface {
 				+ "            lastdate, agedate, description, counterentry, open, "
 				+ "            noofoptionals, usercode, entrydate, finalized,  advertisementno,  "
 				+ "            examinationmodecode)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Integer adcode = UI.getMax("backend", "Advertisements", "adcode");
-		Object[] params = new Object[] { adcode + 1, adcode + 1, obj.getOfficecode(), obj.getNameofpost(),
-				obj.getPostshortname(), obj.getIssuedate(), obj.getLastdate(), obj.getAgedate(), obj.getDescription(),
-				obj.getCounterentry(), obj.getOpen(), obj.getNoofoptionals(), obj.getUsercode(), new Date(),
-				obj.getFinalized(), obj.getAdvertisementno(), obj.getExaminationmodecode() };
+		Integer slno = UI.getMax("backend", "Advertisements", "slno","officecode",obj.getOfficecode()) + 1;
+		String adcode = ((obj.getOfficecode().toString().length() == 1) ? "00"
+				: (obj.getOfficecode().toString().length() == 2) ? "0" : "") + obj.getOfficecode()
+			+ ((slno.toString().length() == 1) ? "00" 
+				: (slno.toString().length() == 2) ? "0" : "") + slno;//6 Characters adcode 3 of officecode +3 of slno
+		Object[] params = new Object[] { slno, adcode, obj.getOfficecode(), obj.getNameofpost(), obj.getPostshortname(),
+				obj.getIssuedate(), obj.getLastdate(), obj.getAgedate(), obj.getDescription(), obj.getCounterentry(),
+				obj.getOpen(), obj.getNoofoptionals(), obj.getUsercode(), new Date(), obj.getFinalized(),
+				obj.getAdvertisementno(), obj.getExaminationmodecode() };
 		return (UI.update("backend.Advertisements", sql, params)) ? (adcode + 1) + "" : "FAILED";
 	}
 

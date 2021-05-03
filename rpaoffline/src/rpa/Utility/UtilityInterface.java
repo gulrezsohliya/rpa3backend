@@ -7,6 +7,8 @@ public interface UtilityInterface {
 
 	public Integer getMax(String schema, String table, String column);
 
+	public Integer getMax(String schema, String table, String column, String groupByColumn, Object groupByValue);
+
 	public <T> List<T> listGeneric(Class<T> clazz, String sql);
 
 	public <T> List<T> listGeneric(Class<T> clazz, String sql, Object[] params);

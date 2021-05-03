@@ -86,6 +86,7 @@ public class ExaminationController {
 		String res=ES.createAdvertisement(adv);
 		switch (res) {
 		case "EXISTS":
+		case "FAILED":
 			response.put("response", HttpStatus.ALREADY_REPORTED);
 			break;
 		default:

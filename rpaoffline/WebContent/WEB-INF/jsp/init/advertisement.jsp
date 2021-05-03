@@ -38,7 +38,7 @@
 							    </div>
 							    
 					    		<div id="stepperBody">
-					                <form id="advForm" name="advForm" ng-show='step==1'>
+					                <form id="advForm" name="advForm" ng-show='step==1' autocomplete="off">
 					                    <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px;"> 
 					                        
 					                        <tr class="form-group has-feedback">
@@ -189,7 +189,7 @@
 					                        </tr>
 					                    </table>
 					                </form>
-					                <form id="advForm2" name="advForm2" ng-show='step==2'>                	
+					                <form id="advForm2" name="advForm2" ng-show='step==2' autocomplete="off">                	
 					                    <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
 					                    	<tr class="form-group has-feedback">
 					                            <td class="title" style="border-bottom:1px solid black">Age as on <input type="date" ng-model='adv.agedate' readonly style='border:none;background:inherit;'/></td>
@@ -294,7 +294,7 @@
 					                        </tr>
 					                    </table>
 					                </form>	                
-					                <form id="advForm3" name="advForm3"  ng-show='step==3'>  
+					                <form id="advForm3" name="advForm3"  ng-show='step==3' autocomplete="off">  
 					                    <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
 	                       					<tr class="form-group has-feedback">
 					                            <td class="col-xs-5 selectContainer title" style="padding:10px 0">No. of Optional Subjects</td>

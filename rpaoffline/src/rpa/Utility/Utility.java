@@ -15,31 +15,46 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public class Utility implements UtilityInterface{
-	
+public class Utility implements UtilityInterface {
+
 	private static final Logger LOG = Logger.getLogger(UtilityInterface.class);
 	private JdbcTemplate jdbcTemplate;
+
 	@Autowired
 	public void createTemplate(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	
+
 	@Override
-	public Integer getMax(String schema, String table,String column) {
+	public Integer getMax(String schema, String table, String column) {
 		List<Map<String, Object>> list = null;
-		Integer i=0;
+		Integer i = 0;
 		try {
-			String sql = (new StringBuilder("Select max(")).append(column)
-			.append(") From ")
-			.append(schema).append(".").append(table).toString();
-			 i= jdbcTemplate.queryForObject(sql,Integer.class);
+			String sql = (new StringBuilder("Select max(")).append(column).append(") From ").append(schema).append(".")
+					.append(table).toString();
+			i = jdbcTemplate.queryForObject(sql, Integer.class);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			System.out.println("\n\nError in getMax " + ex);
 		}
-		return (i!=null) ? i : 0;
+		return (i != null) ? i : 0;
 	}
-	
+
+	@Override
+	public Integer getMax(String schema, String table, String column, String groupByColumn, Object groupByValue) {
+		List<Map<String, Object>> list = null;
+		Integer i = 0;
+		try {
+			String sql = (new StringBuilder("Select max(")).append(column).append(") From ").append(schema).append(".")
+					.append(table).append(" WHERE ").append(groupByColumn).append("=?").toString();
+			i = jdbcTemplate.queryForObject(sql, Integer.class, groupByValue);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.out.println("\n\nError in getMax " + ex);
+		}
+		return (i != null) ? i : 0;
+	}
+
 	@Override
 	public <T> List<T> listGeneric(Class<T> clazz, String sql) {
 		List<T> list = new ArrayList<>();
@@ -47,7 +62,7 @@ public class Utility implements UtilityInterface{
 			list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(clazz));
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
-			System.out.println("\n\nError in listGeneric::"+ex);
+			System.out.println("\n\nError in listGeneric::" + ex);
 		}
 		return list;
 	}
@@ -59,45 +74,45 @@ public class Utility implements UtilityInterface{
 			list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(clazz), params);
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
-			System.out.println("\n\nError in listGeneric::"+ex);
+			System.out.println("\n\nError in listGeneric::" + ex);
 		}
 		return list;
 	}
 
 	@Override
-	public List<Map<String,Object>> listGeneric(String sql) {
-		List<Map<String,Object>> list = new ArrayList<>();
+	public List<Map<String, Object>> listGeneric(String sql) {
+		List<Map<String, Object>> list = new ArrayList<>();
 		try {
 			list = jdbcTemplate.queryForList(sql);
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
-			System.out.println("\n\nError in listGeneric::"+ex);
+			System.out.println("\n\nError in listGeneric::" + ex);
 		}
 		return list;
 	}
-	
+
 	@Override
-	public List<Map<String,Object>> listGeneric(String sql, Object[] params) {
-		List<Map<String,Object>> list = new ArrayList<>();
+	public List<Map<String, Object>> listGeneric(String sql, Object[] params) {
+		List<Map<String, Object>> list = new ArrayList<>();
 		try {
 			list = jdbcTemplate.queryForList(sql, params);
 		} catch (Exception ex) {
 			LOG.info("\n\nError in listGeneric " + ex);
-			System.out.println("\n\nError in listGeneric::"+ex);
+			System.out.println("\n\nError in listGeneric::" + ex);
 		}
 		return list;
 	}
-	
+
 	@Override
-	public <T> boolean update(String tablename,String sql, Object[] params) {
-	 
-		boolean response=false;		
+	public <T> boolean update(String tablename, String sql, Object[] params) {
+
+		boolean response = false;
 		try {
-			response=jdbcTemplate.update(sql,params)>=0;
-		}catch(Exception e) {
-			response=false;
-			LOG.info("\n\nError in "+tablename+"::"+e);
-			System.out.println("\n\nError in "+tablename+"::"+e);
+			response = jdbcTemplate.update(sql, params) >= 0;
+		} catch (Exception e) {
+			response = false;
+			LOG.info("\n\nError in " + tablename + "::" + e);
+			System.out.println("\n\nError in " + tablename + "::" + e);
 		}
 		return response;
 	}
