@@ -93,7 +93,11 @@ app.controller('venueCtrl', ['$scope', '$sce', '$compile','$timeout','commonInit
     	});
     };
     
-    
+    $scope.getExamcenters=()=>{
+    	commonInitFactory.listExamCentersforOffice($scope.venue.officecode,(response)=>{
+    		$scope.centers = response;
+    	});
+    };
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
     
     $scope.setDataTable = function (obj) {
@@ -139,9 +143,7 @@ app.controller('venueCtrl', ['$scope', '$sce', '$compile','$timeout','commonInit
     };
 
     /*READ DATA*/
-    commonInitFactory.listExamCenters((response)=>{
-    	$scope.centers = response;
-    });
+   
     $scope.listVenues = () => {
         commonInitFactory.listVenues((response)=>{
     		$scope.venues = response;
