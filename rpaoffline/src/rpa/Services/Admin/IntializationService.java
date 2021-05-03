@@ -103,7 +103,7 @@ public class IntializationService implements IntializationServiceInterface {
 
 	@Override
 	public List<ExamCenter> listExamCenters() {
-		String sql = "SELECT * FROM masters.examinationcenters e INNER JOIN masters.officecenters o on o.centercode=e.centercode order by centername";
+		String sql = "SELECT * FROM masters.examinationcenters e order by centername";
 		List<ExamCenter> examCenters = UI.listGeneric(ExamCenter.class, sql);
 		return examCenters;
 	}
@@ -310,10 +310,7 @@ public class IntializationService implements IntializationServiceInterface {
 		int max = UI.getMax("masters", "examinationcenters", "centercode");
 		Object[] params = new Object[] { max + 1, center.getCentername() };
 		if (UI.update("masters.examinationcenters", sql, params)) {
-			sql = "INSERT INTO masters.officecenters(officecode, centercode) VALUES (?, ?)";
-			return (UI.update("masters.officecenters", sql, new Object[] { center.getOfficecode(), max + 1 }))
-					? "CREATED"
-					: "FAILED";
+			return "CREATED";					
 		} else {
 			return "FAILED";
 		}

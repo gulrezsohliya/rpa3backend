@@ -29,7 +29,7 @@ app.controller("mapCtrl", [
         if (v.checked) {
           mapCenters.push({
             slno: 0,
-            officecode: $scope.officecode,
+            officecode: Number($scope.officecode),
             centercode: v.centercode,
           });
         }
@@ -46,7 +46,7 @@ app.controller("mapCtrl", [
         contentType: "application/json; charset=utf-8",
         success: function (response) {
           MsgBox(response.response=="CREATED"?"Mapped":"Failed");
-	      $scope.listOffices();
+          window.location.reload();
 	      $scope.reset();
         },
         error: function (xhr) {
@@ -55,6 +55,8 @@ app.controller("mapCtrl", [
             "Sorry, there was an error while trying to process the request."
           );
         },
+      }).then(()=>{
+    	  $scope.listOffices();
       });
     };
     

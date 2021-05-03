@@ -28,22 +28,9 @@
 													{{offc.officeshortname}}</option>
 											</select>
 			                            </td>                                     
-			                            <td rowspan="15" style="width:65%;border: 1px solid blue;">
-			                                <div style="width:100%;max-height:300px;overflow-y: auto ">
-			                                    <table border="1" cellspacing="0"width="100%">
-			                                        <tr>
-			                                            <th></th>
-			                                            <th>Examination Center Code</th>    
-			                                            <th>Examination Center Name</th>
-			                                        </tr>
-			                                        <tr ng-repeat='item in centers track by $index' style="width:100%;">
-			                                            <td><input style="margin:8px" type='checkbox' ng-model="item.checked"/></td>
-			                                            <td >&nbsp;{{item.centercode}}</td>
-			                                            <td>&nbsp;{{item.centername}}</td>
-			                                        </tr>
-			                                    </table>
-			                                </div>
-			                            </td>
+<!-- 			                            <td rowspan="15" style="width:65%;border: 1px solid blue;"> -->
+			                                
+<!-- 			                            </td> -->
 			                        </tr> <tr><td>&nbsp;</td></tr>
 			                        <tr >
 			                            <td colspan="2" align="center">
@@ -53,6 +40,20 @@
 			                        </tr><tr><td>&nbsp;</td></tr>
 			                        <tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 			                    </table>
+			                    <div style="width:100%;max-height:300px;overflow-y: auto ">
+                                   <table border="1" cellspacing="0"width="100%">
+                                       <tr>
+                                           <th></th>
+                                           <th>Examination Center Code</th>    
+                                           <th>Examination Center Name</th>
+                                       </tr>
+                                       <tr ng-repeat='item in centers track by $index' style="width:100%;">
+                                           <td><input style="margin:8px" type='checkbox' ng-model="item.checked"/></td>
+                                           <td >&nbsp;{{item.centercode}}</td>
+                                           <td>&nbsp;{{item.centername}}</td>
+                                       </tr>
+                                   </table>
+                               </div>
 			                </form>
 			            </div>
 			        </div>

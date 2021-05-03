@@ -1,5 +1,6 @@
 package rpa.Controller.Admin;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,10 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import rpa.Models.Examination.ExamCenter;
 import rpa.Models.Examination.ExamSubjects;
@@ -105,13 +114,13 @@ public class InitializationController {
 	@GetMapping(value = "/listExamCenters", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ExamCenter>> listExamCenters(HttpServletRequest req) {
 		try {
-			User user = ((User) req.getSession().getAttribute("user"));
+//			User user = ((User) req.getSession().getAttribute("user"));
 			List<ExamCenter> examCenters = null;
-			if (user.getUsercode() == 1) {
+//			if (user.getUsercode() == 1) {
 				examCenters = IS.listExamCenters();
-			} else {
-				examCenters = IS.listExamCenters(user.getOfficecode());
-			}
+//			} else {
+//				examCenters = IS.listExamCenters(user.getOfficecode());
+//			}
 			return ResponseEntity.ok().body(examCenters);
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
@@ -138,7 +147,7 @@ public class InitializationController {
 	public ResponseEntity<List<Office>> listOffice(HttpServletRequest req) {
 		try {
 			List<Office> offices = null;
-			if (((User) req.getSession().getAttribute("user")).getCellcode() == null) {
+			if (((User) req.getSession().getAttribute("user")).getUsercode() == 1) {
 				offices = IS.listOfficesAndMappedCenters();
 			} else {
 				List<Cell> cells = IS.listCellsforCode(((User) req.getSession().getAttribute("user")).getCellcode());
@@ -232,7 +241,7 @@ public class InitializationController {
 
 	@PostMapping(value = "/saveOfficeCenters", consumes = "application/json")
 	public ResponseEntity<HashMap<String, Object>> saveOfficeCenters(@RequestBody List<OfficeCenter> offcen) {
-
+		
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		if (IS.saveOfficeCenters(offcen)) {
 			response.put("response", HttpStatus.CREATED);

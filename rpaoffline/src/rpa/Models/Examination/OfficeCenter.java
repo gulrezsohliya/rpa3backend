@@ -12,6 +12,10 @@ public class OfficeCenter implements Serializable {
 	private Integer officecode;
 	private Integer centercode;
 
+	public OfficeCenter() {
+		super();
+	}
+
 	public OfficeCenter(Integer officecode, Integer centercode) {
 		super();
 		this.officecode = officecode;

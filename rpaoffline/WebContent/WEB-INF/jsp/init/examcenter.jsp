@@ -17,22 +17,22 @@
 			            <div  style='width:80%;margin: 15px auto 0'>
 			                <form id="examForm" name="examForm">
 			                    <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
-			                        <tr class="form-group has-feedback">
-			                            <td class="title">Office:</td>
-			                            <td class="col-xs-5 selectContainer">
-											<select type="text" class="form-control" id="office" name="officecode" ng-model="examCenter.officecode" required>
-												<option value="">--Select--</option>
-												<option ng-selected="offc.officecode == examCenter.officecode"
-													ng-repeat='offc in offices track by $index' ng-value="offc.officecode">
-													{{offc.officeshortname}}</option>
-											</select>       				
-										</td>
-										<td style="width:100px"><span class="alert alert-danger" 
-												ng-show="examForm.officecode.$pristine && examForm.officecode.$invalid"> 
-												Required
-											</span>
-			                            </td>
-			                        </tr>
+<!-- 			                        <tr class="form-group has-feedback"> -->
+<!-- 			                            <td class="title">Office:</td> -->
+<!-- 			                            <td class="col-xs-5 selectContainer"> -->
+<!-- 											<select type="text" class="form-control" id="office" name="officecode" ng-model="examCenter.officecode" required> -->
+<!-- 												<option value="">--Select--</option> -->
+<!-- 												<option ng-selected="offc.officecode == examCenter.officecode" -->
+<!-- 													ng-repeat='offc in offices track by $index' ng-value="offc.officecode"> -->
+<!-- 													{{offc.officeshortname}}</option> -->
+<!-- 											</select>       				 -->
+<!-- 										</td> -->
+<!-- 										<td style="width:100px"><span class="alert alert-danger"  -->
+<!-- 												ng-show="examForm.officecode.$pristine && examForm.officecode.$invalid">  -->
+<!-- 												Required -->
+<!-- 											</span> -->
+<!-- 			                            </td> -->
+<!-- 			                        </tr> -->
 			                        <tr class="form-group has-feedback">
 			                            <td class="title">Examination Center Name:</td>
 			                            <td class="col-xs-5 selectContainer">
