@@ -64,9 +64,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
     	
         if($scope.userForm.$invalid)
             return false;
-// $scope.user.password = ($scope.user.password === '') ? "" :
-// sha256_digest($scope.user.password);
-        $scope.user.mobileno = "";
+//        $scope.user.passwords=sha256_digest($scope.user.passwords);
         $scope.user.cellcode = $scope.user.cellcode!==""?parseInt($scope.user.cellcode):"";
         
         $scope.method = "POST";
@@ -90,6 +88,7 @@ app.controller('createuserCtrl', ['$scope', '$sce', '$compile','$timeout','commo
     $scope.update = () => {
 	    if($scope.userForm.$invalid)
              return false;
+//	    $scope.user.passwords=sha256_digest($scope.user.passwords);
 	    $scope.method = "PUT";
     	$scope.urlEndpoint = "./updateuser";
     	commonInitService.save($scope.method, $scope.urlEndpoint, $scope.user, () => {$scope.reset();$scope.listUsers(), MsgBox(successMsg)}, () => {MsgBox(errorMsg)});

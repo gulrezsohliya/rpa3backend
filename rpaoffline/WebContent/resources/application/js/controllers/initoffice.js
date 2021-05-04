@@ -39,8 +39,8 @@ app.controller('officeCtrl', ['$scope', '$sce', '$compile','$timeout','commonIni
 
     $scope.save = function () {
         if($scope.officeForm.$invalid)
-            return false;
-        
+            return false;\
+            
         $scope.method = "POST";
         $scope.urlEndpoint = "./createoffice";
     	

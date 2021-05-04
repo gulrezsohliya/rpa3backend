@@ -49,7 +49,7 @@
 							</div>														
 							<script>
 						        function beforeSubmit() {
-								    //jQuery('#password').val(sha256_digest(jQuery('#password').val()));								    
+// 								    jQuery('#password').val(sha256_digest(jQuery('#password').val()));								    
 // 						            jQuery("#loginForm").submit();
 									return true;
 						        }						        
