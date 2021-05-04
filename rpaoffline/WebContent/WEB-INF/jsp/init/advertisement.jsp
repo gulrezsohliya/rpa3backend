@@ -81,7 +81,7 @@
 					                            </td>
 					                        </tr>
 					                        <tr class="form-group has-feedback">
-					                            <td class="title">Post Sort Name:</br><span style='font-size: 10px'>Please provide a short name of the</br>Name of Post to be  used for sending SMS</span></td>
+					                            <td class="title">Post Short Name:</br><span style='font-size: 10px'>Provide a short name of the</br>Name of Post to be  used for sending SMS</span></td>
 					                            <td class="col-xs-5 selectContainer">
 													<input class="form-control" type="text" id="postshortname" name="postshortname"
 														ng-model="adv.postshortname" required/>
