@@ -159,6 +159,6 @@ public class PageurlsService implements PageurlsServiceInterface {
 
 	public String saveUserpages(List<UserPages> upages) {
 
-		return (dao.mapUserpages(upages)) ? "Mapped" : "Failed";
+		return (dao.mapUserpages(upages)) ? "The pages has been mapped successfully" : "Error : cannot map the pages to the user.";
 	}
 }
