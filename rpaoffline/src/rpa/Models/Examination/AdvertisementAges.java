@@ -17,6 +17,13 @@ public class AdvertisementAges implements Serializable {
 	private Integer maxage;
 	private Date entrydate;
 
+	public AdvertisementAges() {
+		super();
+		this.categorycode = "GENERAL";
+		this.minage = 0;
+		this.maxage = 0;
+	}
+
 	public Integer getSlno() {
 		return slno;
 	}

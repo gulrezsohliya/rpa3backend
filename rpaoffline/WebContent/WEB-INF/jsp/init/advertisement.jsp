@@ -168,8 +168,8 @@
 					                            <td class="title">Finalized</td>
 					                            <td class="col-xs-5 selectContainer">
 													<select class="form-control"  id="finalized" name="finalized"	ng-model="adv.finalized" required>
-														<option value="Y" ng-selected='true'>Yes</option> 
-														<option value="N">No</option> 
+														<option value="Y" >Yes</option> 
+														<option value="N" ng-selected='true'>No</option> 
 													</select>
 													<span id="advMsg"></span>
 												</td>

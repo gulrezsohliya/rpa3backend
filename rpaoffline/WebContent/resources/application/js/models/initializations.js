@@ -21,7 +21,7 @@ var Advertisement = function() {
 		advertisementAge : [ new AdvertisementAge() ],
 		advertisementAgeRelax : {
 			slno : 0,
-			adcode : '',
+			adcode : null,
 			pwdadditionalage : 0,
 			womanadditionalage : 0,
 			exservicemenadditionalage : 0,
@@ -30,7 +30,7 @@ var Advertisement = function() {
 		advertisementFee : [ new AdvertisementFee() ],
 		advertisementFeeRelax : {
 			slno : 0,
-			adcode : '',
+			adcode : null,
 			pwdfees : 0,
 			womanfees : 0,
 			exservicemenfees : 0,
@@ -43,7 +43,7 @@ var Advertisement = function() {
 
 var AdvertisementOptionals = function(optional_code) {
 	return {
-		adcode : '',
+		adcode : null,
 		optionalcode : optional_code,
 		optionalsubject : [{"optionalsubjectcode":0,"optionalsubjectname":"Not Applicable"}]
 	};
@@ -51,7 +51,7 @@ var AdvertisementOptionals = function(optional_code) {
 var AdvertisementAge = function() {
 	return {
 		slno : 0,
-		adcode : '',
+		adcode : null,
 		categorycode : '',
 		minage : 0,
 		maxage : 0,
@@ -62,7 +62,7 @@ var AdvertisementAge = function() {
 var AdvertisementFee = function() {
 	return {
 		slno : 0,
-		adcode : '',
+		adcode : null,
 		categorycode : '',
 		feeamount : 0,
 		entrydate : 0

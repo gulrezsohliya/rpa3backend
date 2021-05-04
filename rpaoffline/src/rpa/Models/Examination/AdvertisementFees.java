@@ -22,6 +22,12 @@ public class AdvertisementFees implements Serializable {
 	private Integer feeamount;
 	private Date entrydate;
 
+	public AdvertisementFees() {
+		super();
+		this.categorycode = "GENERAL";
+		this.feeamount = 0;
+	}
+
 	public Integer getSlno() {
 		return slno;
 	}

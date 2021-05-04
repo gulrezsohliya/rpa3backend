@@ -1,8 +1,6 @@
 package rpa.Services.Examination;
 
-import java.sql.SQLDataException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +17,6 @@ import rpa.Models.Examination.AdvertisementFees;
 import rpa.Models.Examination.AdvertisementFeesRelax;
 import rpa.Models.Examination.AdvertisementOptionals;
 import rpa.Models.Examination.ExamSubjects;
-import rpa.Models.Examination.OfficeCenter;
 import rpa.Models.Examination.OptionalSubjects;
 import rpa.Utility.UtilityInterface;
 
@@ -239,11 +236,16 @@ public class ExaminationService implements ExaminationServiceInterface {
 				+ "            lastdate, agedate, description, counterentry, open, "
 				+ "            noofoptionals, usercode, entrydate, finalized,  advertisementno,  "
 				+ "            examinationmodecode)" + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Integer slno = UI.getMax("backend", "Advertisements", "slno","officecode",obj.getOfficecode()) + 1;
+		Integer slno = UI.getMax("backend", "Advertisements", "slno", "officecode", obj.getOfficecode()) + 1;
 		String adcode = ((obj.getOfficecode().toString().length() == 1) ? "00"
 				: (obj.getOfficecode().toString().length() == 2) ? "0" : "") + obj.getOfficecode()
-			+ ((slno.toString().length() == 1) ? "00" 
-				: (slno.toString().length() == 2) ? "0" : "") + slno;//6 Characters adcode 3 of officecode +3 of slno
+				+ ((slno.toString().length() == 1) ? "00" : (slno.toString().length() == 2) ? "0" : "") + slno;// 6
+																												// Characters
+																												// adcode
+																												// 3 of
+																												// officecode
+																												// +3 of
+																												// slno
 		Object[] params = new Object[] { slno, adcode, obj.getOfficecode(), obj.getNameofpost(), obj.getPostshortname(),
 				obj.getIssuedate(), obj.getLastdate(), obj.getAgedate(), obj.getDescription(), obj.getCounterentry(),
 				obj.getOpen(), obj.getNoofoptionals(), obj.getUsercode(), new Date(), obj.getFinalized(),
@@ -266,62 +268,65 @@ public class ExaminationService implements ExaminationServiceInterface {
 			if (UI.update("backend.Advertisements", sql, params)) {
 
 ////////////// Save AdvertisementsAgesRelax
-//			if()
-				sqlDelete = "DELETE FROM backend.advertisementsagesrelax WHERE adcode=?";
-				sql = "INSERT INTO backend.advertisementsagesrelax(slno, adcode, pwdadditionalage,  "
-						+ "		womanadditionalage, exservicemenadditionalage,entrydate) "
-						+ "    VALUES (?, ?, ?, ?, ?, ?)";
-				UI.update("backend.advertisementsagesrelax", sqlDelete, new Object[] { obj.getAdcode() });
-				if (!UI.update("backend.advertisementsagesrelax", sql,
-						new Object[] { UI.getMax("backend", "advertisementsagesrelax", "slno") + 1, obj.getAdcode(),
-								obj.getAdvertisementAgeRelax().getPwdadditionalage(),
-								obj.getAdvertisementAgeRelax().getWomanadditionalage(),
-								obj.getAdvertisementAgeRelax().getExservicemenadditionalage(), new Date() })) {
-					return false;
-				}
-
+					sqlDelete = "DELETE FROM backend.advertisementsagesrelax WHERE adcode=?";
+					sql = "INSERT INTO backend.advertisementsagesrelax(slno, adcode, pwdadditionalage,  "
+							+ "		womanadditionalage, exservicemenadditionalage,entrydate) "
+							+ "    VALUES (?, ?, ?, ?, ?, ?)";
+					UI.update("backend.advertisementsagesrelax", sqlDelete, new Object[] { obj.getAdcode() });
+					if (!UI.update("backend.advertisementsagesrelax", sql,
+							new Object[] { UI.getMax("backend", "advertisementsagesrelax", "slno") + 1, obj.getAdcode(),
+									obj.getAdvertisementAgeRelax().getPwdadditionalage(),
+									obj.getAdvertisementAgeRelax().getWomanadditionalage(),
+									obj.getAdvertisementAgeRelax().getExservicemenadditionalage(), new Date() })) {
+						return false;
+					}
+				
 ////////////// Save AdvertisementsFeesRelax
-				sqlDelete = "DELETE FROM backend.advertisementsfeesrelax WHERE adcode=?";
-				sql = "INSERT INTO backend.advertisementsfeesrelax("
-						+ "            slno, adcode, pwdfees, womanfees, exservicemenfees, entrydate)"
-						+ "    VALUES (?, ?, ?, ?, ?, ?)";
-				UI.update("backend.advertisementsfeesrelax", sqlDelete, new Object[] { obj.getAdcode() });
-				if (!UI.update("backend.advertisementsfeesrelax", sql,
-						new Object[] { UI.getMax("backend", "advertisementsfeesrelax", "slno") + 1, obj.getAdcode(),
-								obj.getAdvertisementFeeRelax().getPwdfees(),
-								obj.getAdvertisementFeeRelax().getWomanfees(),
-								obj.getAdvertisementFeeRelax().getExservicemenfees(), new Date() })) {
-					return false;
-				}
-
+					sqlDelete = "DELETE FROM backend.advertisementsfeesrelax WHERE adcode=?";
+					sql = "INSERT INTO backend.advertisementsfeesrelax("
+							+ "            slno, adcode, pwdfees, womanfees, exservicemenfees, entrydate)"
+							+ "    VALUES (?, ?, ?, ?, ?, ?)";
+					UI.update("backend.advertisementsfeesrelax", sqlDelete, new Object[] { obj.getAdcode() });
+					if (!UI.update("backend.advertisementsfeesrelax", sql,
+							new Object[] { UI.getMax("backend", "advertisementsfeesrelax", "slno") + 1, obj.getAdcode(),
+									obj.getAdvertisementFeeRelax().getPwdfees(),
+									obj.getAdvertisementFeeRelax().getWomanfees(),
+									obj.getAdvertisementFeeRelax().getExservicemenfees(), new Date() })) {
+						return false;
+					}
+				
 //////////////Save AdvertisementsAges
-				sqlDelete = "DELETE FROM backend.advertisementsages WHERE adcode=?";
-				sql = "INSERT INTO backend.advertisementsages( "
-						+ "            slno, adcode, categorycode, minage, maxage, entrydate) "
-						+ "    VALUES (?, ?, ?, ?, ?, ?); ";
-				UI.update("backend.advertisementsages", sqlDelete, new Object[] { obj.getAdcode() });
-				Integer max = UI.getMax("backend", "advertisementsages", "slno");
-				for (AdvertisementAges age : obj.getAdvertisementAge()) {
-					if (!UI.update("backend.advertisementsages", sql, new Object[] { ++max, obj.getAdcode(),
-							age.getCategorycode(), age.getMinage(), age.getMaxage(), new Date() })) {
-						return false;
+				Integer max = 0;
+					sqlDelete = "DELETE FROM backend.advertisementsages WHERE adcode=?";
+					sql = "INSERT INTO backend.advertisementsages( "
+							+ "            slno, adcode, categorycode, minage, maxage, entrydate) "
+							+ "    VALUES (?, ?, ?, ?, ?, ?); ";
+					UI.update("backend.advertisementsages", sqlDelete, new Object[] { obj.getAdcode() });
+					max = UI.getMax("backend", "advertisementsages", "slno");
+					for (AdvertisementAges age : obj.getAdvertisementAge()) {
+						if (!UI.update("backend.advertisementsages", sql, new Object[] { ++max, obj.getAdcode(),
+								age.getCategorycode(), age.getMinage(), age.getMaxage(), new Date() })) {
+							return false;
+						}
 					}
-				}
-
+				
 //////////////Save AdvertisementsFees
-				sqlDelete = "DELETE FROM backend.advertisementsfees WHERE adcode=?";
-				sql = "INSERT INTO backend.advertisementsfees( slno, adcode, categorycode, feeamount, entrydate) "
-						+ "VALUES (?, ?, ?, ?, ?);";
-				UI.update("backend.advertisementsfees", sqlDelete, new Object[] { obj.getAdcode() });
-				max = UI.getMax("backend", "advertisementsfees", "slno");
-				for (AdvertisementFees fees : obj.getAdvertisementFee()) {
-					if (!UI.update("backend.advertisementsfees", sql, new Object[] { ++max, obj.getAdcode(),
-							fees.getCategorycode(), fees.getFeeamount(), new Date() })) {
-						return false;
+
+					sqlDelete = "DELETE FROM backend.advertisementsfees WHERE adcode=?";
+					sql = "INSERT INTO backend.advertisementsfees( slno, adcode, categorycode, feeamount, entrydate) "
+							+ "VALUES (?, ?, ?, ?, ?);";
+					UI.update("backend.advertisementsfees", sqlDelete, new Object[] { obj.getAdcode() });
+					max = UI.getMax("backend", "advertisementsfees", "slno");
+					for (AdvertisementFees fees : obj.getAdvertisementFee()) {
+						if (!UI.update("backend.advertisementsfees", sql, new Object[] { ++max, obj.getAdcode(),
+								fees.getCategorycode(), fees.getFeeamount(), new Date() })) {
+							return false;
+						}
 					}
-				}
+				
 
 //////////////Save AdvertisementsOptionals
+
 				sqlDelete = "DELETE FROM backend.advertisementsoptionals WHERE adcode=?";
 				sql = "INSERT INTO backend.advertisementsoptionals( adcode, optionalcode,optionalsubjectcode ) "
 						+ "VALUES (?, ?, ?);";
@@ -339,7 +344,9 @@ public class ExaminationService implements ExaminationServiceInterface {
 			} else {
 				return false;
 			}
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			System.out.println("Error in updateAdvertisement(Advertisement obj) ::" + e);
 			return false;
 		}

@@ -17,6 +17,13 @@ public class AdvertisementFeesRelax implements Serializable {
 	private Integer exservicemenfees;
 	private Date entrydate;
 
+	public AdvertisementFeesRelax() {
+		super();
+		this.pwdfees = 0;
+		this.womanfees = 0;
+		this.exservicemenfees = 0;
+	}
+
 	public Integer getSlno() {
 		return slno;
 	}

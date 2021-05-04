@@ -17,6 +17,13 @@ public class AdvertisementAgeRelax implements Serializable {
 	private Integer exservicemenadditionalage;
 	private Date entrydate;
 
+	public AdvertisementAgeRelax() {
+		super();
+		this.pwdadditionalage = 0;
+		this.womanadditionalage = 0;
+		this.exservicemenadditionalage = 0;
+	}
+
 	public Integer getSlno() {
 		return slno;
 	}
