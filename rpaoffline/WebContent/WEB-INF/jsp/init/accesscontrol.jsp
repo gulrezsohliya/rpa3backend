@@ -56,7 +56,7 @@
                         </tr><tr><td>&nbsp;</td></tr>
                         <tr >
                             <td colspan="2" align="center">
-                                <input type="button" value="Save" ng-click="save()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="button" value="Save" ng-click="save()" ng-disabled="user.usercode==-1"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <input type="reset" value="RESET" ng-click="reset()"/>
                             </td>
                         </tr><tr><td>&nbsp;</td></tr>

@@ -13,7 +13,7 @@
 	        <div class="row">	        
 	        	<!-- ====================Dynamic Page Content Will Come Starts====================== -->     	
 	        	<div class="col-md-12 py-12 px-12">
-					<div class='containerBody' id="createuserCtrl" ng-controller="createuserCtrl">            
+					<div class='containerBody' id="createuserCtrl" ng-controller="createuserCtrl" autocomplete='off'>            
 			            <div  style='width:80%;margin: 15px auto 0'>
 			                <form id="userForm" name="userForm">
 			                    <table class="" style="width:70%;margin: 0px auto; border-spacing: 10px"> 
@@ -88,6 +88,7 @@
 	      </div>	      
 	    </div> 	    
 	  </div>
+	  <script src="resources/vendor/sha256.min.js"></script>
 	  <script src="resources/application/js/controllers/createuser.js"></script>
 	</body>
 </html>

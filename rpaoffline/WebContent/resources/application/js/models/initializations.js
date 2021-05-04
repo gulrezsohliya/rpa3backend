@@ -186,7 +186,7 @@ function Userlogins() {
 	var Userlogins = {
 		"cellcode" : 0,
 		"designation" : "",
-		"usercode" : 0,
+		"usercode" : -1,
 		"username" : "",
 		"passwords" : "",
 		"entrydate" : new Date(),
